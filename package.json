@@ -10,9 +10,12 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
+		"@heroui/avatar": "^2.2.22",
 		"@heroui/button": "^2.2.27",
 		"@heroui/card": "^2.2.25",
+		"@heroui/dropdown": "^2.3.27",
 		"@heroui/input": "^2.4.28",
+		"@heroui/navbar": "^2.2.25",
 		"@heroui/system": "^2.4.23",
 		"@heroui/theme": "^2.4.23",
 		"axios": "^1.12.2",
@@ -24,6 +27,7 @@
 		"react-hook-form": "^7.64.0",
 		"react-icons": "^5.5.0",
 		"react-router-dom": "^7.9.4",
+		"swiper": "^12.0.2",
 		"yup": "^1.7.1"
 	},
 	"devDependencies": {
@@ -32,6 +36,7 @@
 		"@types/react": "^19.1.16",
 		"@types/react-dom": "^19.1.9",
 		"@vitejs/plugin-react-swc": "^4.1.0",
+		"animate.css": "^4.1.1",
 		"daisyui": "^5.1.29",
 		"eslint": "^9.36.0",
 		"eslint-plugin-react-hooks": "^5.2.0",

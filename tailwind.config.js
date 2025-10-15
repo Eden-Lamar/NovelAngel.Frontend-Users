@@ -24,10 +24,7 @@ export default {
 	darkMode: "class",
 	plugins: [heroui(), daisyui],
 	daisyui: {
-		themes: ["light"],
-		// darkTheme: "light",
-		// base: true,
-		// styled: true,
-		// utils: true,
+		themes: false, // disables all built-in themes
 	},
+
 };

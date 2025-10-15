@@ -1,6 +1,9 @@
 @config "../tailwind.config.js";
 @import "tailwindcss";
 
+@plugin "daisyui" {
+  themes: false;
+}
 
 @layer base {
   *, *::before, *::after {
@@ -12,11 +15,18 @@
     padding: 0;
   }
 
-  html, body {
-    height: 100%;
-    background-color: white;
-    color: black;
+  html.light {
+    --background: white;
+    --foreground: black;
+    background-color: var(--background);
+    color: var(--foreground);
   }
 
+  html.dark {
+    --background: #1a1b23;
+    --foreground: #e6edf3;
+    background-color: var(--background);
+    color: var(--foreground);
+  }
   
 }
