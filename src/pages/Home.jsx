@@ -1,28 +1,39 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Hero from '../components/Hero';
+import TrendingBooks from '../components/TrendingBooks';
 
 function Home() {
   const [newBooks, setNewBooks] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loadingNew, setLoadingNew] = useState(true);
+  const [trendingBooks, setTrendingBooks] = useState([]);
+  const [loadingTrending, setLoadingTrending] = useState(true);
+
 
   // Fetch new books from API
   useEffect(() => {
-    const fetchNewBooks = async () => {
+    const fetchHomeData = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/v1/books/new');
+        const [newRes, trendingRes] = await Promise.all([
+          axios.get('http://localhost:3000/api/v1/books/new'),
+          axios.get('http://localhost:3000/api/v1/books/trending'),
+        ]);
 
-        if (response.data.status === 'success') {
-          setNewBooks(response.data.data);
+        if (newRes.data.status === 'success') {
+          setNewBooks(newRes.data.data);
+        }
+        if (trendingRes.data.status === 'success') {
+          setTrendingBooks(trendingRes.data.data);
         }
       } catch (error) {
         console.error('Error fetching new books:', error);
       } finally {
-        setLoading(false);
+        setLoadingNew(false);
+        setLoadingTrending(false);
       }
     };
 
-    fetchNewBooks();
+    fetchHomeData();
   }, []);
 
   // Mock data for development (remove when API is ready)
@@ -40,9 +51,14 @@ function Home() {
   ];
 
   const booksToDisplay = newBooks.length > 0 ? newBooks : mockBooks;
+    const trendingBooksToDisplay = trendingBooks.length > 0 ? trendingBooks : mockBooks;
+
 
   return (
-    <Hero books={booksToDisplay} loading={loading} />
+    <div>
+      <Hero books={booksToDisplay} loading={loadingNew} />
+      <TrendingBooks books={trendingBooksToDisplay} loading={loadingTrending} />
+    </div>
   );
 }
 
