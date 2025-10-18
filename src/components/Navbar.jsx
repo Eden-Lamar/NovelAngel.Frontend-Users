@@ -77,7 +77,7 @@ const menuItems = [
             alt="Novel Angel Logo"
             className="h-14 w-auto mr-2"
           />
-          <span className="text-3xl font-vibes text-transparent bg-clip-text bg-gradient-to-r from-gold to-cyan-500">
+          <span className=" text-3xl font-bold font-vibes text-transparent bg-clip-text bg-gradient-to-r from-gold to-cyan-500">
             Novel Angel
           </span>
         </NavbarBrand>
