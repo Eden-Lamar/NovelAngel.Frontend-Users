@@ -2,7 +2,7 @@ import {Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenu, NavbarMenuIt
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@heroui/dropdown";
 import { Avatar } from "@heroui/avatar";
 import { Input } from "@heroui/input";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { Button } from "@heroui/button";
 import { GiTwoCoins } from "react-icons/gi";
 import { useState, useEffect } from "react";
@@ -12,10 +12,14 @@ import logo from "../assets/logo.png";
 
 
 function NavbarSticky() {
+  const location = useLocation();
   const [theme, setTheme] = useState("light");
   const [coins, setCoins] = useState(0); // Placeholder for user coins
   const [avatar, setAvatar] = useState(null); // Placeholder for user avatar
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // Check if current route is the book reader page
+  const isBookReaderPage = location.pathname.includes("/book/") && location.pathname.includes("/read");
 
   // Toggle theme between light and dark
 const toggleTheme = () => {
@@ -30,7 +34,7 @@ const toggleTheme = () => {
     // Example: Fetch coins and avatar from your backend
     // Replace with actual API call using axios
     setCoins(100); // Mock data
-    setAvatar("https://robohash.org/angel"); // Mock avatar URL
+    setAvatar("https://api.dicebear.com/9.x/bottts/svg?seed=Mason"); // Mock avatar URL
   }, []);
 const menuItems = [
     { name: "Home", path: "/" },
@@ -42,6 +46,7 @@ const menuItems = [
   return (
     <Navbar 
       isBordered 
+      position={isBookReaderPage ? "static" : "sticky"}
       isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
       classNames={{

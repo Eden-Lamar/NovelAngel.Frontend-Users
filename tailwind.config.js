@@ -12,6 +12,7 @@ export default {
 		extend: {
 			backgroundImage: {
 				'custom-striped': 'repeating-linear-gradient(-45deg, transparent, transparent 14px, rgba(0, 0, 0, 0.3) 14px, rgba(0, 0, 0, 0.3) 15px)',
+				'custom-striped-light': 'repeating-linear-gradient(-45deg, #ffffff, #ffffff 14px,#f8f8f8 14px,#f8f8f8 15px)',
 			},
 			colors: {
 				gold: '#FFD700', // Define gold color shade

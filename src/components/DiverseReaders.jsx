@@ -1,6 +1,6 @@
 function DiverseReaders() {
   return (
-    <div className="hidden md:block relative bg-gradient-to-br from-amber-50 via-orange-50 to-pink-50 dark:from-gray-900 dark:via-purple-900/20 dark:to-gray-900 py-20 md:py-5 overflow-hidden">
+    <div className="hidden md:block relative rounded-2xl bg-gradient-to-br from-amber-50 via-orange-50 to-pink-50 dark:from-gray-900 dark:via-purple-900/20 dark:to-gray-900 py-20 md:py-5 overflow-hidden">
       {/* Decorative background elements */}
       <div className="absolute inset-0 opacity-30">
         <div className="absolute top-10 left-10 w-32 h-32 bg-gold/20 rounded-full blur-3xl animate-pulse" />

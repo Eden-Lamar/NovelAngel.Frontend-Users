@@ -28,5 +28,23 @@
     background-color: var(--background);
     color: var(--foreground);
   }
+
+  /* use !important to beat library specificity */
+.force-cyan-solid {
+  background-color: #06b6d4 !important; /* cyan-500 */
+  color: #111827 !important;            /* gray-900 */
+}
+
+  /* use !important to beat library specificity */
+.force-cyan:hover {
+  background-color: #06b6d4 !important; /* cyan-500 */
+  color: #111827 !important;            /* gray-900 */
+}
+
+  /* use !important to beat library specificity */
+.force-blue:hove {
+  background-color: #3b82f6 !important; /* blue-500 */
+  color: #111827 !important;            /* gray-900 */
+}
   
 }
