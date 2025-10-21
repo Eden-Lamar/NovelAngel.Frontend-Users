@@ -34,7 +34,7 @@ const toggleTheme = () => {
     // Example: Fetch coins and avatar from your backend
     // Replace with actual API call using axios
     setCoins(100); // Mock data
-    setAvatar("https://api.dicebear.com/9.x/bottts/svg?seed=Mason"); // Mock avatar URL
+    setAvatar("https://robohash.org/angel"); // Mock avatar URL
   }, []);
 const menuItems = [
     { name: "Home", path: "/" },
