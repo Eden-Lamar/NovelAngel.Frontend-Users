@@ -4,6 +4,9 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 import BookDetails from './pages/BookDetails';
 import BookReader from './pages/BookReader';
+import Novels from './pages/Novels';
+import Genres from './pages/Genres';
+import "./App.css"
 
 function App() {
   
@@ -19,8 +22,8 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/book/:id" element={<BookDetails />} />
             <Route path="/book/:bookId/read" element={<BookReader />} />
-            <Route path="/novels" element={<h1 className="text-gray-500 text-3xl">Novels</h1>} />
-            <Route path="/genres" element={<h1 className="text-gray-500 text-3xl">Genres</h1>} />
+            <Route path="/novels" element={<Novels />} />
+            <Route path="/genres" element={<Genres />} />
             <Route path="/buy-coins" element={<h1 className="text-gray-500 text-3xl">Buy Coins</h1>} />
           </Routes>
       </div>
