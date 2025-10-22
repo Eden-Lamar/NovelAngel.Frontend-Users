@@ -5,21 +5,33 @@ import { Input } from "@heroui/input";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { Button } from "@heroui/button";
 import { GiTwoCoins } from "react-icons/gi";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { CiSearch, CiCloudMoon  } from "react-icons/ci";
 import { PiCloudSun, PiCoinsFill  } from "react-icons/pi";
+import { useAuth } from "../context/useAuth";
 import logo from "../assets/logo.png";
 
 
 function NavbarSticky() {
   const location = useLocation();
   const [theme, setTheme] = useState("light");
-  const [coins, setCoins] = useState(0); // Placeholder for user coins
-  const [avatar, setAvatar] = useState(null); // Placeholder for user avatar
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
+
 
   // Check if current route is the book reader page
   const isBookReaderPage = location.pathname.includes("/book/") && location.pathname.includes("/read");
+
+  
+  const { auth, logout, isAuthenticated } = useAuth(); // ✅ get user + logout + auth state
+
+  const user = auth?.user;
+  const coins = user?.coinBalance;
+  const avatar = user?.avatar || "https://robohash.org/angel"; // fallback avatar
+
+  console.log("auth", auth)
+  console.log("auth", isAuthenticated)
+  console.log("avatar", avatar)
+
 
   // Toggle theme between light and dark
 const toggleTheme = () => {
@@ -29,13 +41,7 @@ const toggleTheme = () => {
   document.documentElement.classList.add(newTheme);
 };
 
-  // Placeholder: Fetch user data (coins, avatar) from API
-  useEffect(() => {
-    // Example: Fetch coins and avatar from your backend
-    // Replace with actual API call using axios
-    setCoins(100); // Mock data
-    setAvatar("https://robohash.org/angel"); // Mock avatar URL
-  }, []);
+
 const menuItems = [
     { name: "Home", path: "/" },
     { name: "Novels", path: "/novels" },
@@ -148,7 +154,8 @@ const menuItems = [
         </NavbarItem>
       </NavbarContent>
 
-      {/* Mobile - Avatar Only */}
+      {/* Mobile - Avatar Only (show only if logged in) */}
+      {isAuthenticated && (
       <NavbarContent className="md:hidden" justify="end">
         <NavbarItem>
           <Dropdown placement="bottom-end">
@@ -165,7 +172,7 @@ const menuItems = [
             <DropdownMenu aria-label="Profile Actions" variant="flat">
               <DropdownItem key="profile" className="h-14 gap-2">
                 <p className="font-semibold">Signed in as</p>
-                <p className="font-semibold">zoey@example.com</p>
+                <p className="font-semibold">{user?.email}</p>
               </DropdownItem>
               <DropdownItem key="coins" className="h-10 gap-2">
                 <div className="flex items-center gap-2">
@@ -190,13 +197,30 @@ const menuItems = [
               </DropdownItem>
               <DropdownItem key="my-profile">My profile</DropdownItem>
               <DropdownItem key="library">My Library</DropdownItem>
-              <DropdownItem key="logout" color="danger">
+              <DropdownItem key="logout" color="danger" onClick={logout}>
                 Log Out
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>
         </NavbarItem>
       </NavbarContent>
+      )}
+
+      {/* Mobile - Login/Register Buttons if not logged in */}
+      {!isAuthenticated && (
+        <NavbarContent className="md:hidden gap-2" justify="end">
+          <NavbarItem>
+            <Button as={Link} to="/login" color="primary" variant="flat" radius="md" size="sm">
+              Login
+            </Button>
+          </NavbarItem>
+          <NavbarItem>
+            <Button as={Link} to="/signup" color="danger" variant="solid" radius="md" size="sm">
+              Register
+            </Button>
+          </NavbarItem>
+        </NavbarContent>
+      )}
 
       {/* Desktop - Right Side Icons */}
       <NavbarContent className="hidden md:flex gap-4 items-center" justify="end">
@@ -223,38 +247,57 @@ const menuItems = [
             )}
           </Button>
         </NavbarItem>
+      
+      {/* Coins + Avatar (only show if logged in) */}
+        {isAuthenticated ? (
+          <>
+            <NavbarItem className="flex items-center gap-1">
+              <PiCoinsFill className="text-lg text-gold" />
+              <span className="text-sm font-semibold">{coins}</span>
+            </NavbarItem>
 
-        <NavbarItem className="flex items-center gap-1">
-          <PiCoinsFill className="text-lg text-gold" />
-          <span className="text-sm font-semibold">{coins}</span>
-        </NavbarItem>
-
-        <NavbarItem>
-          <Dropdown placement="bottom-end">
-            <DropdownTrigger>
-              <Avatar
-                isBordered
-                as="button"
-                className="transition-transform"
-                color="primary"
-                name="Jason Hughes"
-                size="sm"
-                src={avatar}
-              />
-            </DropdownTrigger>
-            <DropdownMenu aria-label="Profile Actions" variant="flat">
-              <DropdownItem key="profile" className="h-14 gap-2">
-                <p className="font-semibold">Signed in as</p>
-                <p className="font-semibold">zoey@example.com</p>
-              </DropdownItem>
-              <DropdownItem key="my-profile">My profile</DropdownItem>
-              <DropdownItem key="library">My Library</DropdownItem>
-              <DropdownItem key="logout" color="danger">
-                Log Out
-              </DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
-        </NavbarItem>
+            <NavbarItem>
+              <Dropdown placement="bottom-end">
+                <DropdownTrigger>
+                  <Avatar
+                    isBordered
+                    as="button"
+                    className="transition-transform"
+                    color="primary"
+                    name={user?.username}
+                    size="sm"
+                    src={avatar}
+                  />
+                </DropdownTrigger>
+                <DropdownMenu aria-label="Profile Actions" variant="flat">
+                  <DropdownItem key="profile" className="h-14 gap-2">
+                    <p className="font-semibold">Signed in as</p>
+                    <p className="font-semibold">{user?.email}</p>
+                  </DropdownItem>
+                  <DropdownItem key="my-profile">My profile</DropdownItem>
+                  <DropdownItem key="library">My Library</DropdownItem>
+                  <DropdownItem key="logout" color="danger" onClick={logout}>
+                    Log Out
+                  </DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            </NavbarItem>
+        </>
+        ) : (
+          <>
+            {/* Login & Register buttons for guests */}
+            <NavbarItem>
+              <Button as={Link} to="/login" color="primary" variant="flat" radius="md" size="sm">
+                Login
+              </Button>
+            </NavbarItem>
+            <NavbarItem>
+              <Button as={Link} to="/signup" color="danger" variant="solid" radius="md" size="sm">
+                Register
+              </Button>
+            </NavbarItem>
+          </>
+        )}
       </NavbarContent>
 
       {/* Mobile Menu */}

@@ -227,17 +227,25 @@ console.log('Books:', books);
                 <div 
 									ref={scrollRef}
 									className="flex items-center gap-2 overflow-x-auto py-1 px-10 scrollbar-hide w-[95%] mx-auto">
-                    {allFilters.map((filter) => (
+                    {allFilters.map((filter) => {
+											const isSelected = selectedFilters.includes(filter);
+											const isCategory = categories.includes(filter);
+
+											return (
                         <Chip
                             key={filter}
                             onClick={() => toggleFilter(filter)}
                             className="cursor-pointer whitespace-nowrap"
-                            color={selectedFilters.includes(filter) ? "warning" : "default"}
+                            color= { isSelected ? isCategory
+															? "success" // categories use success color
+															: "warning" // tags use warning color
+														: "default"}
                             variant={selectedFilters.includes(filter) ? "flat" : "bordered"}
                         >
                             {filter}
                         </Chip>
-                    ))}
+											);
+										})}
                     {(keyword || selectedStatus || selectedFilters.length > 0) && (
                         <Chip
                             onClick={clearFilters}

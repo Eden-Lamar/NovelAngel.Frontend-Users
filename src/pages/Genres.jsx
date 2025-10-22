@@ -33,31 +33,31 @@ function Genres() {
     const genres = [
         {
             name: 'Action',
-            gradient: 'from-red-900 via-orange-900 to-gray-900',
+            gradient: 'from-gray-900 via-orange-900 to-gray-900',
             icon: '⚔️',
             description: 'High-octane thrills and epic battles'
         },
         {
             name: 'Adventure',
-            gradient: 'from-green-900 via-teal-900 to-gray-900',
+            gradient: 'from-gray-900 via-teal-900 to-gray-900',
             icon: '🗺️',
             description: 'Exciting journeys to unknown lands'
         },
         {
             name: 'Drama',
-            gradient: 'from-purple-900 via-purple-900 to-gray-900',
+            gradient: 'from-gray-900 via-purple-900 to-gray-900',
             icon: '🎭',
             description: 'Emotional depth and complex narratives'
         },
         {
             name: 'Romance',
-            gradient: 'from-pink-900 via-rose-900 to-gray-900',
+            gradient: 'from-gray-900 via-rose-900 to-gray-900',
             icon: '💕',
             description: 'Love stories that warm the heart'
         },
         {
             name: 'Sci-fi',
-            gradient: 'from-blue-900 via-blue-900 to-gray-900',
+            gradient: 'from-gray-900 via-blue-900 to-gray-900',
             icon: '🚀',
             description: 'Futuristic worlds and technology'
         },
@@ -69,37 +69,37 @@ function Genres() {
         },
         {
             name: 'Thriller',
-            gradient: 'from-slate-800 via-gray-700 to-gray-900',
+            gradient: 'from-gray-800 via-gray-700 to-gray-900',
             icon: '🔪',
             description: 'Suspenseful edge-of-your-seat stories'
         },
         {
             name: 'Female Protagonist',
-            gradient: 'from-fuchsia-900 via-pink-900 to-gray-900',
+            gradient: 'from-gray-900 via-pink-900 to-gray-900',
             icon: '👸',
             description: 'Stories led by strong female leads'
         },
         {
             name: 'Male Protagonist',
-            gradient: 'from-slate-900 via-indigo-900 to-gray-900',
+            gradient: 'from-gray-900 via-indigo-900 to-gray-900',
             icon: '🤴',
             description: 'Stories led by compelling male leads'
         },
         {
             name: 'Historical',
-            gradient: 'from-amber-900 via-yellow-900 to-gray-900',
+            gradient: 'from-gray-900 via-yellow-900 to-gray-900',
             icon: '🏛️',
             description: 'Tales from ages past'
         },
         {
             name: 'Mystery',
-            gradient: 'from-indigo-900 via-purple-900 to-gray-900',
+            gradient: 'from-gray-900 via-purple-900 to-gray-900',
             icon: '🔍',
             description: 'Puzzles waiting to be solved'
         },
         {
             name: 'Supernatural',
-            gradient: 'from-gray-900 via-purple-900 to-gray-900',
+            gradient: 'from-gray-900 via-amber-900 to-gray-900',
             icon: '🧛',
             description: 'Beyond the realm of natural'
         },

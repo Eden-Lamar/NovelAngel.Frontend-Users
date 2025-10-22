@@ -358,14 +358,14 @@ function BookReader() {
                 <div className="sticky top-0 z-5 flex justify-between items-center border-2 border-gray-200 dark:border-gray-700 p-2 rounded-xl mb-6 bg-white/80 dark:bg-[#1a1b23]/80 backdrop-blur-md shadow-md">
 									<div className=" ">
                     <Link to={`/book/${bookId}`} className="flex items-center group">
-                        <RiArrowLeftSLine className="text-gold text-2xl transition-all duration-200" />
+                        <RiArrowLeftSLine className="text-gold text-2xl transition-all duration-200 group-hover:mr-1 group-hover:scale-110" />
 												
 												<img 
 												src={bookImage} 
 												alt={chapterData.bookTitle} 
 												decoding="async"
 												loading="lazy"
-												className="w-12 h-16 object-cover shadow-md rounded-md group-hover:mr-3 mr-2" 
+												className="w-12 h-16 object-cover shadow-md rounded-md mr-2" 
 												/>
                         <h2 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gold to-cyan-500">
                             {startCase(chapterData.bookTitle)}
