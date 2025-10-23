@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate, } from 'react-router-dom';
 import { Input } from "@heroui/input";
 import { Button } from "@heroui/button";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -24,14 +24,13 @@ const schema = yup.object().shape({
 
 function Login() {
     const navigate = useNavigate();
-    const location = useLocation();
+    // const location = useLocation();
     const { login, loading } = useAuth();
 		const [serverError, setServerError] = useState("");
 		const [showPassword, setShowPassword] = useState(false);
 
 
-    const from = location.state?.from || '/';
-
+    // const from = location.state?.from || '/';
 		// ✅ React Hook Form setup
 		const {
 			register,
@@ -48,7 +47,12 @@ function Login() {
 				const result = await login(data.email, data.password);
         
         if (result.success) {
-            navigate(from, { replace: true });
+           // Go back if possible, otherwise go home
+					if (window.history.state && window.history.state.idx > 0) {
+						navigate(-1);
+					} else {
+						navigate("/");
+					};
         } else {
 					setServerError(result.error || "Invalid email or password.");
         }
@@ -62,7 +66,6 @@ function Login() {
                 <div className="w-3/4 h-3/4 max-w-md space-y-4">
                     {/* Header */}
                     <div className="text-center">
-                      
                         <h2 className="text-3xl font-bold font-vibes text-transparent bg-clip-text bg-gradient-to-r from-gold to-cyan-500">
                             Welcome Back
                         </h2>
@@ -159,7 +162,7 @@ function Login() {
                     <p className="text-center text-xs text-gray-600 dark:text-gray-400">
                         Don't have an account?{' '}
                         <Link
-                            to="/register"
+                            to="/signup"
                             className="text-gold hover:text-amber-500 font-semibold transition-colors"
                         >
                             Sign up

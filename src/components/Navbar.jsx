@@ -7,7 +7,7 @@ import { Button } from "@heroui/button";
 import { GiTwoCoins } from "react-icons/gi";
 import { useState } from "react";
 import { CiSearch, CiCloudMoon  } from "react-icons/ci";
-import { PiCloudSun, PiCoinsFill  } from "react-icons/pi";
+import { PiCloudSun } from "react-icons/pi";
 import { useAuth } from "../context/useAuth";
 import logo from "../assets/logo.png";
 
@@ -26,7 +26,7 @@ function NavbarSticky() {
 
   const user = auth?.user;
   const coins = user?.coinBalance;
-  const avatar = user?.avatar || "https://robohash.org/angel"; // fallback avatar
+  const avatar = user?.avatar; 
 
   console.log("auth", auth)
   console.log("auth", isAuthenticated)
@@ -51,7 +51,6 @@ const menuItems = [
 
   return (
     <Navbar 
-      isBordered 
       position={isBookReaderPage ? "static" : "sticky"}
       isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
@@ -88,7 +87,7 @@ const menuItems = [
             alt="Novel Angel Logo"
             className="h-14 w-auto mr-2"
           />
-          <span className=" text-3xl font-bold font-vibes text-transparent bg-clip-text bg-gradient-to-r from-gold to-cyan-500">
+          <span className="px-1 text-3xl font-bold font-vibes text-transparent bg-clip-text bg-gradient-to-r from-gold to-cyan-500">
             Novel Angel
           </span>
         </NavbarBrand>
@@ -176,7 +175,8 @@ const menuItems = [
               </DropdownItem>
               <DropdownItem key="coins" className="h-10 gap-2">
                 <div className="flex items-center gap-2">
-                  <PiCoinsFill className="text-lg text-gold" />
+                  <GiTwoCoins className="text-lg text-yellow-500" />
+                  
                   <span className="font-semibold">{coins} Coins</span>
                 </div>
               </DropdownItem>
@@ -252,7 +252,7 @@ const menuItems = [
         {isAuthenticated ? (
           <>
             <NavbarItem className="flex items-center gap-1">
-              <PiCoinsFill className="text-lg text-gold" />
+              <GiTwoCoins className="text-lg text-gold" />
               <span className="text-sm font-semibold">{coins}</span>
             </NavbarItem>
 
@@ -262,17 +262,18 @@ const menuItems = [
                   <Avatar
                     isBordered
                     as="button"
-                    className="transition-transform"
-                    color="primary"
+                    // className="transition-transform"
+                    // color="primary"
                     name={user?.username}
                     size="sm"
+                    radius="sm"
                     src={avatar}
                   />
                 </DropdownTrigger>
                 <DropdownMenu aria-label="Profile Actions" variant="flat">
                   <DropdownItem key="profile" className="h-14 gap-2">
                     <p className="font-semibold">Signed in as</p>
-                    <p className="font-semibold">{user?.email}</p>
+                    <p className="font-semibold">{user?.username}</p>
                   </DropdownItem>
                   <DropdownItem key="my-profile">My profile</DropdownItem>
                   <DropdownItem key="library">My Library</DropdownItem>

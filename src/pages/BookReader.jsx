@@ -14,11 +14,12 @@ import { Switch } from "@heroui/switch";
 import { Select, SelectItem } from "@heroui/select";
 import { Slider } from "@heroui/slider";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@heroui/modal";
+import { useAuth } from "../context/useAuth";
+
 import 'animate.css';
 
 function BookReader() {
-    // TODO: Replace with actual auth when implemented
-    const auth = null;
+    const { auth, refreshUser } = useAuth();
     
     const { bookId } = useParams();
     const [searchParams, setSearchParams] = useSearchParams();
@@ -106,15 +107,13 @@ function BookReader() {
         setUnlockLoading(true);
         setUnlockError(null);
         try {
-            await axios.post(
-                `http://localhost:3000/api/v1/books/${bookId}/chapters/${chapterId}/unlock`,
-                {},
-                { headers: { Authorization: `Bearer ${auth?.token}` } }
-            );
-            
-            const chapterResponse = await axios.get(`http://localhost:3000/api/v1/books/${bookId}/chapters/${chapterId}`, {
-                headers: { Authorization: `Bearer ${auth?.token}` }
-            });
+            await axios.post(`http://localhost:3000/api/v1/books/${bookId}/chapters/${chapterId}/unlock`);
+
+						// ✅ If successful, refresh the user (update coin balance)
+						await refreshUser();
+
+            // Refetch chapter data
+            const chapterResponse = await axios.get(`http://localhost:3000/api/v1/books/${bookId}/chapters/${chapterId}`);
             setChapterData(chapterResponse.data.data);
         } catch (err) {
             const errorMessage = err.response?.data?.message || "Failed to unlock chapter.";
@@ -358,7 +357,7 @@ function BookReader() {
                 <div className="sticky top-0 z-5 flex justify-between items-center border-2 border-gray-200 dark:border-gray-700 p-2 rounded-xl mb-6 bg-white/80 dark:bg-[#1a1b23]/80 backdrop-blur-md shadow-md">
 									<div className=" ">
                     <Link to={`/book/${bookId}`} className="flex items-center group">
-                        <RiArrowLeftSLine className="text-gold text-2xl transition-all duration-200 group-hover:mr-1 group-hover:scale-110" />
+                        <RiArrowLeftSLine className="text-gold text-2xl transition-all duration-200 group-hover:mr-1 group-hover:scale-125" />
 												
 												<img 
 												src={bookImage} 
@@ -400,7 +399,7 @@ function BookReader() {
                         }}
                         className="max-w-full"
                         classNames={{
-                            trigger: "border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1a1b23] cursor-pointer",
+                            trigger: "border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1a1b23] cursor-pointer",
                             value: "text-gold font-semibold",
                             label: "text-gold font-bold",
                         }}
@@ -545,12 +544,10 @@ function BookReader() {
                         <>
                             <ModalHeader className="text-gold">Confirm Purchase</ModalHeader>
                             <ModalBody>
-                                <p className="text-gray-600 dark:text-gray-400">
+                                <p className="text-gray-600 dark:text-gray-400 text-wrap">
                                     Are you sure you want to unlock this chapter for{' '}
-                                    <span className="inline-flex items-center gap-1 font-bold text-gold">
-                                        <GiTwoCoins /> {chapterData?.chapter?.coinCost}
-                                    </span>{' '}
-                                    coins?
+																		<GiTwoCoins className="inline-flex font-bold text-gold" />{' '} 
+																		{chapterData?.chapter?.coinCost} ?
                                 </p>
                             </ModalBody>
                             <ModalFooter>

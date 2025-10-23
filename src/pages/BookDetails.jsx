@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { startCase, truncate, capitalize } from 'lodash';
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { FaHeart, FaRegEye, FaBookOpen, FaBookReader, FaLock, FaBookmark } from "react-icons/fa";
 import { RiArrowDownWideFill } from "react-icons/ri";
 import { GiTwoCoins } from "react-icons/gi";
@@ -9,12 +9,14 @@ import { Button } from "@heroui/button";
 import { Chip } from "@heroui/chip";
 import { Card, CardBody } from "@heroui/card";
 import { Skeleton } from "@heroui/skeleton";
+import AlertMessage from "../components/AlertMessage";
+import { useAuth } from "../context/useAuth";
 import 'animate.css';
 import { getCountryFlagCode } from "../helperFunction";
 
 function BookDetails() {
     const { id } = useParams();
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const [book, setBook] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -22,25 +24,36 @@ function BookDetails() {
     const [activeTab, setActiveTab] = useState('summary');
     const [isLiked, setIsLiked] = useState(false);
     const [isBookmarked, setIsBookmarked] = useState(false);
-    const [likeLoading, setLikeLoading] = useState(false);
-    const [bookmarkLoading, setBookmarkLoading] = useState(false);
     
-    // TODO: Replace with actual auth context when implemented
-    const auth = null; // Set to null for anonymous access
+    const { auth, isAuthenticated } = useAuth(); // Set to null for anonymous access
 
-		console.log(navigate)
+		// console.log(navigate)
 
     // Fetch book details
     useEffect(() => {
-        const fetchBook = async () => {
+        const fetchBookData  = async () => {
             setLoading(true);
             try {
-                const bookResponse = await axios.get(`http://localhost:3000/api/v1/books/${id}`);
+							// Base requests
+							const promises = [axios.get(`http://localhost:3000/api/v1/books/${id}`)];
+							
+							// Conditionally add like/bookmark requests if logged in
+							if (isAuthenticated) {
+									promises.push(axios.get(`http://localhost:3000/api/v1/books/${id}/like-status`));
+									promises.push(axios.get(`http://localhost:3000/api/v1/books/${id}/bookmark-status`));
+								}
+								
+								// Fetch book details, like status, and bookmark status in parallel
+								const results = await Promise.allSettled(promises);
+
+								const bookRes = results[0];
+								const likeRes = isAuthenticated ? results[1] : null;
+								const bookmarkRes = isAuthenticated ? results[2] : null;
+
+								if (bookRes.status === "fulfilled") setBook(bookRes.value.data.data);
+								if (likeRes?.status === "fulfilled") setIsLiked(likeRes.value.data.isLiked);
+								if (bookmarkRes?.status === "fulfilled") setIsBookmarked(bookmarkRes.value.data.isBookmarked);
                 
-                // If user is authenticated, fetch like/bookmark status
-                // For now, these will remain false for anonymous users
-                
-                setBook(bookResponse.data.data);
                 setError(null);
             } catch (err) {
                 const errorMessage = err.response?.data?.message || "Failed to load book details.";
@@ -50,37 +63,57 @@ function BookDetails() {
                 setLoading(false);
             }
         };
-        fetchBook();
-    }, [id]);
-                
-    // Clear error after 10 seconds
-    useEffect(() => {
-        if (error) {
-            const timer = setTimeout(() => setError(null), 10000);
-            return () => clearTimeout(timer);
-        }
-    }, [error]);
+        fetchBookData();
+    }, [id, isAuthenticated]);
     
     // Toggle Like (requires authentication)
     const handleToggleLike = async () => {
-        if (!auth) {
+        if (!isAuthenticated) {
             setError("Please log in to like this book.");
             // TODO: Navigate to login when auth is implemented
             // navigate('/login', { state: { from: `/book/${id}` } });
             return;
         }
-        // Like logic will be implemented with auth
+
+				// Optimistically update UI
+				const prevLiked = isLiked;
+				const prevLikeCount = book.likeCount || 0;
+				const newLiked = !prevLiked;
+				const newLikeCount = prevLikeCount + (newLiked ? 1 : -1);
+				
+				setIsLiked(newLiked);
+				setBook((prev) => ({ ...prev, likeCount: newLikeCount }));
+        
+				try {
+					await axios.post(`http://localhost:3000/api/v1/books/${id}/toggle-like`);
+				} catch (err) {
+					// Revert on failure
+					setIsLiked(prevLiked);
+					setBook((prev) => ({ ...prev, likeCount: prevLikeCount }));
+					setError(err.response?.data?.message || "Unable to like this book.");
+				} 
     };
     
     // Toggle Bookmark (requires authentication)
     const handleToggleBookmark = async () => {
-        if (!auth) {
+        if (!isAuthenticated) {
             setError("Please log in to bookmark this book.");
             // TODO: Navigate to login when auth is implemented
             // navigate('/login', { state: { from: `/book/${id}` } });
             return;
         }
-        // Bookmark logic will be implemented with auth
+        
+				// Optimistically update UI
+				const prevBookmarked = isBookmarked;
+				setIsBookmarked(!prevBookmarked);
+
+				try {
+					await axios.post(`http://localhost:3000/api/v1/books/${id}/toggle-bookmark`);
+				} catch (err) {
+					// Revert on failure
+					setIsBookmarked(prevBookmarked);
+					setError(err.response?.data?.message || "Unable to bookmark this book.");
+				}
     };
 
     // Calculate free and locked chapters
@@ -107,15 +140,9 @@ function BookDetails() {
         <div className="container mx-auto px-4 py-8 min-h-screen">
             {/* Error Alert */}
             {error && (
-                <div className="fixed top-20 left-1/2 -translate-x-1/2 w-4/5 lg:w-1/2 z-50 animate__animated animate__fadeInDown">
-                    <div className="bg-red-500/90 backdrop-blur-md text-white px-6 py-4 rounded-xl shadow-lg flex items-center gap-3">
-                        <svg className="h-6 w-6 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <span>{error}</span>
-                    </div>
-                </div>
+							<AlertMessage message={error} onClose={() => setError(null)} />
             )}
+						
             <div className="flex flex-col lg:flex-row gap-8">
                 {/* Left Section: Image and Details */}
                 <div className=" w-full lg:w-1/3 flex flex-col gap-4">
@@ -183,42 +210,41 @@ function BookDetails() {
                             <CardBody className="gap-4">
 															<div className="grid grid-cols-2 gap-4">
                                     {/* Mimic grid items */}
-                                    <div className="space-y-1">
-                                        <Skeleton className="h-3 w-3/4" />
-                                        <Skeleton className="h-4 w-full" />
+                                    <div className="space-y-2">
+                                        <Skeleton className="h-3 w-3/4 rounded-full" />
+                                        <Skeleton className="h-4 w-full rounded-full" />
                                     </div>
-                                    <div className="space-y-1">
-                                        <Skeleton className="h-3 w-3/4" />
-                                        <Skeleton className="h-4 w-full" />
+                                    <div className="space-y-2">
+                                        <Skeleton className="h-3 w-3/4 rounded-full" />
+                                        <Skeleton className="h-4 w-full rounded-full" />
                                     </div>
-                                    <div className="space-y-1">
-                                        <Skeleton className="h-3 w-3/4" />
-                                        <Skeleton className="h-4 w-full" />
+                                    <div className="space-y-2">
+                                        <Skeleton className="h-3 w-3/4 rounded-full" />
+                                        <Skeleton className="h-4 w-full rounded-full" />
                                     </div>
-                                    <div className="space-y-1">
-                                        <Skeleton className="h-3 w-3/4" />
-                                        <Skeleton className="h-4 w-full" />
+                                    <div className="space-y-2">
+                                        <Skeleton className="h-3 w-3/4 rounded-full" />
+                                        <Skeleton className="h-4 w-full rounded-full" />
                                     </div>
-                                    <div className="space-y-1">
-                                        <Skeleton className="h-3 w-3/4" />
-                                        <Skeleton className="h-4 w-full" />
+                                    <div className="space-y-2">
+                                        <Skeleton className="h-3 w-3/4 rounded-full" />
+                                        <Skeleton className="h-4 w-full rounded-full" />
                                     </div>
-                                    <div className="space-y-1">
-                                        <Skeleton className="h-3 w-3/4" />
-                                        <Skeleton className="h-4 w-full" />
+                                    <div className="space-y-2">
+                                        <Skeleton className="h-3 w-3/4 rounded-full" />
+                                        <Skeleton className="h-4 w-full rounded-full" />
                                     </div>
-                                    <div className="space-y-1">
-                                        <Skeleton className="h-3 w-3/4" />
+                                    <div className="space-y-2">
                                         <Skeleton className="h-8 w-8 rounded-full" />
                                     </div>
-                                    <div className="col-span-2">
-                                        <Skeleton className="h-10 w-full rounded-lg" />
+                                    <div className="">
+                                        <Skeleton className="h-10 w-full rounded-xl" />
                                     </div>
                                 </div>
                             </CardBody>
                         </Card>
                     ) : book ? (
-                        <Card className="dark:bg-[#1a1b23] border-2 border-cyan-500 shadow-md shadow-cyan-500/30">
+                        <Card className="dark:bg-[#0f1419] border-2 border-cyan-500 shadow-md shadow-cyan-500/30">
                             <CardBody className=" p-6">
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
@@ -291,7 +317,8 @@ function BookDetails() {
                             <Skeleton className="flex-1 h-10 rounded-lg" />
                             <Skeleton className="flex-1 h-10 rounded-lg" />
                         </div>
-                    ) : (
+                    ) : 
+											book && (
                         <div className="flex gap-2">
                             <Button
                                 color={isBookmarked ? 'success' : 'default'}
@@ -299,7 +326,6 @@ function BookDetails() {
                                 className="flex-1"
                                 startContent={<FaBookmark />}
                                 onClick={handleToggleBookmark}
-                                isLoading={bookmarkLoading}
                                 isDisabled={!auth}
                             >
                                 {isBookmarked ? 'Bookmarked' : 'Bookmark'}
@@ -310,13 +336,13 @@ function BookDetails() {
                                 className="flex-1"
                                 startContent={<FaHeart />}
                                 onClick={handleToggleLike}
-                                isLoading={likeLoading}
                                 isDisabled={!auth}
                             >
                                 {isLiked ? 'Liked' : 'Like'}
                             </Button>
                         </div>
-                    )}
+												)}
+                    
                 </div>
 
                 {/* Right Section: Title and Tabs */}
@@ -324,26 +350,23 @@ function BookDetails() {
                     {loading ? (
                         <Card className="w-full">
                             <CardBody className="gap-4">
-                                <Skeleton className="h-8 w-2/3 rounded-md" />
+                                <Skeleton className="h-8 w-2/3 rounded-2xl" />
                                 <div className="flex gap-2 mb-4">
 																	<Skeleton className="flex-1 h-8 rounded-lg" />
 																	<Skeleton className="flex-1 h-8 rounded-lg" /> 
                                 </div>
                               {/* Mimic summary content (default tab) */}
                                 <div className="space-y-2">
-                                    <Skeleton className="h-4 w-full" />
-                                    <Skeleton className="h-4 w-full" />
-                                    <Skeleton className="h-4 w-5/6" />
-                                    <Skeleton className="h-4 w-4/6" />
-                                    <div className="flex items-center gap-2 mt-4">
-                                        <Skeleton className="h-5 w-24 rounded-md" /> {/* Show More button */}
-                                        <Skeleton className="h-5 w-5 rounded-full" /> {/* Icon */}
-                                    </div>
+                                    <Skeleton className="h-5 w-full rounded-full" />
+                                    <Skeleton className="h-5 w-full rounded-full" />
+                                    <Skeleton className="h-5 w-5/6 rounded-full" />
+                                    <Skeleton className="h-5 w-4/6 rounded-full" />
+                                    
                                 </div>
                             </CardBody>
                         </Card>
                     ) : book ? (
-                        <Card className="w-full shadow-xl dark:bg-[#1a1b23] bg-custom-striped-light dark:bg-custom-striped">
+                        <Card className="w-full shadow-xl bg-custom-striped-light dark:bg-custom-striped">
                             <CardBody className="p-6">
                                 <h2 className="text-2xl md:text-2xl text-transparent bg-clip-text bg-gradient-to-r from-gold to-cyan-500 mb-6 break-words">
                                     {startCase(book.title)}

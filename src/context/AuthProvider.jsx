@@ -91,13 +91,28 @@ export const AuthProvider = ({ children }) => {
 				delete axios.defaults.headers.common['Authorization'];
 		};
 
+		const refreshUser = async () => {
+		try {
+			const response = await axios.get("http://localhost:3000/api/v1/user/profile");
+			if (response.status === 200) {
+				const updatedUser = response.data.data;
+				localStorage.setItem("user", JSON.stringify(updatedUser));
+				setAuth((prev) => ({ ...prev, user: updatedUser }));
+			}
+		} catch (err) {
+			console.error("Failed to refresh user:", err);
+		}
+	};
+
 		const value = {
 				auth,
 				login,
 				register,
 				logout,
 				loading,
-				isAuthenticated: !!auth
+				isAuthenticated: !!auth,
+				setAuth,
+				refreshUser
 		};
 
 		return (

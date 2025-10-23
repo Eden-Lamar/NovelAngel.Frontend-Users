@@ -6,7 +6,7 @@ function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative bg-gradient-to-br from-[#0f1419] via-[#1a1b23] dark:via-[gray-700] to-[#0f1419] text-gray-300 pt-16 pb-8 mt-20 border-t border-gold/20">
+    <footer className="relative bg-gradient-to-br from-[#1a1b23] via-[#0f1419] dark:via-[gray-700] to-[#1a1b23] text-gray-300 pt-16 pb-8 mt-20 border-t border-gold/20">
       {/* Decorative top border */}
       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
       

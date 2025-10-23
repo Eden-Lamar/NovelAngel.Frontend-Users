@@ -9,7 +9,7 @@ function RecentlyAdded({ books, loading }) {
   const navigate = useNavigate();
 
   return (
-    <div className="relative bg-white dark:bg-[#1a1b23] py-2.5 md:py-5 w-full">
+    <div className="relative py-2.5 md:py-5 w-full">
       <div className="container mx-auto px-4">
 
         {loading ? (
