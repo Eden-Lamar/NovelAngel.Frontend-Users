@@ -47,12 +47,20 @@ function Login() {
 				const result = await login(data.email, data.password);
         
         if (result.success) {
-           // Go back if possible, otherwise go home
-					if (window.history.state && window.history.state.idx > 0) {
-						navigate(-1);
+					// Retrieve last visited page from sessionStorage
+					const lastVisited = sessionStorage.getItem("lastVisited");
+
+					// If the last page was login or signup, go home instead
+					if (lastVisited === "/login" || lastVisited === "/signup") {
+						navigate("/");
+					} else if (lastVisited) {
+						navigate(lastVisited);
 					} else {
 						navigate("/");
-					};
+					}
+
+					// Clear lastVisited sessionStorage after using it
+					sessionStorage.removeItem("lastVisited");
         } else {
 					setServerError(result.error || "Invalid email or password.");
         }
