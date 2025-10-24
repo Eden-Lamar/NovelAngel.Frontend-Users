@@ -7,10 +7,8 @@ import { GiTwoCoins } from "react-icons/gi";
 import { Card, CardBody } from "@heroui/card";
 import { Button } from "@heroui/button";
 import { Chip } from "@heroui/chip";
-import { Skeleton } from "@heroui/skeleton";
 import { useAuth } from "../context/useAuth";
 import AlertMessage from "../components/AlertMessage";
-import 'animate.css';
 
 const COIN_PLANS = [
     { baseCoins: 100, bonus: 0, price: 1.00, popular: false },
@@ -122,12 +120,12 @@ function BuyCoins() {
 								{ isAuthenticated && (
                 <div className="mt-6">
                     {isProfileLoading ? (
-                        <Skeleton className="h-8 w-48 mx-auto rounded-lg" />
+                        null
                     ) : (
                         <div className="flex items-center justify-center gap-2">
-                            <span className="text-gray-700 dark:text-gray-300 font-medium">Your coins:</span>
-                            <GiTwoCoins className="text-gold text-2xl" />
-                            <span className="text-2xl font-bold text-gray-900 dark:text-white">
+                            <span className="text-gray-700 dark:text-gray-300 font-medium">Your Coins:</span>
+                            <GiTwoCoins className="text-gold" />
+                            <span className=" text-gray-900 dark:text-gray-300">
                                 {userCoinBalance?.toLocaleString() || 0}
                             </span>
                         </div>
@@ -137,7 +135,7 @@ function BuyCoins() {
             </div>
 
             {/* Coin Packages Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-12">
                 {COIN_PLANS.map((plan) => {
                     const totalCoins = plan.baseCoins + plan.bonus;
                     const hasBonus = plan.bonus > 0;
@@ -145,19 +143,17 @@ function BuyCoins() {
                     return (
                         <Card
                             key={plan.baseCoins}
-                            className={`relative border ${
-                                plan.popular
-                                    ? "border-[#FFD700]"
-                                    : "border-blue-500"
-                            } bg-custom-striped-light dark:bg-custom-striped hover:scale-105 transition-transform duration-300`}
+                            className={`relative border border-gray-400 bg-custom-striped-light dark:bg-custom-striped hover:bottom-1 transition-transform duration-300`}
                         >
                             <CardBody className="p-6">
                                 {/* Popular Badge */}
                                 {plan.popular && (
                                     <Chip
                                         startContent={<FaStar />}
-                                        className="absolute top-3 right-3 bg-gradient-to-r from-orange-500 to-gold text-black font-bold animate-pulse"
+                                        className="absolute top-3 right-3 animate__animated  animate__pulse animate__infinite animate_slower"
                                         size="sm"
+																				color="warning"
+																				variant="shadow"
                                     >
                                         POPULAR
                                     </Chip>
