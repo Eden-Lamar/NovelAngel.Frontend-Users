@@ -3,7 +3,7 @@ import axios from "axios";
 import { startCase } from 'lodash';
 import { useParams, useSearchParams, Link } from "react-router-dom";
 import { FaBookOpen, FaLock } from "react-icons/fa";
-import { CiLock } from "react-icons/ci";
+import { CiLock, CiUnlock } from "react-icons/ci";
 import { RiArrowLeftSLine, RiArrowRightSLine, RiSettings3Line, RiCloseLine } from "react-icons/ri";
 import { GiTwoCoins } from "react-icons/gi";
 import { LuCalendarRange } from "react-icons/lu";
@@ -15,6 +15,7 @@ import { Select, SelectItem } from "@heroui/select";
 import { Slider } from "@heroui/slider";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@heroui/modal";
 import { useAuth } from "../context/useAuth";
+import AlertMessage from "../components/AlertMessage";
 
 import 'animate.css';
 
@@ -178,14 +179,7 @@ function BookReader() {
         <div className="container mx-auto px-4 py-8 flex flex-col">
             {/* Error Alert */}
             {(error || unlockError) && (
-                <div className="fixed left-1/2 top-20 -translate-x-1/2 z-50 animate__animated animate__fadeInDown w-4/5 lg:w-1/2">
-                    <div className="bg-red-500/90 backdrop-blur-md text-white px-6 py-4 rounded-xl shadow-lg flex items-center gap-3">
-                        <svg className="h-6 w-6 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <span>{error || unlockError}</span>
-                    </div>
-                </div>
+                <AlertMessage message={error || unlockError} onClose={() => {setError(null); setUnlockError(null);}} />
             )}
 
             {/* Settings Sidebar */}
@@ -403,32 +397,65 @@ function BookReader() {
                             value: "text-gold font-semibold",
                             label: "text-gold font-bold",
                         }}
-                        startContent={<FaBookOpen className="text-cyan-500" />}
-                    >
-                        {bookChapters.map((chapter) => (
+                        startContent={(() => {
+																			const currentChapter = bookChapters.find((ch) => ch._id === chapterId);
+
+																			if (!currentChapter)
+																				return <FaBookOpen className="text-cyan-500 text-lg" />;
+
+																			const isLocked = currentChapter.isLocked;
+																			const isUnlocked =
+																				auth?.user?.unlockedChapters?.includes(currentChapter._id) || !isLocked;
+
+																			if (!isLocked) {
+																				return <FaBookOpen className="text-cyan-500 text-lg" />; // Free
+																			} else if (isUnlocked) {
+																				return <CiUnlock className="text-green-500 text-lg" />; // Unlocked (paid)
+																			} else {
+																				return <CiLock className="text-red-500 text-lg" />; // Still locked
+																			}
+																		})()
+																	}
+																>
+                        {bookChapters.map((chapter) => {
+													const isLocked = chapter.isLocked
+													const isUnlocked = auth?.user?.unlockedChapters?.includes(chapter._id) || !isLocked;
+
+													// Determine icon and label color dynamically
+													const icon = isLocked
+														? isUnlocked
+															? <CiUnlock className="text-green-500 text-sm" /> // unlocked (paid)
+															: <CiLock className="text-red-500 text-sm" /> // still locked
+														: <FaBookOpen className="text-cyan-500 text-sm" />; // free
+
+													const StatusLabel = isLocked ? (
+														isUnlocked ? (
+																<span className="text-xs text-green-500 ml-2">Unlocked</span>
+															) : (
+																<span className="text-xs text-red-500 ml-2">Locked</span>
+															)
+														) : <span className="text-xs text-cyan-500 ml-2">Free</span>;
+
+													return (
                             <SelectItem
                                 key={chapter._id}
                                 value={chapter._id}
                                 textValue={`Chapter ${chapter.chapterNo}: ${startCase(chapter.title)}`}
-                                startContent={
-                                    chapter.isLocked ? (
-                                        <CiLock className="text-red-500 text-sm" />
-                                    ) : (
-                                        <FaBookOpen className="text-cyan-500 text-sm" />
-                                    )
-                                }
-                                className={chapter.isLocked ? "text-gray-500" : ""}
+                                startContent={icon}
+                                className={isLocked && !isUnlocked ? "text-gray-500" : ""}
                             >
                                 <div className="flex items-center justify-between w-full">
-                                    <span className={chapter.isLocked ? "text-gray-500" : "font-semibold text-amber-500"}>
+                                    <span className={isLocked && !isUnlocked
+																					? "text-gray-500"
+																					: "font-semibold text-amber-500"
+																			}>
                                         {chapter.chapterNo}. {startCase(chapter.title)}
                                     </span>
-                                    {chapter.isLocked && (
-                                        <span className="text-xs text-red-500 ml-2">Locked</span>
-                                    )}
+                                    {StatusLabel}
                                 </div>
                             </SelectItem>
-                        ))}
+													)
+											})}
                     </Select>
                 </div>
             )}
@@ -499,7 +526,36 @@ function BookReader() {
 																		{chapterData?.chapter?.coinCost.toFixed(2)}
                                 </Button>
                                 {!auth && (
-                                    <p className="text-sm text-gray-500">Please log in to unlock chapters</p>
+																	<>
+																		<p className="text-sm text-gray-500">Please log in to unlock chapters</p>
+																		{/* Login & Register buttons for guests */}
+																		<div className="flex  items-center gap-3">
+																			<Button
+																				as={Link} 
+																				onClick={() => sessionStorage.setItem("lastVisited", window.location.pathname)}
+																				to="/login" 
+																				color="primary" 
+																				variant="flat" 
+																				radius="md" 
+																				size="md"
+																				>
+																				Login
+																			</Button>
+
+																			<Button 
+																				as={Link}
+																				onClick={() => sessionStorage.setItem("lastVisited", window.location.pathname)}
+																				to="/signup" 
+																				color="danger" 
+																				variant="solid" 
+																				radius="md" 
+																				size="md"
+																				>
+																				Register
+																			</Button>
+
+																		</div>
+																	</>
                                 )}
                             </div>
                         ) : (
