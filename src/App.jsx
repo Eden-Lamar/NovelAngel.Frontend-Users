@@ -12,8 +12,10 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import BuyCoins from './pages/BuyCoins';
 import PaymentSuccess from "./pages/PaymentSuccess";
+import Profile from "./pages/Profile";
 import { useAuth } from "./context/useAuth";
 import "./App.css"
+import 'animate.css';
 
 function App() {
   const location = useLocation();
@@ -39,7 +41,7 @@ function App() {
       run();
 
       return () => { isMounted = false; };
-  }, [location.pathname]); // triggers on every page navigation
+  }, [location.pathname]); // triggers on every page navigation (NOTE: can be optimized further if needed by removing it from here and only referencing in buy coin page, home page and book reader page)
 
   return (
   <div className="flex flex-col min-h-screen">
@@ -66,6 +68,7 @@ function App() {
             <Route path="/genres" element={<Genres />} />
             <Route path="/buy-coins" element={<BuyCoins />} />
             <Route path="/payment/success" element={<PaymentSuccess />} />
+            <Route path="/profile" element={<Profile />} />
           </Routes>
       </div>
 
