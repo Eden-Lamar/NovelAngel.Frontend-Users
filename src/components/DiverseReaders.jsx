@@ -10,8 +10,8 @@ function DiverseReaders() {
       <div className="container mx-auto px-4 relative z-10">
         {/* Main Heading */}
         <div className="text-center mb-2">
-          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">
-						Stories that connect readers across the world.
+          <h2 className="text-3xl md:text-5xl font-bold font-vibes text-gray-900 dark:text-amber-500 mb-4 leading-tight tracking-wider">
+						Stories that Connect Readers Across The World.
           </h2>
           <p className="text-base md:text-base text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
             Dive into novels from China, Japan, and Korea, translated into English. 
