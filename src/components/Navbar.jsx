@@ -210,12 +210,12 @@ const menuItems = [
       {!isAuthenticated && (
         <NavbarContent className="md:hidden gap-2" justify="end">
           <NavbarItem>
-            <Button as={Link} to="/login" color="primary" variant="flat" radius="md" size="sm">
+            <Button as={Link} onClick={() => sessionStorage.setItem("lastVisited", window.location.pathname)} to="/login" color="primary" variant="flat" radius="md" size="sm">
               Login
             </Button>
           </NavbarItem>
           <NavbarItem>
-            <Button as={Link} to="/signup" color="danger" variant="solid" radius="md" size="sm">
+            <Button as={Link} onClick={() => sessionStorage.setItem("lastVisited", window.location.pathname)} to="/signup" color="danger" variant="solid" radius="md" size="sm">
               Register
             </Button>
           </NavbarItem>
@@ -273,9 +273,9 @@ const menuItems = [
                 <DropdownMenu aria-label="Profile Actions" variant="flat">
                   <DropdownItem key="profile" className="h-14 gap-2">
                     <p className="font-semibold">Signed in as</p>
-                    <p className="font-semibold">{user?.username}</p>
+                    <p className="font-semibold">{user?.email}</p>
                   </DropdownItem>
-                  <DropdownItem key="my-profile">My profile</DropdownItem>
+                  <DropdownItem key="my-profile" as={Link} to="/profile">My profile</DropdownItem>
                   <DropdownItem key="library">My Library</DropdownItem>
                   <DropdownItem key="logout" color="danger" onClick={logout}>
                     Log Out
@@ -288,12 +288,28 @@ const menuItems = [
           <>
             {/* Login & Register buttons for guests */}
             <NavbarItem>
-              <Button as={Link} to="/login" color="primary" variant="flat" radius="md" size="sm">
+              <Button 
+                as={Link} 
+                onClick={() => sessionStorage.setItem("lastVisited", window.location.pathname)} 
+                to="/login" 
+                color="primary" 
+                variant="flat" 
+                radius="md" 
+                size="sm"
+                >
                 Login
               </Button>
             </NavbarItem>
             <NavbarItem>
-              <Button as={Link} to="/signup" color="danger" variant="solid" radius="md" size="sm">
+              <Button 
+                as={Link} 
+                onClick={() => sessionStorage.setItem("lastVisited", window.location.pathname)} 
+                to="/signup" 
+                color="danger" 
+                variant="solid" 
+                radius="md" 
+                size="sm"
+                >
                 Register
               </Button>
             </NavbarItem>
