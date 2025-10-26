@@ -13,6 +13,7 @@ import Register from './pages/Register';
 import BuyCoins from './pages/BuyCoins';
 import PaymentSuccess from "./pages/PaymentSuccess";
 import Profile from "./pages/Profile";
+import Library from "./pages/Library";
 import { useAuth } from "./context/useAuth";
 import "./App.css"
 import 'animate.css';
@@ -69,6 +70,7 @@ function App() {
             <Route path="/buy-coins" element={<BuyCoins />} />
             <Route path="/payment/success" element={<PaymentSuccess />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/library" element={<Library />} />
           </Routes>
       </div>
 
