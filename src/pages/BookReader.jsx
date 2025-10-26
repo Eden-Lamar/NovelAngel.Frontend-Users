@@ -16,6 +16,8 @@ import { Slider } from "@heroui/slider";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@heroui/modal";
 import { useAuth } from "../context/useAuth";
 import AlertMessage from "../components/AlertMessage";
+import BookRecommendations from '../components/BookRecommendations';
+
 
 import 'animate.css';
 
@@ -592,6 +594,9 @@ function BookReader() {
                     </CardBody>
                 ) : null}
             </Card>
+						
+							{/* Recommendations Section - Full Width */}
+							<BookRecommendations />
 
             {/* Unlock Modal */}
             <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
