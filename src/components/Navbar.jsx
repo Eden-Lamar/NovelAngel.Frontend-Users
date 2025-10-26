@@ -195,8 +195,8 @@ const menuItems = [
                   )}
                 </div>
               </DropdownItem>
-              <DropdownItem key="my-profile">My profile</DropdownItem>
-              <DropdownItem key="library">My Library</DropdownItem>
+              <DropdownItem key="my-profile" as={Link} to="/profile">My profile</DropdownItem>
+              <DropdownItem key="library" as={Link} to="/library">My Library</DropdownItem>
               <DropdownItem key="logout" color="danger" onClick={logout}>
                 Log Out
               </DropdownItem>
@@ -276,7 +276,7 @@ const menuItems = [
                     <p className="font-semibold">{user?.email}</p>
                   </DropdownItem>
                   <DropdownItem key="my-profile" as={Link} to="/profile">My profile</DropdownItem>
-                  <DropdownItem key="library">My Library</DropdownItem>
+                  <DropdownItem key="library"  as={Link} to="/library">My Library</DropdownItem>
                   <DropdownItem key="logout" color="danger" onClick={logout}>
                     Log Out
                   </DropdownItem>
