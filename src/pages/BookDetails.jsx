@@ -10,6 +10,8 @@ import { Chip } from "@heroui/chip";
 import { Card, CardBody } from "@heroui/card";
 import { Skeleton } from "@heroui/skeleton";
 import AlertMessage from "../components/AlertMessage";
+import BookComments from '../components/BookComments';
+import BookRecommendations from '../components/BookRecommendations';
 import { useAuth } from "../context/useAuth";
 import 'animate.css';
 import { getCountryFlagCode } from "../helperFunction";
@@ -145,7 +147,7 @@ function BookDetails() {
 						
             <div className="flex flex-col lg:flex-row gap-8">
                 {/* Left Section: Image and Details */}
-                <div className=" w-full lg:w-1/3 flex flex-col gap-4">
+                <div className="w-full lg:w-1/3 flex flex-col gap-4">
                     {/* Book Image */}
                     {loading ? (
 											<Skeleton className="relative h-[442.2px] w-[300px] aspect-[3/4] sm:aspect-[2/2.5] md:aspect-[3/4] rounded-xl shadow-2xl" />
@@ -346,7 +348,8 @@ function BookDetails() {
                 </div>
 
                 {/* Right Section: Title and Tabs */}
-                <div className="w-full lg:w-2/3">
+							<div className="w-full lg:w-2/3 flex flex-col gap-5">
+                <div className="">
                     {loading ? (
                         <Card className="w-full">
                             <CardBody className="gap-4">
@@ -463,7 +466,19 @@ function BookDetails() {
                         </Card>
                     ) : null}
                 </div>
+
+								{/* Comments Section */}
+								<div className="">
+										<BookComments 
+												bookId={id} 
+												isAuthenticated={isAuthenticated}
+										/>
+								</div>
+							</div>
             </div>
+
+					{/* Recommendations Section - Full Width */}
+					<BookRecommendations />
         </div>
     );
 }
