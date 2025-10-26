@@ -337,7 +337,7 @@ console.log('Books:', books);
                             >
                                 <CardBody className="flex flex-row gap-0 p-0">
                                     {/* Book Image */}
-                                    <div className="relative w-[46.5%] aspect-[3/4]h-full flex-shrink-0 overflow-hidden group">
+                                    <div className="relative w-[46.5%] aspect-[3/4] h-full flex-shrink-0 overflow-hidden group">
                                         <img
                                             src={book.bookImage}
                                             alt={book.title}
