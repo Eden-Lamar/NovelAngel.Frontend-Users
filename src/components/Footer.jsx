@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { FaTwitter, FaFacebook, FaInstagram, FaDiscord, FaReddit } from 'react-icons/fa';
+import { FaFacebook, FaInstagram, FaDiscord, FaReddit } from 'react-icons/fa';
+import { FaSquareXTwitter } from "react-icons/fa6";
 import logo from '../assets/logo.png';
 
 function Footer() {
@@ -41,7 +42,7 @@ function Footer() {
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full bg-gray-800 hover:bg-gold/30 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-md hover:shadow-gold/50"
               >
-                <FaTwitter className="text-lg" />
+                <FaSquareXTwitter className="text-lg" />
               </a>
               <a
                 href="https://facebook.com"
