@@ -126,7 +126,7 @@ console.log("comments:", comments)
                     <BiMessageSquareDetail className="text-3xl text-primary" />
                     <div>
                         <h3 className="text-2xl font-bold text-primary">Comments</h3>
-                        <p className="text-sm text-base-content/60">
+                        <p className="text-sm text-gray-600 dark:text-gray-400">
                             {totalComments} {totalComments === 1 ? 'comment' : 'comments'}
                         </p>
                     </div>
