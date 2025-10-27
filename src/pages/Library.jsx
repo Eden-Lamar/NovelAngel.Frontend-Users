@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { startCase, truncate } from "lodash";
+import { startCase } from "lodash";
 import { Card, CardBody, CardFooter } from "@heroui/card";
 import { Button } from "@heroui/button";
 import { Progress } from "@heroui/progress";
@@ -11,6 +11,8 @@ import { Tabs, Tab } from "@heroui/tabs";
 import { FaBookOpen, FaHistory, FaBookmark, FaPlay } from "react-icons/fa";
 import { RiBook2Line } from "react-icons/ri";
 import { useAuth } from "../context/useAuth";
+import AlertMessage from "../components/AlertMessage";
+
 
 function Library() {
     const { auth } = useAuth();
@@ -70,24 +72,21 @@ function Library() {
     //         year: readDate.getFullYear() !== now.getFullYear() ? 'numeric' : undefined
     //     });
     // };
-
     return (
         <div className="container mx-auto px-4 py-8 min-h-screen max-w-7xl">
             {/* Header */}
-            <div className="mb-8">
-                <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gold to-cyan-500 mb-2">
+            <div className="mb-2">
+                <h1 className="text-4xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-gold to-cyan-500 mb-2 py-2">
                     My Library
                 </h1>
                 <p className="text-base-content/60">
-                    Your reading journey in one place
+                    Pick Up Where You Left Off
                 </p>
             </div>
 
             {/* Error Alert */}
             {error && (
-                <div className="alert alert-error mb-6">
-                    <span>{error}</span>
-                </div>
+							<AlertMessage message={error} onClose={() => setError(null)} />
             )}
 
             {/* Tabs */}
@@ -177,7 +176,7 @@ function Library() {
                                     return (
                                         <Card
                                             key={item.bookId}
-                                            className="w-full transition-all duration-300 bg-custom-striped-light dark:bg-custom-striped"
+                                            className="w-full transition-all duration-300 dark:bg-[#09090b] border border-amber-500/50"
                                         >
                                             <CardBody className="gap-4">
                                                 <div className="flex gap-4">
@@ -189,6 +188,8 @@ function Library() {
                                                         <img
                                                             src={item.bookImage}
                                                             alt={item.bookTitle}
+																														decoding="async"
+																														loading="lazy"
                                                             className="w-24 h-32 object-cover rounded-lg shadow-md hover:scale-105 transition-transform"
                                                         />
                                                     </Link>
@@ -204,15 +205,15 @@ function Library() {
                                                                     {startCase(item.bookTitle)}
                                                                 </h3>
                                                             </Link>
-                                                            <p className="text-sm text-base-content/60 mb-2">
-                                                                Chapter {item.lastChapter.number}: {truncate(startCase(item.lastChapter.title), { length: 30 })}
+                                                            <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-1 mb-2">
+                                                                Chp {item.lastChapter.number}: {startCase(item.lastChapter.title)}
                                                             </p>
                                                         </div>
 
                                                         {/* Progress */}
                                                         <div className="space-y-2">
-                                                            <div className="flex justify-between text-xs">
-                                                                <span className="text-base-content/60">Progress</span>
+                                                            <div className="flex justify-end text-xs">
+                                                                {/* <span className="text-base-content/60">Progress</span> */}
                                                                 <span className="font-semibold text-cyan-500">{progress}%</span>
                                                             </div>
                                                             <Progress
@@ -260,7 +261,7 @@ function Library() {
                 {activeTab === "history" && (
                     <div>
                         {loading ? (
-                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 gap-4">
                                 {Array(6).fill(0).map((_, idx) => (
                                     <Card key={idx}>
                                         <CardBody className="p-0">
@@ -325,7 +326,7 @@ function Library() {
                 {activeTab === "bookmarks" && (
                     <div>
                         {loading ? (
-                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 {Array(6).fill(0).map((_, idx) => (
                                     <Card key={idx}>
                                         <CardBody className="p-0">
@@ -339,38 +340,44 @@ function Library() {
                                 ))}
                             </div>
                         ) : bookmarks.length > 0 ? (
-                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 overflow-x-auto p-2">
                                 {bookmarks.map((book) => (
                                     <Link
-                                        key={book._id}
-                                        to={`/book/${book._id}`}
-                                        className="group"
-                                    >
-                                        <Card
-                                            isPressable
-                                            className="h-full hover:shadow-lg hover:shadow-cyan-500/20 transition-all duration-300"
-                                        >
-                                            <CardBody className="p-0 relative">
-                                                <img
-                                                    src={book.bookImage}
-                                                    alt={book.title}
-                                                    className="w-full aspect-[2/3] object-cover rounded-t-lg group-hover:scale-105 transition-transform"
-                                                    loading="lazy"
-                                                />
-                                                <div className="absolute top-2 right-2 bg-amber-500 p-2 rounded-full shadow-lg">
-                                                    <FaBookmark className="text-white text-xs" />
-                                                </div>
-                                            </CardBody>
-                                            <CardFooter className="flex-col items-start gap-1 p-3">
-                                                <h4 className="text-sm font-semibold line-clamp-2 group-hover:text-cyan-500 transition-colors">
-                                                    {startCase(book.title)}
-                                                </h4>
-                                                <p className="text-xs text-base-content/60">
-                                                    {startCase(book.author)}
-                                                </p>
-                                            </CardFooter>
-                                        </Card>
-                                    </Link>
+																			key={book._id}
+																			to={`/book/${book._id}`}
+																			className="group block transition-transform transform hover:scale-[1.01]"
+																		>
+																			<Card className="h-full border border-gray-700/50 transition-all duration-300 
+																				hover:border-amber-400/50 
+																				hover:shadow-[0_0_4px_rgba(251,191,36,0.6)]">
+																				<CardBody className=" p-0 flex flex-col items-center">
+																					<div className="relative w-full ">
+																						<img
+																							src={book.bookImage}
+																							alt={book.title}
+																							decoding="async"
+																							loading="lazy"
+																							className="object-cover w-full h-[220px] rounded-lg"
+																						/>
+
+																						{/* Gradient Overlay */}
+																						<div className="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-transparent"/>
+																					</div>
+
+
+
+																					{/*Bookmark icon*/}
+																					<div className="absolute top-2 right-2">
+																						<FaBookmark className="text-cyan-500 text-base" />
+																					</div>
+
+																					{/*Book titles*/}
+																					<h3 className="text-sm font-semibold text-center my-2 text-gray-800 dark:text-gray-400 line-clamp-2 px-1 group-hover:text-amber-400 group-hover:dark:text-amber-400  transition-colors duration-300">
+																						{startCase(book.title)}
+																					</h3>
+																				</CardBody>
+																			</Card>
+																		</Link>
                                 ))}
                             </div>
                         ) : (
@@ -391,12 +398,12 @@ function Library() {
 function EmptyState({ icon, title, description }) {
     return (
         <div className="flex flex-col items-center justify-center py-20 text-center">
-            <div className="text-base-content/30 mb-4">{icon}</div>
-            <h3 className="text-xl font-semibold mb-2">{title}</h3>
-            <p className="text-base-content/60 mb-6">{description}</p>
+            <div className="text-gray-600 dark:text-gray-400mb-4">{icon}</div>
+            <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-2">{title}</h3>
+            <p className="text-gray-600 dark:text-gray-400 mb-6">{description}</p>
             <Button
                 as={Link}
-                to="/browse"
+                to="/novels"
                 color="primary"
                 variant="bordered"
                 startContent={<RiBook2Line />}
