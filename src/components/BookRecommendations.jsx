@@ -91,7 +91,7 @@ function BookRecommendations() {
                       variant="flat"
                       size="sm"
                       classNames={{
-                      base: "absolute top-4 left-4 uppercase font-bold backdrop-blur-md z-10",
+                      base: "absolute top-2 left-2 uppercase font-bold backdrop-blur-md z-10",
                       content: book.status === "ongoing" 
                         ? "text-yellow-500" 
                         : "text-green-500"
@@ -105,7 +105,7 @@ function BookRecommendations() {
                   <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-transparent"/>
                 </div>
 
-                <h3 className="text-sm font-semibold text-center my-2 text-gray-800 dark:text-gray-400 line-clamp-2 px-1 group-hover:text-amber-400 group-hover:dark:text-amber-400  transition-colors duration-300">
+                <h3 className="text-sm font-semibold text-center my-2 text-gray-800 dark:text-gray-400 line-clamp-2 px-3 group-hover:text-amber-400 group-hover:dark:text-amber-400  transition-colors duration-300">
                   {startCase(book.title)}
                 </h3>
               </CardBody>
