@@ -3,6 +3,7 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import NavbarSticky from './components/Navbar';
 import Footer from './components/Footer'; 
 import ScrollToTop from "./components/ScrollToTop";
+import NetworkStatusAlert from './components/NetworkStatusAlert';
 import Home from './pages/Home';
 import BookDetails from './pages/BookDetails';
 import BookReader from './pages/BookReader';
@@ -45,9 +46,12 @@ function App() {
   }, [location.pathname]); // triggers on every page navigation (NOTE: can be optimized further if needed by removing it from here and only referencing in buy coin page, home page and book reader page)
 
   return (
-  <div className="flex flex-col min-h-screen">
+  <div className="flex flex-col min-h-screen relative">
     {/* Navbar */}
     {showFooterAndNav && <NavbarSticky />}
+
+    {/* Network Status Alert - Always rendered, but conditionally visible */}
+    <NetworkStatusAlert />
 
       {/* Main Content Area */}
       <div className={`flex-grow ${
