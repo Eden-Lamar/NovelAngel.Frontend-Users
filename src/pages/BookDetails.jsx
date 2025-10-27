@@ -147,9 +147,9 @@ function BookDetails() {
 							<AlertMessage message={error} onClose={() => setError(null)} />
             )}
 						
-            <div className="flex flex-col lg:flex-row gap-8">
+            <div className="relative flex flex-col lg:flex-row gap-8">
                 {/* Left Section: Image and Details */}
-                <div className="w-full lg:w-1/3 flex flex-col gap-4">
+                <div className="sticky top-20 w-full lg:w-1/3 flex flex-col gap-4 self-start">
                     {/* Book Image */}
                     {loading ? (
 											<Skeleton className="relative h-[442.2px] w-[300px] aspect-[3/4] sm:aspect-[2/2.5] md:aspect-[3/4] rounded-xl shadow-2xl" />
@@ -400,19 +400,24 @@ function BookDetails() {
                                 {/* Summary Tab */}
                                 {activeTab === 'summary' && (
                                     <div className="prose dark:prose-invert max-w-none">
-                                        <p className="text-base leading-relaxed">
+                                        <span className="text-base leading-relaxed mr-2">
                                             {showFullDescription
                                                 ? startCase(book.description)
                                                 : truncate(startCase(book.description), { length: 300 })}
-                                        </p>
+                                        </span>
                                         {book.description.length > 300 && !showFullDescription && (
-                                            <button
-                                                className="flex items-center gap-2 text-cyan-500 hover:text-cyan-400 mt-4 font-semibold transition-colors cursor-pointer"
-                                                onClick={() => setShowFullDescription(true)}
+                                            <Button
+																							// color="primary"
+																							variant="flat"
+																							size="sm"
+																							radius="full"
+																							onClick={() => setShowFullDescription(true)}
+																							endContent={<RiArrowDownWideFill className="text-xl" />}
+																							// className="ml-2"
                                             >
                                                 Show More
-                                                <RiArrowDownWideFill className="text-xl" />
-                                            </button>
+                                                
+                                            </Button>
                                         )}
                                     </div>
                                 )}
@@ -421,7 +426,7 @@ function BookDetails() {
                                 {activeTab === 'chapters' && (
 																	<>
 																		<span className="text-gray-900 dark:text-white text-xl font-semibold p-2">Chapters</span>
-                                    <div className="space-y-2 max-h-[calc(100vh-200px)] overflow-y-auto scrollbar-hide">
+                                    <div className="space-y-2">
                                         {book.chapters.map((chapter) => {
 																					const isUnlocked = auth?.user?.unlockedChapters?.includes(chapter._id) || !chapter.isLocked;
 																					return(
