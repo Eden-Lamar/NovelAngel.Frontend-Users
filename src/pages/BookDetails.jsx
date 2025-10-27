@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { startCase, truncate, capitalize } from 'lodash';
 import { useParams, Link } from "react-router-dom";
-import { FaHeart, FaRegEye, FaBookOpen, FaBookReader, FaLock, FaBookmark } from "react-icons/fa";
+import { FaHeart, FaRegEye, FaBookOpen, FaBookReader, FaLock, FaBookmark, FaLockOpen } from "react-icons/fa";
 import { RiArrowDownWideFill } from "react-icons/ri";
 import { GiTwoCoins } from "react-icons/gi";
 import { Button } from "@heroui/button";
@@ -138,6 +138,8 @@ function BookDetails() {
         return { fullDate, year };
     };
 
+		console.log("book", book)
+
     return (
         <div className="container mx-auto px-4 py-8 min-h-screen">
             {/* Error Alert */}
@@ -246,7 +248,7 @@ function BookDetails() {
                             </CardBody>
                         </Card>
                     ) : book ? (
-                        <Card className="dark:bg-[#0f1419] border-2 border-cyan-500 shadow-md shadow-cyan-500/30">
+                        <Card className="dark:bg-[#0f1419] border border-cyan-500 shadow-md shadow-cyan-500/30">
                             <CardBody className=" p-6">
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
@@ -420,22 +422,28 @@ function BookDetails() {
 																	<>
 																		<span className="text-gray-900 dark:text-white text-xl font-semibold p-2">Chapters</span>
                                     <div className="space-y-2 max-h-[calc(100vh-200px)] overflow-y-auto scrollbar-hide">
-                                        {book.chapters.map((chapter) => (
+                                        {book.chapters.map((chapter) => {
+																					const isUnlocked = auth?.user?.unlockedChapters?.includes(chapter._id) || !chapter.isLocked;
+																					return(
                                             <div
                                                 key={chapter._id}
                                                 className="flex items-center justify-between p-2 rounded-lg bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors border border-gray-200 dark:border-gray-700"
                                             >
                                                 <div className="flex items-start gap-3 flex-1 min-w-0">
                                                     <div className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center border-2 ${
-                                                        chapter.isLocked 
-                                                            ? 'border-red-500 shadow-lg shadow-red-500/50' 
-                                                            : 'border-cyan-500 shadow-lg shadow-cyan-500/50'
+																											chapter.isLocked && !isUnlocked
+																											? 'border-red-500 shadow-lg shadow-red-500/50' // Locked
+																											: chapter.isLocked && isUnlocked 
+																											? 'border-green-500 shadow-lg shadow-green-500/50' // Unlocked (purchased)
+																											: 'border-cyan-500 shadow-lg shadow-cyan-500/50' // Free
                                                     }`}>
-                                                        {chapter.isLocked ? (
-                                                            <FaLock className="text-red-500 text-sm" />
-                                                        ) : (
-                                                            <FaBookReader className="text-cyan-500 text-sm" />
-                                                        )}
+																											{chapter.isLocked && !isUnlocked ? (
+																													<FaLock className="text-red-500 text-sm" />
+																												) : chapter.isLocked && isUnlocked ? (
+																													<FaLockOpen className="text-green-500 text-sm" />
+																												) : (
+																													<FaBookReader className="text-cyan-500 text-sm" />
+																											)}
                                                     </div>
                                                     <div className="flex-1 min-w-0">
                                                         <p className="font-semibold text-gray-900 dark:text-white break-words">
@@ -449,16 +457,18 @@ function BookDetails() {
                                                 <Button
                                                     as={Link}
                                                     to={`/book/${book._id}/read?chapterId=${chapter._id}`}
-                                                    
                                                     variant="ghost"
                                                     size="sm"
                                                     className="ml-4 border border-cyan-500 text-cyan-500 force-cyan text-sm font-medium"
-                                                    startContent={chapter.isLocked && chapter.coinCost ? <GiTwoCoins /> : null}
-                                                >
-                                                    {chapter.isLocked && chapter.coinCost ? chapter.coinCost : 'Read'}
+                                                    startContent={chapter.isLocked && !isUnlocked && chapter.coinCost
+																											? <GiTwoCoins />
+																											: null}
+																										>
+                                                    {chapter.isLocked && chapter.coinCost && !isUnlocked ? chapter.coinCost : 'Read'}
                                                 </Button>
                                             </div>
-                                        ))}
+																				)
+																					})}
                                     </div>
 																		</>
                                 )}
