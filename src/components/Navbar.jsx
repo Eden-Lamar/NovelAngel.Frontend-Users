@@ -224,7 +224,7 @@ const menuItems = [
 
       {/* Desktop - Right Side Icons */}
       <NavbarContent className="hidden md:flex gap-4 items-center" justify="end">
-        <Input
+        {/* <Input
           classNames={{
             base: "max-w-full sm:max-w-[10rem] h-10",
             mainWrapper: "h-full",
@@ -236,7 +236,7 @@ const menuItems = [
           size="sm"
           startContent={<CiSearch className="text-2xl"/>}
           type="search"
-        />
+        /> */}
 
         <NavbarItem>
           <Button color="primary" variant="light" radius="md" size="sm" isIconOnly onClick={toggleTheme}>
@@ -338,7 +338,7 @@ const menuItems = [
         ))}
         
         {/* Search in mobile menu */}
-        <NavbarMenuItem className="pt-4">
+        {/* <NavbarMenuItem className="pt-4">
           <Input
             classNames={{
               base: "w-full",
@@ -351,7 +351,7 @@ const menuItems = [
             startContent={<CiSearch className="text-2xl"/>}
             type="search"
           />
-        </NavbarMenuItem>
+        </NavbarMenuItem> */}
       </NavbarMenu>
     </Navbar>
   );
