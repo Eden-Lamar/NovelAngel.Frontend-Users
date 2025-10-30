@@ -197,7 +197,7 @@ function Register() {
                                     style={{"color": "transparent"}}
                                 />
                             }
-                            isDisabled
+                            onClick={() => window.location.href = "http://localhost:3000/api/v1/user/auth/google"}
                         >
                             Continue with Google
                         </Button>
