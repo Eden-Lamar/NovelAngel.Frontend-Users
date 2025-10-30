@@ -73,8 +73,9 @@ export const AuthProvider = ({ children }) => {
 						});
 
 						if (response.data.status === 'success') {
-								// Auto-login after registration
-								return await login(email, password);
+							// Auto-login after registration
+							const loginResponse = await login(email, password);
+							return loginResponse;
 						}
 				} catch (error) {
 						const errorMessage = error.response?.data?.error || error.response?.data?.message || 'Registration failed';
