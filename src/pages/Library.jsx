@@ -79,7 +79,7 @@ function Library() {
                 <h1 className="text-4xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-gold to-cyan-500 mb-2 py-2">
                     My Library
                 </h1>
-                <p className="text-base-content/60">
+                <p className="text-gray-600 dark:text-gray-400">
                     Pick Up Where You Left Off
                 </p>
             </div>
