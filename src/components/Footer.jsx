@@ -40,7 +40,7 @@ function Footer() {
                 href="https://x.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-gray-800 hover:bg-gold/30 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-md hover:shadow-gold/50"
+                className="w-10 h-10 rounded-full bg-gray-800 hover:bg-cyan-500/30 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-md hover:shadow-cyan-500/50"
               >
                 <FaSquareXTwitter className="text-lg" />
               </a>
@@ -48,7 +48,7 @@ function Footer() {
                 href="https://facebook.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-gray-800 hover:bg-gold/30 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-gold/50"
+                className="w-10 h-10 rounded-full bg-gray-800 hover:bg-cyan-500/30 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-cyan-500/50"
               >
                 <FaFacebook className="text-lg" />
               </a>
@@ -56,7 +56,7 @@ function Footer() {
                 href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-gray-800 hover:bg-gold/30 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-md hover:shadow-gold/50"
+                className="w-10 h-10 rounded-full bg-gray-800 hover:bg-cyan-500/30 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-md hover:shadow-cyan-500/50"
               >
                 <FaInstagram className="text-lg" />
               </a>
@@ -64,7 +64,7 @@ function Footer() {
                 href="https://discord.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-gray-800 hover:bg-gold/30 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-md hover:shadow-gold/50"
+                className="w-10 h-10 rounded-full bg-gray-800 hover:bg-cyan-500/30 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-md hover:shadow-cyan-500/50"
               >
                 <FaDiscord className="text-lg" />
               </a>
@@ -72,7 +72,7 @@ function Footer() {
                 href="https://reddit.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-gray-800 hover:bg-gold/30 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-md hover:shadow-gold/50"
+                className="w-10 h-10 rounded-full bg-gray-800 hover:bg-cyan-500/30 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-md hover:shadow-cyan-500/50"
               >
                 <FaReddit className="text-lg" />
               </a>
