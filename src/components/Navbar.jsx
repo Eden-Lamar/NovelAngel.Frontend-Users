@@ -1,11 +1,11 @@
 import {Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenu, NavbarMenuItem, NavbarMenuToggle  } from "@heroui/navbar";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@heroui/dropdown";
 import { Avatar } from "@heroui/avatar";
-import { Input } from "@heroui/input";
+// import { Input } from "@heroui/input";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { Button } from "@heroui/button";
 import { GiTwoCoins } from "react-icons/gi";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CiSearch, CiCloudMoon  } from "react-icons/ci";
 import { PiCloudSun } from "react-icons/pi";
 import { useAuth } from "../context/useAuth";
@@ -14,8 +14,27 @@ import logo from "../assets/logo.png";
 
 function NavbarSticky() {
   const location = useLocation();
-  const [theme, setTheme] = useState("light");
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
+  
+  // 🔥 Initialize theme from localStorage or system preference
+  const getInitialTheme = () => {
+    const stored = localStorage.getItem("theme");
+    if (stored) return stored;
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
+  };
+
+  const [theme, setTheme] = useState(getInitialTheme);
+
+  useEffect(() => {
+    // Apply the current theme to the document
+    document.documentElement.classList.remove("light", "dark");
+    document.documentElement.classList.add(theme);
+
+    // Persist choice
+    localStorage.setItem("theme", theme);
+  }, [theme]);
 
 
   // Check if current route is the book reader page
@@ -34,15 +53,12 @@ function NavbarSticky() {
 
 
   // Toggle theme between light and dark
-const toggleTheme = () => {
-  const newTheme = theme === "light" ? "dark" : "light";
-  setTheme(newTheme);
-  document.documentElement.classList.remove("light", "dark");
-  document.documentElement.classList.add(newTheme);
-};
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+  };
 
 
-const menuItems = [
+  const menuItems = [
     { name: "Home", path: "/" },
     { name: "Novels", path: "/novels" },
     { name: "Genres", path: "/genres" },
