@@ -224,7 +224,7 @@ function Library() {
                                                                     indicator: "bg-gradient-to-r from-gold to-cyan-500"
                                                                 }}
                                                             />
-                                                            <p className="text-xs text-base-content/50">
+                                                            <p className="text-xs text-gray-600 dark:text-gray-400">
                                                                 {item.lastChapter.number} / {item.totalChapters} chapters
                                                             </p>
                                                         </div>
