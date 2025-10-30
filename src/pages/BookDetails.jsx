@@ -248,7 +248,7 @@ function BookDetails() {
                             </CardBody>
                         </Card>
                     ) : book ? (
-                        <Card className="dark:bg-[#0f1419] border border-cyan-500 shadow-md shadow-cyan-500/30">
+                        <Card className="bg-gray-50 dark:bg-[#0f1419] border border-cyan-500 shadow-md shadow-cyan-500/30">
                             <CardBody className=" p-6">
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
