@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate, } from 'react-router-dom';
 import { Input } from "@heroui/input";
 import { Button } from "@heroui/button";
@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import {Image} from "@heroui/image";
 import { FaRegEyeSlash, FaRegEye  } from "react-icons/fa";
+import axios from "axios";
 import loginImage from '../assets/girl-reading-novel.gif'; // Add your image
 import { useAuth } from '../context/useAuth';
 
@@ -25,7 +26,7 @@ const schema = yup.object().shape({
 function Login() {
     const navigate = useNavigate();
     // const location = useLocation();
-    const { login, loading } = useAuth();
+    const { login, loading, setAuth } = useAuth();
 		const [serverError, setServerError] = useState("");
 		const [showPassword, setShowPassword] = useState(false);
 
@@ -39,6 +40,30 @@ function Login() {
 		} = useForm({
 			resolver: yupResolver(schema),
 		});
+
+		useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("token");
+
+    if (token) {
+      // Store token
+      localStorage.setItem("token", token);
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+      // Fetch user profile
+      axios.get("http://localhost:3000/api/v1/user/profile")
+        .then((res) => {
+          const user = res.data.data;
+					console.log("red", user)
+          localStorage.setItem("user", JSON.stringify(user));
+          setAuth({ token, user });
+          navigate("/");
+        })
+        .catch(() => {
+          console.error("Error fetching user after Google login");
+        });
+    }
+  }, [navigate, setAuth]);
 
 
     const onSubmit  = async (data) => {
@@ -161,7 +186,9 @@ function Login() {
                         size="md"
 												color='default'
                         startContent={<img alt="Google logo" loading="lazy" width="16" height="16" decoding="async" data-nimg="1" src="https://claude.ai/images/google.svg" style={{"color": "transparent"}}/>}
-                        isDisabled
+												onClick={() => {
+													window.location.href = "http://localhost:3000/api/v1/user/auth/google";
+												}}
                     >
                         Continue with Google
                     </Button>
