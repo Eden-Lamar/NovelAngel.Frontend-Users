@@ -7,6 +7,7 @@ import RecentlyAdded from '../components/RecentlyAdded';
 import BLNovels from '../components/BLNovels';
 import GLNovels from '../components/GLNovels';
 import BGNovels from '../components/BGNovels';
+import NoCPNovels from '../components/NoCPNovels';
 import DiverseReaders from '../components/DiverseReaders'
 
 
@@ -23,18 +24,21 @@ function Home() {
   const [loadingGL, setLoadingGL] = useState(true);
   const [bgNovels, setBGNovels] = useState([]);
   const [loadingBG, setLoadingBG] = useState(true);
+  const [noCPNovels, setNoCPNovels] = useState([]);
+  const [loadingNoCP, setLoadingNoCP] = useState(true);
 
   // Fetch new books from API
   useEffect(() => {
     const fetchHomeData = async () => {
       try {
-        const [newRes, trendingRes, recentRes, blRes, glRes, bgRes] = await Promise.all([
+        const [newRes, trendingRes, recentRes, blRes, glRes, bgRes, noCPRes] = await Promise.all([
           axios.get('http://localhost:3000/api/v1/books/new'),
           axios.get('http://localhost:3000/api/v1/books/trending'),
           axios.get('http://localhost:3000/api/v1/books/latest-updates'),
           axios.get('http://localhost:3000/api/v1/books/search?category=BL'),
           axios.get('http://localhost:3000/api/v1/books/search?category=GL'),
           axios.get('http://localhost:3000/api/v1/books/search?category=BG'),
+          axios.get('http://localhost:3000/api/v1/books/search?category=No%20CP'),
         ]);
 
         if (newRes.data.status === 'success') setNewBooks(newRes.data.data);
@@ -43,6 +47,7 @@ function Home() {
         if (blRes.data.status === 'success') setBLNovels(blRes.data.data);
         if (glRes.data.status === 'success') setGLNovels(glRes.data.data);
         if (bgRes.data.status === 'success') setBGNovels(bgRes.data.data);
+        if (noCPRes.data.status === 'success') setNoCPNovels(noCPRes.data.data);
 
       } catch (error) {
         console.error('Error fetching new books:', error.message);
@@ -53,6 +58,7 @@ function Home() {
         setLoadingBL(false);
         setLoadingGL(false);
         setLoadingBG(false);
+        setLoadingNoCP(false);
       }
     };
 
@@ -83,7 +89,7 @@ function Home() {
       <Hero books={booksToDisplay} loading={loadingNew} />
       <TrendingBooks books={trendingBooksToDisplay} loading={loadingTrending} />
       <NewStories books={booksToDisplay} loading={loadingNew} />
-      <div className="divider" />
+      <div className="divider border-amber-200 dark:border-amber-800/50" />
       <RecentlyAdded books={recentBooksToDisplay} loading={loadingRecent} />
       
         {(blNovels.length > 0 || loadingBL) && (
@@ -102,6 +108,13 @@ function Home() {
         {(bgNovels.length > 0 || loadingBG) && (
           <>
             <BGNovels books={bgNovels} loading={loadingBG} />
+          </>
+        )}
+
+        {(noCPNovels.length > 0 || loadingNoCP) && (
+          <>
+            <NoCPNovels books={noCPNovels} loading={loadingNoCP} />
+            <div className="divider" />
           </>
         )}
         
