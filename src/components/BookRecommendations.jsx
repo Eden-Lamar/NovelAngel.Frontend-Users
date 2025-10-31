@@ -91,7 +91,7 @@ function BookRecommendations() {
                       variant="flat"
                       size="sm"
                       classNames={{
-                      base: "absolute top-2 left-2 uppercase font-bold backdrop-blur-md z-10",
+                      base: "absolute top-2 left-2 uppercase text-[10px] backdrop-blur-md z-10",
                       content: book.status === "ongoing" 
                         ? "text-yellow-500" 
                         : "text-green-500"
