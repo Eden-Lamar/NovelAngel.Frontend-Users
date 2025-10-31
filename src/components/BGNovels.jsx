@@ -1,46 +1,20 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { Chip } from "@heroui/chip";
-import { Button } from "@heroui/button";
 import { capitalize } from "lodash";
 import { useNavigate } from 'react-router-dom';
-import { IoChevronBack, IoChevronForward } from "react-icons/io5";
+import HorizontalScrollContainer from "./HorizontalScrollContainer";
+import BookHoverCard from "./BookHoverCard";
 import { getCountryFlagCode } from "../helperFunction";
 import SkeletonBookCard from './SkeletonBookCard';
 import ViewMoreButton from './ViewMoreButton'
 
 function BGNovels({ books, loading }) {
   const [hoveredBook, setHoveredBook] = useState(null);
-  const [showLeftArrow, setShowLeftArrow] = useState(false);
-  const [showRightArrow, setShowRightArrow] = useState(true);
-  const scrollContainerRef = useRef(null);
+  // const [showLeftArrow, setShowLeftArrow] = useState(false);
+  // const [showRightArrow, setShowRightArrow] = useState(true);
+  // const scrollContainerRef = useRef(null);
 
   const navigate = useNavigate();
-
-  const handleScroll = () => {
-    if (scrollContainerRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
-      setShowLeftArrow(scrollLeft > 0);
-      setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 10);
-    }
-  };
-
-  const scrollLeft = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({
-        left: -800,
-        behavior: 'smooth'
-      });
-    }
-  };
-
-  const scrollRight = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({
-        left: 800,
-        behavior: 'smooth'
-      });
-    }
-  };
 
   return (
     <div className="relative py-2.5 md:py-5 w-full">
@@ -59,7 +33,7 @@ function BGNovels({ books, loading }) {
         </div>
 
         {loading ? (
-          <div className="relative group/container">
+          <HorizontalScrollContainer>
             <div className="overflow-x-auto overflow-y-visible pb-8 pt-4 scrollbar-hide">
               <div className="flex gap-14 min-w-max px-10">
                 {[...Array(8)].map((_, index) => (
@@ -67,37 +41,9 @@ function BGNovels({ books, loading }) {
                 ))}
               </div>
             </div>
-          </div>
+          </HorizontalScrollContainer>
         ) : (
-          <div className="relative group/container">
-            {showLeftArrow && (
-              <Button
-                isIconOnly
-                variant="flat"
-                className="absolute left-0 top-1/2 -translate-y-1/2 z-30 bg-black/60 hover:bg-black/80 text-white backdrop-blur-sm opacity-0 group-hover/container:opacity-100 transition-opacity duration-300 h-1/2 w-8 rounded-lg"
-                onClick={scrollLeft}
-              >
-                <IoChevronBack className="text-3xl" />
-              </Button>
-            )}
-
-            {showRightArrow && (
-              <Button
-                isIconOnly
-                variant="flat"
-                className="absolute right-0 top-1/2 -translate-y-1/2 z-30 bg-black/60 hover:bg-black/80 text-white backdrop-blur-sm opacity-0 group-hover/container:opacity-100 transition-opacity duration-300 h-1/2 w-8 rounded-lg"
-                onClick={scrollRight}
-              >
-                <IoChevronForward className="text-3xl" />
-              </Button>
-            )}
-
-            <div 
-              ref={scrollContainerRef}
-              onScroll={handleScroll}
-              className="overflow-x-auto overflow-y-visible pb-8 pt-4 scrollbar-hide"
-            >
-              <div className="flex gap-14 min-w-max px-10">
+            <HorizontalScrollContainer gap="gap-14">
                 {books.slice(0, 10).map((book) => (
                   <div
                     key={book._id}
@@ -162,32 +108,12 @@ function BGNovels({ books, loading }) {
                         </div>
                       )}
 
-                      {hoveredBook === book._id && (
-                        <div className={`hidden md:block absolute 
-                          ${book.title.length > 25 ? 'top-[40%]' : 'top-[47%]'}
-                          left-0 right-0 bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 z-30 animate-fadeIn`}
-                        >
-                          <h4 className="font-bold text-base text-gray-800 dark:text-gray-100 mb-2 line-clamp-2 leading-5">
-                            {capitalize(book.title)}
-                          </h4>
-                          <div className="flex gap-1 mb-3">
-                            {book.tags?.slice(0, 3).map((tag, tagIndex) => (
-                              <Chip key={tagIndex} color="primary" variant="flat" size="sm" className="text-xs">
-                                {capitalize(tag)}
-                              </Chip>
-                            ))}
-                          </div>
-                          <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-3">
-                            {book.description || 'No description available'}
-                          </p>
-                        </div>
-                      )}
+                      {/* Expanded Content on Hover */}
+                      {hoveredBook === book._id && <BookHoverCard book={book} />}
                     </div>
                   </div>
                 ))}
-              </div>
-            </div>
-          </div>
+          </HorizontalScrollContainer>
         )}
       </div>
 
