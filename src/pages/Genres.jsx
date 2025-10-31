@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom';
 import { Card, CardBody } from "@heroui/card";
 import {Button} from "@heroui/button";
 import { GiBookshelf } from "react-icons/gi";
-import DiverseReaders from '../components/DiverseReaders';
 
 
 function Genres() {
@@ -28,6 +27,12 @@ function Genres() {
             gradient: 'from-blue-900 via-indigo-900 to-gray-900',
             description: 'Traditional romance between opposite genders'
         },
+				{
+						name: 'No CP',
+						fullName: 'No Couple',
+						gradient: 'from-gray-900 via-teal-900 to-gray-900',
+						description: 'Stories without romantic pairings'
+				},
     ];
 
     const genres = [
@@ -137,7 +142,7 @@ function Genres() {
                             isPressable
 														isBlurred
                             onPress={() => handleCategoryClick(category.name)}
-                            className={`relative overflow-hidden group cursor-pointer h-48 transition-all duration-300 hover:scale-105 hover:shadow-md card-shine`}
+                            className={`relative overflow-hidden group cursor-pointer h-48 transition-all duration-300 hover:scale-105 card-shine`}
                         >
                             <CardBody className="p-0">
                                 <div className={`absolute inset-0 bg-gradient-to-br ${category.gradient} opacity-90 group-hover:opacity-100 transition-opacity duration-300`} />
