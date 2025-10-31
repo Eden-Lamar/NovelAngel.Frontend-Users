@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { startCase, truncate, capitalize } from 'lodash';
 import { useParams, Link } from "react-router-dom";
-import { FaHeart, FaRegEye, FaBookOpen, FaBookReader, FaLock, FaBookmark, FaLockOpen } from "react-icons/fa";
+import { FaHeart, FaRegEye, FaBookOpen, FaBookReader, FaLock, FaBookmark, FaLockOpen, FaShareAlt } from "react-icons/fa";
 import { RiArrowDownWideFill } from "react-icons/ri";
 import { GiTwoCoins } from "react-icons/gi";
 import { Button } from "@heroui/button";
@@ -117,6 +117,29 @@ function BookDetails() {
 					setError(err.response?.data?.message || "Unable to bookmark this book.");
 				}
     };
+
+		const handleShare = async () => {
+			if (!book) return;
+
+			const shareData = {
+				title: book.title,
+				text: `Check out this novel: ${book.title}`,
+				url: window.location.href,
+			};
+
+			try {
+				if (navigator.share) {
+					await navigator.share(shareData);
+				} else {
+					// fallback: copy link to clipboard
+					await navigator.clipboard.writeText(shareData.url);
+					setError("Link copied to clipboard!");
+				}
+			} catch (err) {
+				console.error("Error sharing:", err);
+			}
+		};
+
 
     // Calculate free and locked chapters
     const getChapterStats = (chapters) => {
@@ -320,6 +343,7 @@ function BookDetails() {
                         <div className="flex gap-2">
                             <Skeleton className="flex-1 h-10 rounded-lg" />
                             <Skeleton className="flex-1 h-10 rounded-lg" />
+														<Skeleton className="flex-1 h-10 rounded-lg" />
                         </div>
                     ) : 
 											book && (
@@ -344,8 +368,17 @@ function BookDetails() {
                             >
                                 {isLiked ? 'Liked' : 'Like'}
                             </Button>
-                        </div>
-												)}
+														<Button
+																color="primary"
+																variant="ghost"
+																className="flex-1"
+																startContent={<FaShareAlt />}
+																onClick={handleShare}
+															>
+																Share
+														</Button>
+													</div>
+													)}
                     
                 </div>
 
@@ -491,7 +524,7 @@ function BookDetails() {
 											/>
 									</div>
 								)}
-								
+
 							</div>
             </div>
 
