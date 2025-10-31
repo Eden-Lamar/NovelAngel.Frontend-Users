@@ -375,7 +375,7 @@ function Novels() {
                                             color={book.status === 'ongoing' ? 'warning' : 'success'}
                                             variant="flat"
 																						classNames={{
-																							base: "absolute top-2 left-2 uppercase font-bold backdrop-blur-md",
+																							base: "absolute top-2 left-2 uppercase text-[10px] backdrop-blur-md",
 																							content: book.status === "ongoing" 
 																								? "text-yellow-500" 
 																								: "text-green-500"
