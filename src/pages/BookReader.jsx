@@ -333,6 +333,30 @@ function BookReader() {
                                         color="warning"
                                         getValue={(value) => `${value}px`}
                                     />
+
+																		{/* Divider */}
+																		<div className="divider !h-[1px]"/>
+																		
+																		{/* Reset to Default Button */}
+																		<div className="flex justify-center">
+																			<Button
+																				color="danger"
+																				variant="flat"
+																				onClick={() => setReadingSettings({
+																					fontSize: 20,
+																					fontFamily: 'serif',
+																					lineSpacing: 1.6,
+																					backgroundGradient: true,
+																					textAlignment: 'left',
+																					letterSpacing: 0,
+																					wordSpacing: 0,
+																				})}
+																				className="w-full"
+																			>
+																				Reset to Default
+																			</Button>
+																		</div>
+
                                 </>
                             )}
 
