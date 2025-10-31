@@ -1,48 +1,21 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { Chip } from "@heroui/chip";
-import { Button } from "@heroui/button";
 import { capitalize } from "lodash";
 import { useNavigate } from 'react-router-dom';
-import { IoChevronBack, IoChevronForward } from "react-icons/io5";
+import BookHoverCard from "./BookHoverCard";
+import HorizontalScrollContainer from "./HorizontalScrollContainer";
 import { getCountryFlagCode } from "../helperFunction";
 import SkeletonBookCard from './SkeletonBookCard';
 
 function TrendingBooks({ books, loading }) {
   const [hoveredBook, setHoveredBook] = useState(null);
-  const [showLeftArrow, setShowLeftArrow] = useState(false);
-  const [showRightArrow, setShowRightArrow] = useState(true);
-  const scrollContainerRef = useRef(null);
+  // const [showLeftArrow, setShowLeftArrow] = useState(false);
+  // const [showRightArrow, setShowRightArrow] = useState(true);
+  // const scrollContainerRef = useRef(null);
 
   const navigate = useNavigate();
 
-  // Handle scroll to check arrow visibility
-  const handleScroll = () => {
-    if (scrollContainerRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
-      setShowLeftArrow(scrollLeft > 0);
-      setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 10);
-    }
-  };
 
-  // Scroll left
-  const scrollLeft = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({
-        left: -800,
-        behavior: 'smooth'
-      });
-    }
-  };
-
-  // Scroll right
-  const scrollRight = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({
-        left: 800,
-        behavior: 'smooth'
-      });
-    }
-  };
 
 
   return (
@@ -61,50 +34,15 @@ function TrendingBooks({ books, loading }) {
         </div>
 
         {loading ? (
-         // Skeleton Loader
-          <div className="relative group/container">
-            {/* Skeleton scroll container */}
-            <div className="overflow-x-auto overflow-y-visible pb-8 pt-4 scrollbar-hide">
-              <div className="flex gap-14 min-w-max px-10">
+            // Skeleton Loader
+            <HorizontalScrollContainer>
+              {/* Skeleton scroll container */}
                 {[...Array(8)].map((_, index) => (
                   <SkeletonBookCard key={index} index={index} />
                 ))}
-              </div>
-            </div>
-          </div>
+            </HorizontalScrollContainer>
         ) : (
-          <div className="relative group/container">
-             {/* Left Arrow Button */}
-            {showLeftArrow && (
-              <Button
-                isIconOnly
-                variant="flat"
-                className="absolute left-0 top-1/2 -translate-y-1/2 z-30 bg-black/60 hover:bg-black/80 text-white backdrop-blur-sm opacity-0 group-hover/container:opacity-100 transition-opacity duration-300 h-1/2 w-8 rounded-lg"
-                onClick={scrollLeft}
-              >
-                <IoChevronBack className="text-3xl" />
-              </Button>
-            )}
-
-            {/* Right Arrow Button */}
-            {showRightArrow && (
-              <Button
-                isIconOnly
-                variant="flat"
-                className="absolute right-0 top-1/2 -translate-y-1/2 z-30 bg-black/60 hover:bg-black/80 text-white backdrop-blur-sm opacity-0 group-hover/container:opacity-100 transition-opacity duration-300 h-1/2 w-8 rounded-lg"
-                onClick={scrollRight}
-              >
-                <IoChevronForward className="text-3xl" />
-              </Button>
-            )}
-
-            {/* Horizontal Scrollable Container */}
-            <div 
-              ref={scrollContainerRef}
-              onScroll={handleScroll}
-              className="overflow-x-auto overflow-y-visible pb-8 pt-4 scrollbar-hide"
-            >
-              <div className="flex gap-14 min-w-max px-10">
+          <HorizontalScrollContainer gap="gap-14">
                 {books.slice(0, 10).map((book, index) => (
                   <div
                     key={book._id}
@@ -273,70 +211,13 @@ function TrendingBooks({ books, loading }) {
                       
 
                       {/* Expanded Content on Hover */}
-                      {hoveredBook === book._id && (
-                        <div className={`hidden md:block absolute 
-                          ${
-                          book.title.length > 25 ? 'top-[40%]' : 'top-[47%]'}
-                          left-0 right-0 bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 z-30 animate-fadeIn`}>
-												{/* Title */}
-												<h4 className="font-bold text-base text-gray-800 dark:text-gray-100 mb-2 line-clamp-2 leading-5">{capitalize(book.title)}</h4>
-
-                          {/* Tags */}
-                          <div className="flex gap-1 mb-3">
-                            {book.tags?.slice(0, 3).map((tag, tagIndex) => (
-                              <Chip
-                                key={tagIndex}
-                                color="primary"
-                                variant="flat"
-                                size="sm"
-                                className="text-xs"
-                              >
-                                {capitalize(tag)}
-                              </Chip>
-                            ))}
-                          </div>
-
-                          {/* Description */}
-                          <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-3">
-                            {book.description || 'No description available'}
-                          </p>
-
-                          {/* Stats */}
-                          {/* <div className="flex gap-4 mt-3 text-xs text-gray-500 dark:text-gray-400">
-                            <div className="flex items-center gap-1">
-                              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                                <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
-                              </svg>
-                              <span>{book.views || 0} views</span>
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
-                              </svg>
-                              <span>{book.likeCount || 0} likes</span>
-                            </div>
-                          </div> */}
-                        </div>
-                      )}
+                      {hoveredBook === book._id && <BookHoverCard book={book} />}
                     </div>
 
-                    {/* Glow effect on hover */}
-                    {/* {hoveredBook === book._id && (
-                      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-gold/20 to-amber-500/20 blur-2xl rounded-full scale-150 animate-pulse" />
-                    )} */}
+                    
                   </div>
                 ))}
-              </div>
-            </div>
-
-            {/* Scroll indicator */}
-            {/* <div className="flex justify-center mt-8 gap-2">
-              <div className="h-1 w-16 bg-gold rounded-full" />
-              <div className="h-1 w-8 bg-gray-300 dark:bg-gray-700 rounded-full" />
-              <div className="h-1 w-8 bg-gray-300 dark:bg-gray-700 rounded-full" />
-            </div> */}
-          </div>
+          </HorizontalScrollContainer>
         )}
       </div>
 
