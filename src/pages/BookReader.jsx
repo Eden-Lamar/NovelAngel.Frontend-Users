@@ -2,11 +2,12 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { startCase } from 'lodash';
 import { useParams, useSearchParams, Link } from "react-router-dom";
-import { FaBookOpen, FaLock } from "react-icons/fa";
+import { FaBookOpen } from "react-icons/fa";
 import { CiLock, CiUnlock } from "react-icons/ci";
 import { RiArrowLeftSLine, RiArrowRightSLine, RiSettings3Line, RiCloseLine } from "react-icons/ri";
 import { GiTwoCoins } from "react-icons/gi";
 import { LuCalendarRange } from "react-icons/lu";
+import { GoShareAndroid } from "react-icons/go";
 import { Button } from "@heroui/button";
 import { Card, CardBody } from "@heroui/card";
 import { Skeleton } from "@heroui/skeleton";
@@ -90,15 +91,15 @@ function BookReader() {
     }, [bookId, chapterId, setSearchParams]);
 
     // Clear errors
-    useEffect(() => {
-        if (error || unlockError) {
-            const timer = setTimeout(() => {
-                setError(null);
-                setUnlockError(null);
-            }, 5000);
-            return () => clearTimeout(timer);
-        }
-    }, [error, unlockError]);
+    // useEffect(() => {
+    //     if (error || unlockError) {
+    //         const timer = setTimeout(() => {
+    //             setError(null);
+    //             setUnlockError(null);
+    //         }, 5000);
+    //         return () => clearTimeout(timer);
+    //     }
+    // }, [error, unlockError]);
 
     // Handle unlock chapter
     const handleUnlockChapter = async () => {
@@ -176,6 +177,28 @@ function BookReader() {
             wordSpacing: `${readingSettings.wordSpacing}px`,
         };
     };
+
+		const handleShare = async () => {
+			if (!chapterData?.bookTitle) return;
+
+			const shareData = {
+				title: chapterData.bookTitle,
+				text: `I'm reading "${chapterData.chapter.title}" on NovelAngel!`,
+				url: window.location.href,
+			};
+
+			try {
+				if (navigator.share) {
+					await navigator.share(shareData);
+				} else {
+					await navigator.clipboard.writeText(shareData.url);
+					setError("Link copied to clipboard!");
+				}
+			} catch (err) {
+				console.error("Error sharing:", err);
+			}
+		};
+
 
     return (
         <div className="container mx-auto px-4 py-8 flex flex-col">
@@ -374,6 +397,7 @@ function BookReader() {
             {loading ? (
                 <Skeleton className="h-16 mx-auto w-full rounded-xl mb-6" />
             ) : chapterData ? (
+							<>
                 <div className="sticky top-0 z-5 flex justify-between items-center border-2 border-gray-200 dark:border-gray-700 p-2 rounded-xl mb-6 bg-white/80 dark:bg-[#1a1b23]/80 backdrop-blur-md shadow-md">
 									<div className=" ">
                     <Link to={`/book/${bookId}`} className="flex items-center group">
@@ -392,17 +416,33 @@ function BookReader() {
                     </Link>
 									</div>
 
-                    {!chapterData.chapter.isLocked && (
+										{/* Setting and Share icon */}
+                  <div className="flex items-center gap-2">
+										{!chapterData.chapter.isLocked && (
+											<>
                         <Button
                             isIconOnly
                             variant="light"
                             onClick={() => setIsSettingsOpen(true)}
                             className="text-gold"
-                        >
+													>
                             <RiSettings3Line className="text-2xl" />
-                        </Button>
+													</Button>
+
+													<Button
+														isIconOnly
+														variant="light"
+														onClick={handleShare}
+														className="text-cyan-500"
+														aria-label="Share Chapter"
+													>
+														<GoShareAndroid className="text-xl" />
+													</Button>
+												</>
                     )}
+										</div>
                 </div>
+							</>
             ) : null}
 
 						 {/* Chapter List Dropdown */}
