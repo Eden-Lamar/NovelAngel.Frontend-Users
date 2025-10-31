@@ -17,7 +17,7 @@ import { getCountryFlagCode } from "../helperFunction";
 
 
   // Filter options
-    const categories = ['BL', 'GL', 'BG'];
+    const categories = ['BL', 'GL', 'BG', 'No CP'];
     const tags = [
         'Action', 'Adventure', 'Drama', 'Romance', 'Sci-fic', 
         'Horror', 'Thriller', 'Female Protagonist', 'Male Protagonist', 
@@ -64,7 +64,7 @@ function Novels() {
     const [total, setTotal] = useState(0);
 
   
-    const allFilters = [...categories, ...tags];
+    // const allFilters = [...categories, ...tags];
 
     // Fetch books
     useEffect(() => {
@@ -87,7 +87,7 @@ function Novels() {
                     const category = selectedFilters.find(f => categories.includes(f));
                     const selectedTags = selectedFilters.filter(f => tags.includes(f));
                     
-                    if (category) params.append('category', category);
+                    if (category) params.append('category', encodeURIComponent(category));
                     if (selectedTags.length > 0) params.append('tags', selectedTags.join(','));
                 }
                 
@@ -163,7 +163,7 @@ function Novels() {
         setSelectedFilters([]);
         setCurrentPage(1);
     };
-console.log('Books:', books);
+// console.log('Books:', books);
     return (
         <div className="container mx-auto px-4 py-8">
             {/* Header */}
@@ -227,35 +227,53 @@ console.log('Books:', books);
                 <div 
 									ref={scrollRef}
 									className="flex items-center gap-2 overflow-x-auto py-1 px-10 scrollbar-hide w-[95%] mx-auto">
-                    {allFilters.map((filter) => {
-											const isSelected = selectedFilters.includes(filter);
-											const isCategory = categories.includes(filter);
 
-											return (
-                        <Chip
-                            key={filter}
-                            onClick={() => toggleFilter(filter)}
-                            className="cursor-pointer whitespace-nowrap"
-                            color= { isSelected ? isCategory
-															? "success" // categories use success color
-															: "warning" // tags use warning color
-														: "default"}
-                            variant={selectedFilters.includes(filter) ? "flat" : "bordered"}
-                        >
-                            {filter}
-                        </Chip>
-											);
-										})}
-                    {(keyword || selectedStatus || selectedFilters.length > 0) && (
-                        <Chip
-                            onClick={clearFilters}
-                            className="cursor-pointer whitespace-nowrap"
-                            color="danger"
-                            variant="flat"
-                        >
-                            Clear All
-                        </Chip>
-                    )}
+									{/* Category Chips */}
+									{categories.map((filter) => {
+										const isSelected = selectedFilters.includes(filter);
+										return (
+											<Chip
+												key={filter}
+												onClick={() => toggleFilter(filter)}
+												className="cursor-pointer whitespace-nowrap"
+												color={isSelected ? "success" : "default"}
+												variant={isSelected ? "flat" : "bordered"}
+											>
+												{filter}
+											</Chip>
+										);
+									})}
+
+									{/* Divider */}
+									<div className="divider divider-horizontal mx-0.5 !h-[0.9rem] !w-[0.01rem] !self-center bg-gray-400 dark:bg-gray-600"/>
+
+									{/* Tag Chips */}
+									{tags.map((filter) => {
+										const isSelected = selectedFilters.includes(filter);
+										return (
+											<Chip
+												key={filter}
+												onClick={() => toggleFilter(filter)}
+												className="cursor-pointer whitespace-nowrap"
+												color={isSelected ? "warning" : "default"}
+												variant={isSelected ? "flat" : "bordered"}
+											>
+												{filter}
+											</Chip>
+										);
+									})}
+
+									{/* Clear All */}
+									{(keyword || selectedStatus || selectedFilters.length > 0) && (
+										<Chip
+											onClick={clearFilters}
+											className="cursor-pointer whitespace-nowrap"
+											color="danger"
+											variant="flat"
+										>
+											Clear All
+										</Chip>
+									)}
                 </div>
 
 								{/* Right Button */}
@@ -356,7 +374,12 @@ console.log('Books:', books);
                                             size="sm"
                                             color={book.status === 'ongoing' ? 'warning' : 'success'}
                                             variant="flat"
-                                            className="absolute top-2 left-2 text-xs uppercase backdrop-blur-md"
+																						classNames={{
+																							base: "absolute top-2 left-2 uppercase font-bold backdrop-blur-md",
+																							content: book.status === "ongoing" 
+																								? "text-yellow-500" 
+																								: "text-green-500"
+																						}}
                                         >
                                             {book.status}
                                         </Chip>
