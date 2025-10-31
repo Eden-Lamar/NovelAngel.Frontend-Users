@@ -483,12 +483,15 @@ function BookDetails() {
                 </div>
 
 								{/* Comments Section */}
-								<div className="">
-										<BookComments 
+								{activeTab === 'summary' && (
+									<div className="">
+											<BookComments 
 												bookId={id} 
 												isAuthenticated={isAuthenticated}
-										/>
-								</div>
+											/>
+									</div>
+								)}
+								
 							</div>
             </div>
 
