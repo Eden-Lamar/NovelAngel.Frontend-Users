@@ -48,3 +48,15 @@
 }
   
 }
+
+/* Light mode */
+html.light .divider::before,
+html.light .divider::after {
+  background-color: rgba(0, 0, 0, 0.1) !important; /* Slightly visible on #f4f4f4 */
+}
+
+/* Dark mode */
+html.dark .divider::before,
+html.dark .divider::after {
+  background-color: rgba(255, 255, 255, 0.15) !important; /* Subtle but visible */
+}
