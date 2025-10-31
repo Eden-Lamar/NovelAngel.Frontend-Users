@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { IoChevronBack, IoChevronForward } from "react-icons/io5";
 import { getCountryFlagCode } from "../helperFunction";
 import SkeletonBookCard from './SkeletonBookCard';
+import ViewMoreButton from './ViewMoreButton'
 
 function BGNovels({ books, loading }) {
   const [hoveredBook, setHoveredBook] = useState(null);
@@ -45,7 +46,7 @@ function BGNovels({ books, loading }) {
     <div className="relative py-2.5 md:py-5 w-full">
       <div className="mx-auto px-4">
         {/* Section Header */}
-        <div className="">
+        <div className="flex justify-between">
           <Chip
             color="primary"
             variant="flat"
@@ -54,6 +55,7 @@ function BGNovels({ books, loading }) {
           >
             BG Novels 👩🏻‍❤️‍👨🏼
           </Chip>
+          <ViewMoreButton category="BG"/>
         </div>
 
         {loading ? (
