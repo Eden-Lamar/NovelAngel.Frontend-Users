@@ -63,16 +63,16 @@ function RecentlyAdded({ books, loading }) {
 												<div className="space-y-1">
 													<p className="text-xs text-gray-600 dark:text-gray-400 line-clamp-1">
 														<span className="font-semibold text-yellow-500">
-															CH {book.latestChapter.chapterNo}:
+															CH {book?.latestChapter?.chapterNo}:
 														</span>{' '}
-														{capitalize(book.latestChapter.title)}
+														{capitalize(book?.latestChapter?.title)}
 													</p>
 
 													{/* Time Ago */}
 													<div className="flex items-center gap-2">
 														<GoClock className="text-xs" />
 														<span className="text-xs text-yellow-500">
-															{book.latestChapter.updatedAt}
+															{book?.latestChapter?.updatedAt}
 														</span>
 													</div>
 												</div>
