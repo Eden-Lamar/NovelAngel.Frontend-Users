@@ -68,11 +68,77 @@ export default function HorizontalScrollContainer({
 
   const scrollByAmount = (direction) => {
     if (!scrollRef.current) return;
+
+    const containerWidth = scrollRef.current.clientWidth;
+
+    // Dynamically calculate scroll amount based on screen size
+    let dynamicScrollAmount;
+
+    if (window.innerWidth < 640) {
+      // small screen (mobile)
+      dynamicScrollAmount = containerWidth * 0.8; // scroll about one screen width
+    } else if (window.innerWidth < 1024) {
+      // tablet / medium screen
+      dynamicScrollAmount = containerWidth * 0.7;
+    } else {
+      // large screen (desktop)
+      dynamicScrollAmount = scrollAmount; // use the default 800px
+    }
+
     scrollRef.current.scrollBy({
-      left: direction * scrollAmount,
+      left: direction * dynamicScrollAmount,
       behavior: "smooth",
     });
   };
+
+   // 🔹 Drag scroll (mouse & touch)
+  useEffect(() => {
+    const container = scrollRef.current;
+    if (!container) return;
+
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    const startDragging = (e) => {
+      isDown = true;
+      container.classList.add("dragging");
+      startX = e.pageX || e.touches?.[0].pageX;
+      scrollLeft = container.scrollLeft;
+    };
+
+    const stopDragging = () => {
+      isDown = false;
+      container.classList.remove("dragging");
+    };
+
+    const onMove = (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX || e.touches?.[0].pageX;
+      const walk = (x - startX) * 1.2; // scroll speed multiplier
+      container.scrollLeft = scrollLeft - walk;
+    };
+
+    // Event listeners for mouse & touch
+    container.addEventListener("mousedown", startDragging);
+    container.addEventListener("mouseleave", stopDragging);
+    container.addEventListener("mouseup", stopDragging);
+    container.addEventListener("mousemove", onMove);
+    container.addEventListener("touchstart", startDragging);
+    container.addEventListener("touchend", stopDragging);
+    container.addEventListener("touchmove", onMove);
+
+    return () => {
+      container.removeEventListener("mousedown", startDragging);
+      container.removeEventListener("mouseleave", stopDragging);
+      container.removeEventListener("mouseup", stopDragging);
+      container.removeEventListener("mousemove", onMove);
+      container.removeEventListener("touchstart", startDragging);
+      container.removeEventListener("touchend", stopDragging);
+      container.removeEventListener("touchmove", onMove);
+    };
+  }, []);
 
   return (
     <div className={`relative group/container ${className}`}>
@@ -107,9 +173,18 @@ export default function HorizontalScrollContainer({
       {/* Scrollable Content */}
       <div
         ref={scrollRef}
-        className="overflow-x-auto overflow-y-visible scrollbar-hide pb-8 pt-4"
+        className="overflow-x-auto overflow-y-visible scrollbar-hide pb-8 pt-4 
+                  scroll-smooth snap-x snap-mandatory select-none cursor-grab"
       >
-        <div className={`flex min-w-max px-10 ${gap}`}>{children}</div>
+        <div className={`flex min-w-max px-10 ${gap}`}>
+          {Array.isArray(children)
+            ? children.map((child, i) => (
+                <div key={i} className="snap-start">
+                  {child}
+                </div>
+              ))
+            : children}
+        </div>
       </div>
 
       <style jsx>{`
@@ -119,6 +194,11 @@ export default function HorizontalScrollContainer({
         .scrollbar-hide {
           -ms-overflow-style: none;
           scrollbar-width: none;
+        }
+        .dragging {
+        cursor: grabbing;
+        cursor: -webkit-grabbing;
+        user-select: none;
         }
       `}</style>
     </div>
