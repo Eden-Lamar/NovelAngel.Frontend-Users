@@ -29,6 +29,7 @@ function Login() {
     const { login, loading, setAuth } = useAuth();
 		const [serverError, setServerError] = useState("");
 		const [showPassword, setShowPassword] = useState(false);
+    const [googleLoading, setGoogleLoading] = useState(false);
 
 
     // const from = location.state?.from || '/';
@@ -42,10 +43,11 @@ function Login() {
 		});
 
 		useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get("token");
-
-    if (token) {
+      const params = new URLSearchParams(window.location.search);
+      const token = params.get("token");
+      
+      if (token) {
+      setGoogleLoading(true); // show spinner while verifying user
       // Store token
       localStorage.setItem("token", token);
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -54,13 +56,16 @@ function Login() {
       axios.get("http://localhost:3000/api/v1/user/profile")
         .then((res) => {
           const user = res.data.data;
-					console.log("red", user)
+					// console.log("red", user)
           localStorage.setItem("user", JSON.stringify(user));
           setAuth({ token, user });
           navigate("/");
         })
         .catch(() => {
           console.error("Error fetching user after Google login");
+        })
+        .finally(() => {
+          setGoogleLoading(false);
         });
     }
   }, [navigate, setAuth]);
@@ -185,7 +190,13 @@ function Login() {
                         className="w-full text-gray-700 dark:text-gray-300"
                         size="md"
 												color='default'
-                        startContent={<img alt="Google logo" loading="lazy" width="16" height="16" decoding="async" data-nimg="1" src="https://claude.ai/images/google.svg" style={{"color": "transparent"}}/>}
+                        startContent={
+                          !googleLoading && (
+                            <img alt="Google logo" loading="lazy" width="16" height="16" decoding="async" data-nimg="1" src="https://claude.ai/images/google.svg" style={{"color": "transparent"}}/>
+                          )
+                        }
+                        isDisabled={googleLoading}
+                        isLoading={googleLoading}
 												onClick={() => {
 													window.location.href = "http://localhost:3000/api/v1/user/auth/google";
 												}}
