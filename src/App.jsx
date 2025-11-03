@@ -4,6 +4,7 @@ import NavbarSticky from './components/Navbar';
 import Footer from './components/Footer'; 
 import ScrollToTop from "./components/ScrollToTop";
 import NetworkStatusAlert from './components/NetworkStatusAlert';
+import SignUpBanner from './components/SignUpBanner';
 import Home from './pages/Home';
 import BookDetails from './pages/BookDetails';
 import BookReader from './pages/BookReader';
@@ -16,8 +17,8 @@ import PaymentSuccess from "./pages/PaymentSuccess";
 import Profile from "./pages/Profile";
 import Library from "./pages/Library";
 import { useAuth } from "./context/useAuth";
-import "./App.css"
 import 'animate.css';
+import "./App.css"
 
 function App() {
   const location = useLocation();
@@ -47,6 +48,9 @@ function App() {
 
   return (
   <div className="flex flex-col min-h-screen relative">
+    {/* NEW: banner only when logged out */}
+    {showFooterAndNav && !isAuthenticated && <SignUpBanner />}
+
     {/* Navbar */}
     {showFooterAndNav && <NavbarSticky />}
 
