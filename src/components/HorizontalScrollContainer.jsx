@@ -46,8 +46,8 @@ export default function HorizontalScrollContainer({
     const node = scrollRef.current;
     if (!node) return;
 
-    // Initial check
-    updateScrollState();
+    // Delay initial check until layout stabilizes
+    requestAnimationFrame(updateScrollState);
 
     // Listen for scrolling
     node.addEventListener("scroll", updateScrollState);
@@ -150,7 +150,7 @@ export default function HorizontalScrollContainer({
           onClick={() => scrollByAmount(-1)}
           className="absolute left-0 top-1/2 -translate-y-1/2 z-30 bg-black/60 hover:bg-black/80 
             text-white backdrop-blur-sm opacity-0 group-hover/container:opacity-100 
-            transition-opacity duration-300 h-1/2 w-8 rounded-lg"
+            transition-opacity duration-300 h-1/2 w-8 rounded-lg mr-10"
         >
           <IoChevronBack className="text-3xl" />
         </Button>
@@ -176,10 +176,10 @@ export default function HorizontalScrollContainer({
         className="overflow-x-auto overflow-y-visible scrollbar-hide pb-8 pt-4 
                   scroll-smooth snap-x snap-mandatory select-none cursor-grab"
       >
-        <div className={`flex min-w-max px-10 ${gap}`}>
+        <div className={`flex min-w-max ${gap} py-1`}>
           {Array.isArray(children)
             ? children.map((child, i) => (
-                <div key={i} className="snap-start">
+                <div key={i} className="snap-start flex-shrink-0">
                   {child}
                 </div>
               ))
