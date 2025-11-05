@@ -75,7 +75,8 @@ function Hero({ books, loading }) {
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <Button
                 size="lg"
-                className="bg-gradient-to-r from-gold to-amber-500 text-white font-semibold px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+                color="warning"
+                className=" text-white font-semibold px-8 py-6 text-lg hover:scale-[1.02]"
                 onClick={() => navigate('/novels')}
               >
                 Explore Our Library
@@ -86,8 +87,9 @@ function Hero({ books, loading }) {
               
               <Button
                 size="lg"
-                variant="bordered"
-                className="border-2 border-gold text-gold hover:bg-gold/10 font-semibold px-8 py-6 text-lg transition-all duration-300"
+                color="warning"
+                variant="ghost"
+                className=" font-semibold px-8 py-6 text-lg transition-all duration-300"
                 onClick={() => navigate('/genres')}
               >
                 Browse Genres
@@ -168,7 +170,7 @@ function Hero({ books, loading }) {
                           {/* Overlay on hover */}
                           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
                             <div className="text-white">
-                              <h3 className="font-bold text-lg mb-2 line-clamp-2 text-transparent bg-clip-text bg-gradient-to-r from-gold to-cyan-500">{capitalize(book.title)}</h3>
+                              <h3 className="font-bold text-lg mb-2 line-clamp-2 text-cyan-500">{capitalize(book.title)}</h3>
                               <p className="text-sm text-gray-300">Click to read</p>
                             </div>
                           </div>
