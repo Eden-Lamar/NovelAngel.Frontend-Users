@@ -73,7 +73,7 @@ function Library() {
     //     });
     // };
     return (
-        <div className="container mx-auto px-10 py-8 min-h-screen">
+        <div className="container mx-auto px-4 md:px-10 py-8 min-h-screen">
             {/* Header */}
             <div className="mb-2">
                 <h1 className="text-4xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-gold to-cyan-500 mb-2 py-2">
