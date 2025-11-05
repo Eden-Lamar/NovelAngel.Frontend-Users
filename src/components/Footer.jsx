@@ -15,7 +15,7 @@ function Footer() {
       {/* <div className="absolute top-0 left-1/4 w-64 h-64 bg-cyan-500/5 rounded-full blur-3xl" />
       <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-cyan-500/5 rounded-full blur-3xl" /> */}
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-10 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           
           {/* Brand Section */}
