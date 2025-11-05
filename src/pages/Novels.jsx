@@ -165,7 +165,7 @@ function Novels() {
     };
 // console.log('Books:', books);
     return (
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-10 py-8">
             {/* Header */}
             <div className="mb-4">
                 {/* <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gold to-cyan-500 mb-2">
@@ -355,7 +355,7 @@ function Novels() {
                             >
                                 <CardBody className="flex flex-row gap-0 p-0">
                                     {/* Book Image */}
-                                    <div className="relative w-[46.5%] aspect-[3/4] h-full flex-shrink-0 overflow-hidden group">
+                                    <div className="relative w-[40%] aspect-[3/4] h-full flex-shrink-0 overflow-hidden group">
                                         <img
                                             src={book.bookImage}
                                             alt={book.title}
