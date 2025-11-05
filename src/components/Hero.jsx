@@ -76,7 +76,7 @@ function Hero({ books, loading }) {
               <Button
                 size="lg"
                 color="warning"
-                className=" text-white font-semibold px-8 py-6 text-lg hover:scale-[1.02]"
+                className="font-semibold px-8 py-6 text-lg hover:scale-[1.02]"
                 onClick={() => navigate('/novels')}
               >
                 Explore Our Library
