@@ -198,7 +198,7 @@ function Library() {
                                                     <div className="flex-1 flex flex-col min-w-0">
                                                         <div>
                                                             <Link
-                                                                to={`/book/${item.bookId}/read?chapterId=${item.lastChapter.id}`}
+                                                                to={`/book/${item.bookId}`}
                                                                 className="hover:text-cyan-500 transition-colors"
                                                             >
                                                                 <h3 className="font-bold text-base line-clamp-1 mb-1">
