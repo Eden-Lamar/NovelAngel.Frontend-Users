@@ -73,7 +73,7 @@ function Library() {
     //     });
     // };
     return (
-        <div className="container mx-auto px-4 py-8 min-h-screen max-w-7xl">
+        <div className="container mx-auto px-10 py-8 min-h-screen">
             {/* Header */}
             <div className="mb-2">
                 <h1 className="text-4xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-gold to-cyan-500 mb-2 py-2">
@@ -195,19 +195,21 @@ function Library() {
                                                     </Link>
 
                                                     {/* Book Info */}
-                                                    <div className="flex-1 flex flex-col justify-between min-w-0">
+                                                    <div className="flex-1 flex flex-col min-w-0">
                                                         <div>
                                                             <Link
-                                                                to={`/book/${item.bookId}`}
+                                                                to={`/book/${item.bookId}/read?chapterId=${item.lastChapter.id}`}
                                                                 className="hover:text-cyan-500 transition-colors"
                                                             >
-                                                                <h3 className="font-bold text-base line-clamp-2 mb-1">
+                                                                <h3 className="font-bold text-base line-clamp-1 mb-1">
                                                                     {startCase(item.bookTitle)}
                                                                 </h3>
                                                             </Link>
-                                                            <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-1 mb-2">
-                                                                Chp {item.lastChapter.number}: {startCase(item.lastChapter.title)}
-                                                            </p>
+                                                            <Link
+																															to={`/book/${item.bookId}/read?chapterId=${item.lastChapter.id}`}
+																															className="text-sm text-gray-600 dark:text-gray-400 hover:text-amber-500 hover:dark:text-amber-500 transition-colors line-clamp-1 mb-3">
+                                                                <span className="text-amber-500">Chp {item.lastChapter.number}:</span> {startCase(item.lastChapter.title)}
+                                                            </Link>
                                                         </div>
 
                                                         {/* Progress */}
@@ -231,7 +233,7 @@ function Library() {
                                                     </div>
                                                 </div>
                                             </CardBody>
-                                            <CardFooter>
+                                            {/* <CardFooter>
                                                 <Button
                                                     as={Link}
                                                     to={`/book/${item.bookId}/read?chapterId=${item.lastChapter.id}`}
@@ -242,7 +244,7 @@ function Library() {
                                                 >
                                                     Continue Reading
                                                 </Button>
-                                            </CardFooter>
+                                            </CardFooter> */}
                                         </Card>
                                     );
                                 })}
