@@ -15,7 +15,6 @@ import ViewMoreButton from "./ViewMoreButton";
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/free-mode';
-import 'swiper/css/pagination';
 
 function ContinueReadingHome() {
     const { auth } = useAuth();
@@ -122,11 +121,7 @@ function ContinueReadingHome() {
                                 slidesPerView="auto"
                                 spaceBetween={16}
                                 freeMode={true}
-                                pagination={{
-                                    clickable: true,
-                                    dynamicBullets: true,
-                                }}
-                                modules={[FreeMode, Pagination]}
+                                modules={[FreeMode]}
                                 className="continue-reading-swiper pb-8"
                             >
                                 {displayBooks.map((item) => {
@@ -264,6 +259,8 @@ function ContinueReadingHome() {
                         </div>
                     </>
                 )}
+
+								<div className="divider"/>
             </div>
 
             <style jsx>{`
