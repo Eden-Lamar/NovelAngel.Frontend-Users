@@ -9,9 +9,11 @@ import GLNovels from '../components/GLNovels';
 import BGNovels from '../components/BGNovels';
 import NoCPNovels from '../components/NoCPNovels';
 import DiverseReaders from '../components/DiverseReaders'
-
+import ContinueReadingHome from '../components/ContinueReadingHome';
+import { useAuth } from '../context/useAuth';
 
 function Home() {
+  const { isAuthenticated } = useAuth();
   const [newBooks, setNewBooks] = useState([]);
   const [loadingNew, setLoadingNew] = useState(true);
   const [trendingBooks, setTrendingBooks] = useState([]);
@@ -86,7 +88,13 @@ function Home() {
 
   return (
     <div>
-      <Hero books={booksToDisplay} loading={loadingNew} />
+      {/* Conditionally render Hero or ContinueReading */}
+        {isAuthenticated ? (
+          <ContinueReadingHome />
+        ) : (
+          <Hero books={booksToDisplay} loading={loadingNew} />
+        )}
+
       <TrendingBooks books={trendingBooksToDisplay} loading={loadingTrending} />
       <NewStories books={booksToDisplay} loading={loadingNew} />
       <div className="divider border-amber-200 dark:border-amber-800/50" />
