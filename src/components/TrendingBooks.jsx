@@ -6,8 +6,11 @@ import BookHoverCard from "./BookHoverCard";
 import HorizontalScrollContainer from "./HorizontalScrollContainer";
 import { getCountryFlagCode } from "../helperFunction";
 import SkeletonBookCard from './SkeletonBookCard';
+import { useAuth } from "../context/useAuth";
+
 
 function TrendingBooks({ books, loading }) {
+  const { isAuthenticated } = useAuth();
   const [hoveredBook, setHoveredBook] = useState(null);
   // const [showLeftArrow, setShowLeftArrow] = useState(false);
   // const [showRightArrow, setShowRightArrow] = useState(true);
@@ -19,7 +22,7 @@ function TrendingBooks({ books, loading }) {
 
 
   return (
-    <div className="relative py-2.5 md:py-5 w-full">
+    <div className={`relative ${isAuthenticated ? "py-0" : "py-2.5 md:py-5"} w-full`}>
       <div className="mx-auto px-4">
         {/* Section Header */}
         <div className="">
