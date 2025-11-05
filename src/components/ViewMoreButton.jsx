@@ -1,16 +1,20 @@
 import { Link } from "@heroui/link";
 import { useNavigate } from 'react-router-dom';
-import { MdKeyboardArrowRight } from "react-icons/md";
+import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 
-const ViewMoreButton = ({ category }) => {
+const ViewMoreButton = ({ category, to, text = "View More" }) => {
 	const navigate = useNavigate();
+	
+	// Determine the destination
+	const destination = to || `/novels?category=${category}`;
+
   return (
     <Link
-			onClick={() => navigate(`/novels?category=${category}`)}
+			onClick={() => navigate(destination)}
 			underline="hover"
-			className="text-sm flex items-center cursor-pointer"
+			className="flex items-center cursor-pointer"
 		>
-			<span>View More</span> <MdKeyboardArrowRight className=""/>
+			<span className="text-sm">{text}</span> <MdOutlineKeyboardArrowRight className="text-lg"/>
     </Link>
   );
 };
