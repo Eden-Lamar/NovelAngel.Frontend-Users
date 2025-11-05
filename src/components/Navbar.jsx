@@ -178,9 +178,10 @@ function NavbarSticky() {
               <Avatar
                 isBordered
                 as="button"
-                className="transition-transform"
-                color="primary"
+                // className="transition-transform"
+                // color="primary"
                 size="sm"
+                radius="sm"
                 src={avatar}
               />
             </DropdownTrigger>
