@@ -164,7 +164,7 @@ function BookDetails() {
 		console.log("book", book)
 
     return (
-        <div className="container mx-auto px-4 py-8 min-h-screen">
+        <div className="container mx-auto px-10 py-8 min-h-screen">
             {/* Error Alert */}
             {error && (
 							<AlertMessage message={error} onClose={() => setError(null)} />
