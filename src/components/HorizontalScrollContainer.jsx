@@ -148,7 +148,7 @@ export default function HorizontalScrollContainer({
           isIconOnly
           variant="flat"
           onClick={() => scrollByAmount(-1)}
-          className="absolute left-0 top-1/2 -translate-y-1/2 z-30 bg-black/60 hover:bg-black/80 
+          className="absolute -left-5 top-1/2 -translate-y-1/2 z-30 bg-black/60 hover:bg-black/80 
             text-white backdrop-blur-sm opacity-0 group-hover/container:opacity-100 
             transition-opacity duration-300 h-1/2 w-8 rounded-lg mr-10"
         >
@@ -162,7 +162,7 @@ export default function HorizontalScrollContainer({
           isIconOnly
           variant="flat"
           onClick={() => scrollByAmount(1)}
-          className="absolute right-0 top-1/2 -translate-y-1/2 z-30 bg-black/60 hover:bg-black/80 
+          className="absolute -right-5 top-1/2 -translate-y-1/2 z-30 bg-black/60 hover:bg-black/80 
             text-white backdrop-blur-sm opacity-0 group-hover/container:opacity-100 
             transition-opacity duration-300 h-1/2 w-8 rounded-lg"
         >
