@@ -67,7 +67,18 @@ function BookDetails() {
         };
         fetchBookData();
     }, [id, isAuthenticated]);
-    
+
+		// Dynamically update tab title
+		useEffect(() => {
+			if (loading) {
+				document.title = "Loading Book… | Novel Angel";
+			} else if (book?.title) {
+				document.title = `${startCase(book.title)} | Novel Angel`;
+			} else {
+				document.title = "Book Not Found | Novel Angel";
+			}
+		}, [loading, book?.title]);
+				
     // Toggle Like (requires authentication)
     const handleToggleLike = async () => {
         if (!isAuthenticated) {
