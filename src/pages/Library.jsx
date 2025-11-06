@@ -347,7 +347,7 @@ function Library() {
                                     <Link
 																			key={book._id}
 																			to={`/book/${book._id}`}
-																			className="group block transition-transform transform hover:scale-[1.01]"
+																			className="group block flex-shrink-0 w-[161.6px] md:w-[180px] transition-transform transform hover:scale-[1.01]"
 																		>
 																			<Card className="h-full border border-gray-700/50 transition-all duration-300 
 																				hover:border-amber-400/50 
@@ -374,7 +374,7 @@ function Library() {
 																					</div>
 
 																					{/*Book titles*/}
-																					<h3 className="text-sm font-semibold text-center my-2 text-gray-800 dark:text-gray-400 line-clamp-2 px-1 group-hover:text-amber-400 group-hover:dark:text-amber-400  transition-colors duration-300">
+																					<h3 className="text-sm font-semibold text-center my-2 text-gray-800 dark:text-gray-400 line-clamp-2 px-3 group-hover:text-amber-400 group-hover:dark:text-amber-400  transition-colors duration-300">
 																						{startCase(book.title)}
 																					</h3>
 																				</CardBody>
