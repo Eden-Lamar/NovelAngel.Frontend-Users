@@ -119,7 +119,7 @@ function Genres() {
     };
 
     return (
-        <div className="container mx-auto px-10 py-8">
+        <div className="container mx-auto px-2 md:px-10 py-8">
             {/* Header */}
             {/* <div className="mb-12">
                 <h1 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gold to-cyan-500 mb-3">
