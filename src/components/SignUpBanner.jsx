@@ -10,7 +10,7 @@ function SignUpBanner() {
       {/* Content */}
       <div className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 py-1 px-3 text-center">
         <span className="text-xs sm:text-sm md:text-base font-semibold tracking-wide">
-          🎉 Sign up now and get{" "}
+          🎉 Register now and get{" "}
           <PiCoinsFill className="inline-block mx-1 text-gold animate__animated animate__pulse animate__infinite" />
           <span className="text-gold font-bold">30 free coins</span> to unlock premium chapters
         </span>
