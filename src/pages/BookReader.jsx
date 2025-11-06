@@ -90,6 +90,19 @@ function BookReader() {
         fetchData();
     }, [bookId, chapterId, setSearchParams]);
 
+		// Dynamically update tab title
+	useEffect(() => {
+		if (loading) {
+			document.title = "Loading Reader… | Novel Angel";
+		} else if (chapterData?.chapter?.title && chapterData?.bookTitle) {
+			document.title = `Chapter ${chapterData.chapter?.chapterNo}: ${startCase(chapterData.chapter?.title)} – ${startCase(chapterData.bookTitle)} | Novel Angel`;
+		} else if (chapterData?.bookTitle) {
+			document.title = `${chapterData.bookTitle} | Novel Angel`;
+		} else {
+			document.title = "Novel Reader | Novel Angel";
+		}
+	}, [loading, chapterData]);
+
     // Clear errors
     // useEffect(() => {
     //     if (error || unlockError) {
