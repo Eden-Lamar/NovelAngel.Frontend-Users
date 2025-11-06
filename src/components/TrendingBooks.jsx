@@ -23,7 +23,7 @@ function TrendingBooks({ books, loading }) {
 
   return (
     <div className={`relative ${isAuthenticated ? "py-0" : "py-2.5 md:py-5"} w-full`}>
-      <div className="mx-auto px-4">
+      <div className="mx-auto px-10">
         {/* Section Header */}
         <div className="">
           <Chip
@@ -38,12 +38,13 @@ function TrendingBooks({ books, loading }) {
 
         {loading ? (
             // Skeleton Loader
-            <HorizontalScrollContainer>
-              {/* Skeleton scroll container */}
-                {[...Array(8)].map((_, index) => (
-                  <SkeletonBookCard key={index} index={index} />
+              <div className="overflow-x-auto overflow-y-visible pb-8 pt-4 scrollbar-hide">
+              <div className="flex gap-14 min-w-max px-10">
+                {[...Array(5)].map((_, index) => (
+                  <SkeletonBookCard key={`new-skeleton-${index}`} index={index} />
                 ))}
-            </HorizontalScrollContainer>
+              </div>
+            </div>
         ) : (
           <HorizontalScrollContainer gap="gap-14">
                 {books.slice(0, 10).map((book, index) => (
