@@ -22,7 +22,7 @@ function TrendingBooks({ books, loading }) {
 
 
   return (
-    <div className={`relative ${isAuthenticated ? "py-0" : "py-2.5 md:py-5"} w-full`}>
+    <div className={`relative ${isAuthenticated ? "py-2" : "py-2.5 md:py-5"} w-full`}>
       <div className="mx-auto px-10">
         {/* Section Header */}
         <div className="">
