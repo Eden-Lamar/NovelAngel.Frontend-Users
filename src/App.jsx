@@ -22,6 +22,52 @@ import "./App.css"
 
 function App() {
   const location = useLocation();
+
+  useEffect(() => {
+    const { pathname } = location;
+    let title = "Novel Angel - Read Novels Online";
+
+    switch (true) {
+      case pathname === "/":
+        title = "Novel Angel | Read Novels Online & Discover Web Novels";
+        break;
+      case pathname.startsWith("/book/") && pathname.endsWith("/read"):
+        title = "Reading - Novel Angel";
+        break;
+      case pathname.startsWith("/book/"):
+        title = "Book Details - Novel Angel";
+        break;
+      case pathname === "/novels":
+        title = "All Novels - Novel Angel";
+        break;
+      case pathname === "/genres":
+        title = "Genres - Novel Angel";
+        break;
+      case pathname === "/buy-coins":
+        title = "Buy Coins - Novel Angel";
+        break;
+      case pathname === "/profile":
+        title = "Your Profile - Novel Angel";
+        break;
+      case pathname === "/library":
+        title = "Your Library - Novel Angel";
+        break;
+      case pathname === "/login":
+        title = "Login - Novel Angel";
+        break;
+      case pathname === "/signup":
+        title = "Sign Up - Novel Angel";
+        break;
+      case pathname === "/payment/success":
+        title = "Payment Successful - Novel Angel";
+        break;
+      default:
+        title = "Novel Angel - Read Novels Online";
+    }
+
+    document.title = title;
+  }, [location]);
+
   const { refreshUser, isAuthenticated } = useAuth();
 
   // Paths that should NOT show the navbar or footer
