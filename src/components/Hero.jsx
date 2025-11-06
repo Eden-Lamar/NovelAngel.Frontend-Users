@@ -158,7 +158,7 @@ function Hero({ books, loading }) {
                 >
                   {books.map((book) => (
                     <SwiperSlide key={book._id} className="!w-64">
-                      <div className="relative group cursor-pointer">
+                      <div className="relative group cursor-default">
                         {/* Book Cover */}
                         <div className="relative overflow-hidden aspect-[3/4] w-full rounded-xl shadow-2xl transition-all duration-500 group-hover:shadow-gold/50">
                           <img
@@ -171,7 +171,6 @@ function Hero({ books, loading }) {
                           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
                             <div className="text-white">
                               <h3 className="font-bold text-lg mb-2 line-clamp-2 text-cyan-500">{capitalize(book.title)}</h3>
-                              <p className="text-sm text-gray-300">Click to read</p>
                             </div>
                           </div>
 
