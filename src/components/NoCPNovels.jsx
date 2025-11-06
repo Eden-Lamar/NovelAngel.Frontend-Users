@@ -18,7 +18,7 @@ function NoCPNovels({ books, loading }) {
 
   return (
     <div className="relative py-2.5 md:py-5 w-full">
-      <div className="mx-auto px-4">
+      <div className="mx-auto px-10">
         {/* Section Header */}
         <div className="flex justify-between">
           <Chip
@@ -34,7 +34,6 @@ function NoCPNovels({ books, loading }) {
         </div>
 
         {loading ? (
-          <HorizontalScrollContainer>
             <div className="overflow-x-auto overflow-y-visible pb-8 pt-4 scrollbar-hide">
               <div className="flex gap-14 min-w-max px-10">
                 {[...Array(8)].map((_, index) => (
@@ -42,9 +41,8 @@ function NoCPNovels({ books, loading }) {
                 ))}
               </div>
             </div>
-          </HorizontalScrollContainer>
         ) : (
-						<HorizontalScrollContainer gap="gap-14">
+						<HorizontalScrollContainer gap="gap-6">
                 {books.slice(0, 10).map((book) => (
                   <div
                     key={book._id}
