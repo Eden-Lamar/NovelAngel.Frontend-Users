@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { startCase, truncate, capitalize } from 'lodash';
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { FaHeart, FaRegEye, FaBookOpen, FaBookReader, FaLock, FaBookmark, FaLockOpen, FaShareAlt } from "react-icons/fa";
 import { RiArrowDownWideFill } from "react-icons/ri";
 import { GiTwoCoins } from "react-icons/gi";
@@ -18,7 +18,7 @@ import { getCountryFlagCode } from "../helperFunction";
 
 function BookDetails() {
     const { id } = useParams();
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     const [book, setBook] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -235,7 +235,15 @@ function BookDetails() {
                     ) : book ? (
                         <div className="flex gap-2 flex-wrap">
                             {book.tags.map((tag, index) => (
-                                <Chip key={index} color="primary" variant="bordered" size="sm">
+                                <Chip 
+																	key={index} 
+																	color="primary" 
+																	variant="bordered" 
+																	size="sm"
+																	isPressable
+																	onClick={() => navigate(`/novels?tags=${encodeURIComponent(tag)}`)}
+																	className="cursor-pointer hover:bg-cyan-500/10 transition-all"
+																	>
                                     {startCase(tag)}
                                 </Chip>
                             ))}
