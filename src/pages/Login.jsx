@@ -97,7 +97,7 @@ function Login() {
     };
 
     return (
-        <div className="h-screen w-full flex bg-[#09090b] text-white ">
+        <div className="min-h-screen w-full flex bg-[#09090b] text-white ">
             {/* Left Side - Form */}
 						<div className="flex flex-col w-full lg:w-1/2 justify-center items-center">
 						<div className="w-full flex items-center justify-center p-2 h-3/4">
