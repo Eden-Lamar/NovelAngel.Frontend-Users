@@ -178,7 +178,7 @@ function ContinueReadingHome() {
                                                                     }}
                                                                 />
                                                                 <p className="text-xs text-gray-600 dark:text-gray-400">
-                                                                    {item.lastChapter.number} / {item.totalChapters} chapters
+                                                                    {item.lastChapter.number} of {item.totalChapters} chapters
                                                                 </p>
                                                             </div>
                                                         </div>
@@ -234,7 +234,7 @@ function ContinueReadingHome() {
                                                     </Link>
 
                                                     {/* Progress */}
-                                                    <div className="space-y-2 mt-auto">
+                                                    <div className="space-y-2">
                                                         <div className="flex justify-end text-xs">
                                                             <span className="font-semibold text-cyan-500">{progress}%</span>
                                                         </div>
@@ -247,7 +247,7 @@ function ContinueReadingHome() {
                                                             }}
                                                         />
                                                         <p className="text-xs text-gray-600 dark:text-gray-400">
-                                                            {item.lastChapter.number} / {item.totalChapters} chapters
+                                                            {item.lastChapter.number} of {item.totalChapters} chapters
                                                         </p>
                                                     </div>
                                                 </div>
