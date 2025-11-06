@@ -2,8 +2,11 @@ import { Link } from 'react-router-dom';
 import { FaFacebook, FaInstagram, FaDiscord, FaReddit } from 'react-icons/fa';
 import { FaSquareXTwitter } from "react-icons/fa6";
 import logo from '../assets/logo.png';
+import { useAuth } from "../context/useAuth";
+
 
 function Footer() {
+  const { isAuthenticated } = useAuth();
   const currentYear = new Date().getFullYear();
 
   return (
@@ -97,7 +100,17 @@ function Footer() {
                   <span className="w-0 group-hover:w-2 h-0.5 bg-gold transition-all duration-300" />
                   Genres
                 </Link>
-              </li> 
+              </li>
+              {
+                isAuthenticated && (
+                  <li>
+                    <Link to="/library" className="text-sm hover:text-gold transition-colors duration-300 flex items-center gap-2 group">
+                      <span className="w-0 group-hover:w-2 h-0.5 bg-gold transition-all duration-300" />
+                      My Library
+                    </Link>
+                  </li> 
+                )
+              }
             </ul>
           </div>
 
@@ -109,35 +122,30 @@ function Footer() {
             </h3>
             <ul className="space-y-3">
               <li>
-                <Link to="/category/bl" className="text-sm hover:text-gold transition-colors duration-300 flex items-center gap-2 group">
+                <Link to="/novels?category=BL" className="text-sm hover:text-gold transition-colors duration-300 flex items-center gap-2 group">
                   <span className="w-0 group-hover:w-2 h-0.5 bg-gold transition-all duration-300" />
                   BL Novels
                 </Link>
               </li>
               <li>
-                <Link to="/category/gl" className="text-sm hover:text-gold transition-colors duration-300 flex items-center gap-2 group">
+                <Link to="/novels?category=GL" className="text-sm hover:text-gold transition-colors duration-300 flex items-center gap-2 group">
                   <span className="w-0 group-hover:w-2 h-0.5 bg-gold transition-all duration-300" />
                   GL Novels
                 </Link>
               </li>
               <li>
-                <Link to="/category/bg" className="text-sm hover:text-gold transition-colors duration-300 flex items-center gap-2 group">
+                <Link to="/novels?category=BG" className="text-sm hover:text-gold transition-colors duration-300 flex items-center gap-2 group">
                   <span className="w-0 group-hover:w-2 h-0.5 bg-gold transition-all duration-300" />
                   BG Novels
                 </Link>
               </li>
               <li>
-                <Link to="/buy-coins" className="text-sm hover:text-gold transition-colors duration-300 flex items-center gap-2 group">
+                <Link to="/novels?category=No+CP" className="text-sm hover:text-gold transition-colors duration-300 flex items-center gap-2 group">
                   <span className="w-0 group-hover:w-2 h-0.5 bg-gold transition-all duration-300" />
-                  Buy Coins
+                  No CP Novels
                 </Link>
               </li>
-              <li>
-                <Link to="/my-library" className="text-sm hover:text-gold transition-colors duration-300 flex items-center gap-2 group">
-                  <span className="w-0 group-hover:w-2 h-0.5 bg-gold transition-all duration-300" />
-                  My Library
-                </Link>
-              </li>
+              
             </ul>
           </div>
 
