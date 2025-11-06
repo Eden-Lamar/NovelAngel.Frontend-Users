@@ -61,7 +61,7 @@ function Genres() {
             description: 'Love stories that warm the heart'
         },
         {
-            name: 'Sci-fi',
+            name: 'Sci-fic',
             gradient: 'from-gray-900 via-blue-900 to-gray-900',
             icon: '🚀',
             description: 'Futuristic worlds and technology'
@@ -86,7 +86,7 @@ function Genres() {
         },
         {
             name: 'Male Protagonist',
-            gradient: 'from-gray-900 via-indigo-900 to-gray-900',
+            gradient: 'from-gray-900 via-sky-600 to-gray-900',
             icon: '🤴',
             description: 'Stories led by compelling male leads'
         },
@@ -108,6 +108,30 @@ function Genres() {
             icon: '🧛',
             description: 'Beyond the realm of natural'
         },
+				{
+						name: 'Comedy',
+						gradient: 'from-gray-900 via-amber-500 to-gray-900',
+						icon: '😂',
+						description: 'Light-hearted and humorous tales to make you smile'
+				},
+				{
+						name: 'Mature',
+						gradient: 'from-gray-900 via-emerald-600 to-gray-900',
+						icon: '🔥',
+						description: 'Intense stories with mature themes and emotions'
+				},
+				{
+						name: 'Fantasy',
+						gradient: 'from-gray-900 via-green-900 to-gray-900',
+						icon: '🐉',
+						description: 'Magical worlds filled with wonder and adventure'
+				},
+				{
+						name: 'Revenge',
+						gradient: 'from-gray-900 via-rose-800 to-gray-900',
+						icon: '🗡️',
+						description: 'Tales of justice, vengeance, and redemption'
+				},
     ];
 
     const handleCategoryClick = (name) => {
