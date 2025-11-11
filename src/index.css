@@ -49,6 +49,16 @@
   
 }
 
+@layer utilities {
+  @keyframes pulse-slow {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50%      { opacity: 0.9; transform: scale(1.05); }
+  }
+  .animate-pulse-slow {
+    animation: pulse-slow 4s ease-in-out infinite;
+  }
+}
+
 /* Light mode */
 html.light .divider::before,
 html.light .divider::after {
