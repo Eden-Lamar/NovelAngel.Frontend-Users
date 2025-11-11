@@ -165,7 +165,7 @@ function Novels() {
     };
 // console.log('Books:', books);
     return (
-        <div className="container mx-auto px-10 py-8">
+        <div className="container mx-auto px-2 md:px-10 py-8">
             {/* Header */}
             <div className="mb-4">
                 {/* <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gold to-cyan-500 mb-2">
@@ -180,7 +180,7 @@ function Novels() {
             <div className="mb-6 space-y-4">
                 {/* Search and Status */}
                 <div className="flex flex-col md:flex-row gap-4">
-                    <form onSubmit={handleSearch} className="w-1/2 ">
+                    <form onSubmit={handleSearch} className="w-full md:w-1/2 ">
                         <Input
                             placeholder="Search by title or author"
                             value={keyword}
@@ -199,7 +199,7 @@ function Novels() {
                         placeholder="All Status"
                         selectedKeys={selectedStatus ? [selectedStatus] : []}
                         onChange={handleStatusChange}
-                        className="w-full md:w-48"
+                        className="w-3/4 md:w-48"
                         size="sm"
 												radius="full"
                     >

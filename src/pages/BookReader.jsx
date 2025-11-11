@@ -214,7 +214,7 @@ function BookReader() {
 
 
     return (
-        <div className="container mx-auto px-4 py-8 flex flex-col">
+        <div className="container mx-auto px-2 md:px-4 py-4 flex flex-col">
             {/* Error Alert */}
             {(error || unlockError) && (
                 <AlertMessage message={error || unlockError} onClose={() => {setError(null); setUnlockError(null);}} />
@@ -408,48 +408,50 @@ function BookReader() {
 
             {/* Header */}
             {loading ? (
-                <Skeleton className="h-16 mx-auto w-full rounded-xl mb-6" />
+                <Skeleton className="h-14 mx-auto w-full md:rounded-xl mb-6" />
             ) : chapterData ? (
 							<>
-                <div className="sticky top-0 z-5 flex justify-between items-center border-2 border-gray-200 dark:border-gray-700 p-2 rounded-xl mb-6 bg-white/80 dark:bg-[#1a1b23]/80 backdrop-blur-md shadow-md">
+                <div className="sticky top-0 z-5 flex justify-between items-center p-1 md:p-2 md:rounded-xl mb-6 bg-white/80 dark:bg-[#1a1b23]/80 backdrop-blur-md shadow-md">
 									<div className=" ">
                     <Link to={`/book/${bookId}`} className="flex items-center group">
-                        <RiArrowLeftSLine className="text-gold text-2xl transition-all duration-200 group-hover:mr-1 group-hover:scale-125" />
+                        <RiArrowLeftSLine className="text-gold text-2xl md:text-2xl transition-all duration-200 group-hover:mr-1 group-hover:scale-105 md:group-hover:scale-125" />
 												
 												<img 
 												src={bookImage} 
 												alt={chapterData.bookTitle} 
 												decoding="async"
 												loading="lazy"
-												className="w-12 h-16 object-cover shadow-md rounded-md mr-2" 
+												className="w-8 md:w-10 h-10 md:h-14 object-cover shadow-md rounded-md mr-2" 
 												/>
-                        <h2 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gold to-cyan-500">
+                        <h2 className="text-lg md:text-xl font-medium md:font-bold line-clamp-2 md:line-clamp-none text-transparent bg-clip-text bg-gradient-to-r from-gold to-cyan-500">
                             {startCase(chapterData.bookTitle)}
                         </h2>
                     </Link>
 									</div>
 
 										{/* Setting and Share icon */}
-                  <div className="flex items-center gap-2">
+										<div className="flex items-center gap-2">
 										{!chapterData.chapter.isLocked && (
 											<>
                         <Button
                             isIconOnly
                             variant="light"
+														size="sm"
                             onClick={() => setIsSettingsOpen(true)}
-                            className="text-gold"
+                            className="text-gray-400"
 													>
-                            <RiSettings3Line className="text-2xl" />
+                            <RiSettings3Line className="text-lg md:text-2xl" />
 													</Button>
 
 													<Button
 														isIconOnly
 														variant="light"
+														size="sm"
 														onClick={handleShare}
-														className="text-cyan-500"
+														className="text-gray-400 dark:text-gray-300"
 														aria-label="Share Chapter"
 													>
-														<GoShareAndroid className="text-xl" />
+														<GoShareAndroid className="text-lg md:text-xl" />
 													</Button>
 												</>
                     )}
@@ -460,7 +462,7 @@ function BookReader() {
 
 						 {/* Chapter List Dropdown */}
             {!loading && chapterData && bookChapters.length > 0 && (
-                <div className="w-1/2 self-center mb-6">
+                <div className="w-3/4 md:w-1/2 self-center mb-6">
                     <Select
                         // label="Select Chapter"
                         placeholder="Choose a chapter to read"
@@ -540,7 +542,7 @@ function BookReader() {
             )}
 
             {/* Chapter Content */}
-            <Card className={`w-4/5 self-center border border-cyan-500 shadow-md shadow-cyan-500/30 ${
+            <Card className={`w-full md:w-4/5 self-center md:border md:border-cyan-500 shadow-md md:shadow-cyan-500/30 ${
                 readingSettings.backgroundGradient ? 'bg-custom-striped-light dark:bg-custom-striped' : ''
             }`}>
                 {loading ? (
@@ -568,8 +570,8 @@ function BookReader() {
                                 )}
                             </div>
                             <h3 className="text-2xl md:text-3xl font-bold text-gold flex gap-2">
-                                <span className="whitespace-nowrap">Chapter {chapterData.chapter.chapterNo}:</span>
-                                <span className="break-words text-amber-500">{startCase(chapterData.chapter.title)}</span>
+                                <span className="whitespace-nowrap">{chapterData.chapter.chapterNo}.</span>
+                                <span className="break-words text-amber-500 line-clamp-2">{startCase(chapterData.chapter.title)}</span>
                             </h3>
                         </div>
 

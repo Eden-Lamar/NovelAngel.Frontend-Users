@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { startCase, truncate, capitalize } from 'lodash';
 import { useParams, Link, useNavigate } from "react-router-dom";
@@ -28,7 +28,9 @@ function BookDetails() {
     const [isBookmarked, setIsBookmarked] = useState(false);
     
     const { auth, isAuthenticated } = useAuth(); // Set to null for anonymous access
-
+		
+		const startReadingButtonRef = useRef(null);
+		const [showFloatingButton, setShowFloatingButton] = useState(false);
 		// console.log(navigate)
 
     // Fetch book details
@@ -67,6 +69,47 @@ function BookDetails() {
         };
         fetchBookData();
     }, [id, isAuthenticated]);
+
+		useEffect(() => {
+			if (!startReadingButtonRef.current || typeof window === 'undefined') return;
+
+			const button = startReadingButtonRef.current;
+
+			const observer = new IntersectionObserver(
+				([entry]) => {
+					// Show floating button ONLY when the button is completely out of view
+					setShowFloatingButton(entry.intersectionRatio === 0);
+				},
+				{
+					root: null,
+					threshold: [0, 1.0], // Track fully visible vs fully out of view
+				}
+			);
+
+			observer.observe(button);
+
+			// Initial check after layout stabilizes
+			const runInitialCheck = () => {
+				requestAnimationFrame(() => {
+					const rect = button.getBoundingClientRect();
+					const fullyVisible =
+						rect.top >= 0 && rect.bottom <= window.innerHeight;
+					setShowFloatingButton(!fullyVisible);
+				});
+			};
+
+			// Run after layout + images load
+			const timeoutId = setTimeout(runInitialCheck, 150);
+
+			window.addEventListener('resize', runInitialCheck);
+
+			return () => {
+				observer.unobserve(button);
+				clearTimeout(timeoutId);
+				window.removeEventListener('resize', runInitialCheck);
+			};
+		}, [book]); // Re-run when book loads
+
 
 		// Dynamically update tab title
 		useEffect(() => {
@@ -175,7 +218,7 @@ function BookDetails() {
 		console.log("book", book)
 
     return (
-        <div className="container mx-auto px-10 py-8 min-h-screen">
+        <div className="container mx-auto px-2 md:px-10 py-8 min-h-screen">
             {/* Error Alert */}
             {error && (
 							<AlertMessage message={error} onClose={() => setError(null)} />
@@ -183,12 +226,25 @@ function BookDetails() {
 						
             <div className="relative flex flex-col lg:flex-row gap-8">
                 {/* Left Section: Image and Details */}
-                <div className="sticky top-20 w-full lg:w-1/3 flex flex-col gap-4 self-start">
+                <div className="w-full md:w-1/3 md:sticky md:top-20 flex flex-col gap-4 md:self-start ">
                     {/* Book Image */}
                     {loading ? (
-											<Skeleton className="relative h-[442.2px] w-[300px] aspect-[3/4] sm:aspect-[2/2.5] md:aspect-[3/4] rounded-xl shadow-2xl" />
+											<Skeleton className="relative h-[342.2px] md:h-[442.2px] w-[60%] md:w-[300px] aspect-[2/2.5] md:aspect-[3/4] rounded-xl shadow-2xl group overflow-hidden self-center md:self-start" />
                     ) : book ? (
-                        <div className="relative h-[442.2px] w-[300px] aspect-[3/4] sm:aspect-[2/2.5] md:aspect-[3/4] rounded-xl shadow-2xl group overflow-hidden">
+                        <div className="relative flex justify-center md:justify-start">
+													{/* ────────  GLOW (mobile only)  ──────── */}
+													<div className="absolute inset-0 flex items-center justify-center md:hidden -z-10 pointer-events-none">
+														<div
+															className="w-[200%] h-[200%] rounded-full blur-3xl animate-pulse-slow"
+															style={{
+																background: 'radial-gradient(circle, rgba(251, 191, 36, 0.4) 0%, rgba(251, 191, 36, 0.1) 40%, transparent 70%)',
+															}}
+														/>
+													</div>
+
+														{/* Book cover */}
+														{/* Original container — keep overflow-hidden for image zoom */}
+														<div className="relative h-[336px] md:h-[442.2px] w-[60%] md:w-[300px] aspect-[2/2.5] md:aspect-[3/4] rounded-xl shadow-2xl group overflow-hidden">
                             <img
                                 src={book.bookImage}
                                 alt={book.title}
@@ -222,6 +278,7 @@ function BookDetails() {
                                 </p>
                             </div>
                         </div>
+											</div>
                     ) : null}
 
                     {/* Tags */}
@@ -233,7 +290,7 @@ function BookDetails() {
                             <Skeleton className="h-6 w-18 rounded-full" />
                         </div>
                     ) : book ? (
-                        <div className="flex gap-2 flex-wrap">
+                        <div className="flex gap-2 flex-wrap self-center md:self-start">
                             {book.tags.map((tag, index) => (
                                 <Chip 
 																	key={index} 
@@ -290,7 +347,9 @@ function BookDetails() {
                             </CardBody>
                         </Card>
                     ) : book ? (
-                        <Card className="bg-gray-50 dark:bg-[#0f1419] border border-cyan-500 shadow-md shadow-cyan-500/30">
+                        <Card
+													
+													className="bg-gray-50 dark:bg-[#0f1419] border border-cyan-500 shadow-md shadow-cyan-500/30">
                             <CardBody className=" p-6">
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
@@ -322,7 +381,7 @@ function BookDetails() {
                                     </div>
 
 
-                                    <div>
+                                    <div className="">
                                         <div className="flex items-center">
                                             {book.country && (
                                                 <img
@@ -337,18 +396,34 @@ function BookDetails() {
                                 
                                         </div>
                                     </div>
-																		
-																		<Button
-                                    as={Link}
-                                    to={`/book/${book._id}/read`}
-                                    
-																		variant="bordered"
-                                    size="md"
-                                    className="w-full border-cyan-500 text-cyan-500 force-cyan"
-                                    startContent={<FaBookOpen />}
-																		>
-																				Start Reading
-																		</Button>
+
+																		{/* Start Reading button (inside card) */}
+																			<Button
+																				ref={startReadingButtonRef}
+																				as={Link}
+																				to={`/book/${book._id}/read`}
+																				variant="bordered"
+																				size="md"
+																				className="w-full border-cyan-500 text-cyan-500 force-cyan"
+																				startContent={<FaBookOpen />}
+																			>
+																					Start Reading
+																			</Button>
+
+																		{/* Floating Start Reading button — appears after scroll past card */}
+																		{showFloatingButton && (
+																			<div className="fixed bottom-1 left-0 right-0 z-20 px-4 md:hidden animate__animated animate__fadeInUp">
+																				<Button
+																					as={Link}
+																					to={`/book/${book._id}/read`}
+																					variant="solid"
+																					size="md"
+																					radius="md"
+																					className="w-full force-cyan-solid">
+																					<FaBookOpen className="mr-2" /> Start Reading
+																				</Button>
+																			</div>
+																	)}
 
                                 </div>
 
@@ -375,7 +450,7 @@ function BookDetails() {
                                 onClick={handleToggleBookmark}
                                 isDisabled={!auth}
                             >
-                                {isBookmarked ? 'Bookmarked' : 'Bookmark'}
+                                {isBookmarked ? 'Added' : 'Add'}
                             </Button>
                             <Button
                                 color={isLiked ? 'danger' : 'default'}
@@ -401,6 +476,9 @@ function BookDetails() {
                     
                 </div>
 
+								{/* Sentinel div for floating button visibility */}
+								{/* <div ref={cardRef} style={{ height: '1px' }} /> */}
+
                 {/* Right Section: Title and Tabs */}
 							<div className="w-full lg:w-2/3 flex flex-col gap-5">
                 <div className="">
@@ -424,7 +502,7 @@ function BookDetails() {
                         </Card>
                     ) : book ? (
                         <Card className="w-full shadow-xl bg-custom-striped-light dark:bg-custom-striped">
-                            <CardBody className="p-6">
+                            <CardBody className="md:p-6">
                                 <h2 className="text-2xl md:text-2xl text-transparent bg-clip-text bg-gradient-to-r from-gold to-cyan-500 mb-6 break-words">
                                     {startCase(book.title)}
                                 </h2>
@@ -503,10 +581,10 @@ function BookDetails() {
 																											)}
                                                     </div>
                                                     <div className="flex-1 min-w-0">
-                                                        <p className="font-semibold text-gray-900 dark:text-white break-words">
-                                                            Chapter {chapter.chapterNo}: {startCase(chapter.title)}
+                                                        <p className="text-sm md:text-base font-normal md:font-semibold text-gray-900 dark:text-white break-words">
+                                                            {chapter.chapterNo}. {startCase(chapter.title)}
                                                         </p>
-                                                        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                                                        <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1">
                                                             Released: {formatDate(chapter.createdAt).fullDate}
                                                         </p>
                                                     </div>
