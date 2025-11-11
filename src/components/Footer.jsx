@@ -83,7 +83,7 @@ function Footer() {
           </div>
 
           {/* Explore Section */}
-          <div>
+          <div className='hidden md:block'>
             <h3 className="text-white font-bold text-lg mb-4 flex items-center gap-2">
               <span className="w-1 h-6 bg-gradient-to-b from-gold to-cyan-500 rounded-full" />
               Explore
@@ -115,7 +115,7 @@ function Footer() {
           </div>
 
           {/* Categories Section */}
-          <div>
+          <div className='hidden md:block'>
             <h3 className="text-white font-bold text-lg mb-4 flex items-center gap-2">
               <span className="w-1 h-6 bg-gradient-to-b from-gold to-cyan-500 rounded-full" />
               Categories
@@ -150,7 +150,7 @@ function Footer() {
           </div>
 
           {/* Support Section */}
-          <div>
+          <div className='hidden md:block'>
             <h3 className="text-white font-bold text-lg mb-4 flex items-center gap-2">
               <span className="w-1 h-6 bg-gradient-to-b from-gold to-cyan-500 rounded-full" />
               Support
