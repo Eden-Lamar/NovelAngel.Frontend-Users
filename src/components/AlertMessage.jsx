@@ -16,7 +16,7 @@ const AlertMessage = ({message, color = "danger", duration = 10000, onClose }) =
 					hideIconWrapper
 					color={color}
 					variant="faded"
-					radius="full"
+					radius="lg"
 					title={startCase(message)}
 				/>
     </div>
