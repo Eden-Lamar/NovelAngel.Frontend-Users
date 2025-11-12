@@ -69,7 +69,7 @@ function BookRecommendations() {
           <Link
             key={book._id}
             to={`/book/${book._id}`}
-            className="group block flex-shrink-0 w-[180px] transition-transform transform hover:scale-[1.01] snap-start"
+            className="group block flex-shrink-0 w-[160px] md:w-[180px] transition-transform transform hover:scale-[1.01] snap-start"
           >
             <Card className="h-full border border-gray-700/50 transition-all duration-300 
 							hover:border-amber-400/50 
@@ -81,7 +81,7 @@ function BookRecommendations() {
                     alt={book.title}
                     decoding="async"
                     loading="lazy"
-                    className="object-cover w-full h-[220px] rounded-lg"
+                    className="object-cover w-full h-[180px] md:h-[220px] rounded-lg"
                   />
 
                   {/* Status Badge */}
