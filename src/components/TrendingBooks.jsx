@@ -50,7 +50,7 @@ function TrendingBooks({ books, loading }) {
                 {books.slice(0, 10).map((book, index) => (
                   <div
                     key={book._id}
-                    className="relative group cursor-pointer overflow-visible"
+                    className="relative group cursor-pointer overflow-visible w-[160px] md:w-[220px]"
                     onMouseEnter={() => setHoveredBook(book._id)}
                     onMouseLeave={() => setHoveredBook(null)}
                     onClick={() => navigate(`/book/${book._id}`)}
@@ -152,7 +152,7 @@ function TrendingBooks({ books, loading }) {
 
                     {/* Book Card */}
                     <div
-                      className={`relative z-10 w-[220px] sm:w-[160xp] transition-transform duration-500 ease-out ${
+                      className={`relative z-10 w-[160px] md:w-[220px] transition-transform duration-500 ease-out ${
                       hoveredBook === book._id ? 'scale-110' : null
                     }`}
                       style={{ transformOrigin: 'center center' }}
