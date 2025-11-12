@@ -4,7 +4,7 @@ function SkeletonBookCard({index}) {
   return (
     <div
 				key={index}
-				className="relative w-[220px] flex flex-col flex-shrink-0 shadow-xl rounded-xl"
+				className="relative w-[140px] md:w-[220px] flex flex-col flex-shrink-0 shadow-xl rounded-xl"
 				>
 				{/* Skeleton for book image (3/4 ratio) */}
 				<div className="relative overflow-hidden aspect-[3/4] w-full rounded-xl">
