@@ -178,6 +178,7 @@ function NavbarSticky() {
               <Avatar
                 isBordered
                 as="button"
+                name={user?.username}
                 // className="transition-transform"
                 // color="primary"
                 size="sm"
