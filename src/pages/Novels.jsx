@@ -19,7 +19,7 @@ import { getCountryFlagCode } from "../helperFunction";
   // Filter options
     const categories = ['BL', 'GL', 'BG', 'No CP'];
     const tags = [
-        'Action', 'Adventure', 'Comedy', 'Drama', 'Romance', 'Sci-fic', 
+        'Action', 'Adventure', 'Comedy', 'Drama', 'Romance', 'Sci-fi', 
         'Horror', 'Thriller', 'Revenge','Female Protagonist', 'Fantasy','Male Protagonist', 
         'Historical', 'Mystery', 'Supernatural', 'Mature'
 ];

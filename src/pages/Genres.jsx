@@ -61,7 +61,7 @@ function Genres() {
             description: 'Love stories that warm the heart'
         },
         {
-            name: 'Sci-fic',
+            name: 'Sci-fi',
             gradient: 'from-gray-900 via-blue-900 to-gray-900',
             icon: '🚀',
             description: 'Futuristic worlds and technology'
