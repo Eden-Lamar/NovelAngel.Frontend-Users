@@ -223,7 +223,7 @@ function Footer() {
               Terms
             </Link>
             <Link to="#" className="hover:text-gold transition-colors duration-300">
-              Cookies
+              Contact Us
             </Link>
           </div>
         </div>
