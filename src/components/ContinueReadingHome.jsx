@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from '../api/axiosInstance';
 import { Link } from "react-router-dom";
 import { startCase } from "lodash";
 import { Card, CardBody } from "@heroui/card";
@@ -25,7 +25,7 @@ function ContinueReadingHome() {
         const fetchContinueReading = async () => {
             setLoading(true);
             try {
-                const response = await axios.get('http://localhost:3000/api/v1/user/continue-reading');
+                const response = await api.get('/user/continue-reading');
                 setContinueReading(response.data.data || []);
             } catch (err) {
                 console.error("Error fetching continue reading:", err);

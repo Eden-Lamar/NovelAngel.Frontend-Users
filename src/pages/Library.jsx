@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from '../api/axiosInstance';
 import { Link } from "react-router-dom";
 import { startCase } from "lodash";
 import { Card, CardBody, CardFooter } from "@heroui/card";
@@ -28,9 +28,9 @@ function Library() {
             setLoading(true);
             try {
                 const [continueRes, bookmarksRes] = await Promise.all([
-                    axios.get('http://localhost:3000/api/v1/user/continue-reading'),
-                    // axios.get('http://localhost:3000/api/v1/user/history'),
-                    axios.get('http://localhost:3000/api/v1/user/bookmarks')
+                    api.get('/user/continue-reading'),
+                    // api.get('/user/history'),
+                    api.get('/user/bookmarks')
                 ]);
 
                 setContinueReading(continueRes.data.data || []);

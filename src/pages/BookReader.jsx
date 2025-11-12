@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from '../api/axiosInstance';
 import { startCase } from 'lodash';
 import { useParams, useSearchParams, Link } from "react-router-dom";
 import { FaBookOpen } from "react-icons/fa";
@@ -60,19 +60,19 @@ function BookReader() {
         const fetchData = async () => {
             setLoading(true);
             try {
-                const bookResponse = await axios.get(`http://localhost:3000/api/v1/books/${bookId}`);
+                const bookResponse = await api.get(`/books/${bookId}`);
                 setBookChapters(bookResponse.data.data.chapters);
 								setBookImage(bookResponse.data.data.bookImage);
 
                 if (chapterId) {
-                    const chapterResponse = await axios.get(`http://localhost:3000/api/v1/books/${bookId}/chapters/${chapterId}`);
+                    const chapterResponse = await api.get(`/books/${bookId}/chapters/${chapterId}`);
                     setChapterData(chapterResponse.data.data);
                     const index = bookResponse.data.data.chapters.findIndex(ch => ch._id === chapterId);
                     setCurrentChapterIndex(index);
                 } else {
                     const firstChapter = bookResponse.data.data.chapters[0];
                     if (firstChapter) {
-                        const chapterResponse = await axios.get(`http://localhost:3000/api/v1/books/${bookId}/chapters/${firstChapter._id}`);
+                        const chapterResponse = await api.get(`/books/${bookId}/chapters/${firstChapter._id}`);
                         setChapterData(chapterResponse.data.data);
                         setCurrentChapterIndex(0);
                         setSearchParams({ chapterId: firstChapter._id });
@@ -124,13 +124,13 @@ function BookReader() {
         setUnlockLoading(true);
         setUnlockError(null);
         try {
-            await axios.post(`http://localhost:3000/api/v1/books/${bookId}/chapters/${chapterId}/unlock`);
+            await api.post(`/books/${bookId}/chapters/${chapterId}/unlock`);
 
 						// ✅ If successful, refresh the user (update coin balance)
 						await refreshUser();
 
             // Refetch chapter data
-            const chapterResponse = await axios.get(`http://localhost:3000/api/v1/books/${bookId}/chapters/${chapterId}`);
+            const chapterResponse = await api.get(`/books/${bookId}/chapters/${chapterId}`);
             setChapterData(chapterResponse.data.data);
         } catch (err) {
             const errorMessage = err.response?.data?.message || "Failed to unlock chapter.";

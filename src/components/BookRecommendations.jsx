@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
-import { capitalize } from 'lodash';
+import api from '../api/axiosInstance';import { capitalize } from 'lodash';
 import { Card, CardBody } from "@heroui/card";
 import { Skeleton } from "@heroui/skeleton";
 import { Chip } from "@heroui/chip";
@@ -16,7 +15,7 @@ function BookRecommendations() {
     const fetchRecommendations = async () => {
       setLoading(true);
       try {
-        const res = await axios.get("http://localhost:3000/api/v1/books/recommendations");
+        const res = await api.get("/books/recommendations");
         setBooks(res.data.data || []);
         setError(null);
       } catch (err) {

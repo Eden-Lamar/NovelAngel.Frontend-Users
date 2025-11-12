@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import axios from "axios";
+import api from '../api/axiosInstance';
 import { startCase, truncate, capitalize } from 'lodash';
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { FaHeart, FaRegEye, FaBookOpen, FaBookReader, FaLock, FaBookmark, FaLockOpen, FaShareAlt } from "react-icons/fa";
@@ -39,12 +39,12 @@ function BookDetails() {
             setLoading(true);
             try {
 							// Base requests
-							const promises = [axios.get(`http://localhost:3000/api/v1/books/${id}`)];
+							const promises = [api.get(`/books/${id}`)];
 							
 							// Conditionally add like/bookmark requests if logged in
 							if (isAuthenticated) {
-									promises.push(axios.get(`http://localhost:3000/api/v1/books/${id}/like-status`));
-									promises.push(axios.get(`http://localhost:3000/api/v1/books/${id}/bookmark-status`));
+									promises.push(api.get(`/books/${id}/like-status`));
+									promises.push(api.get(`/books/${id}/bookmark-status`));
 								}
 								
 								// Fetch book details, like status, and bookmark status in parallel
@@ -141,7 +141,7 @@ function BookDetails() {
 				setBook((prev) => ({ ...prev, likeCount: newLikeCount }));
         
 				try {
-					await axios.post(`http://localhost:3000/api/v1/books/${id}/toggle-like`);
+					await api.post(`/books/${id}/toggle-like`);
 				} catch (err) {
 					// Revert on failure
 					setIsLiked(prevLiked);
@@ -164,7 +164,7 @@ function BookDetails() {
 				setIsBookmarked(!prevBookmarked);
 
 				try {
-					await axios.post(`http://localhost:3000/api/v1/books/${id}/toggle-bookmark`);
+					await api.post(`/books/${id}/toggle-bookmark`);
 				} catch (err) {
 					// Revert on failure
 					setIsBookmarked(prevBookmarked);

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
+import api from "../api/axiosInstance";
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { capitalize, startCase } from 'lodash';
 import { Card, CardBody } from "@heroui/card";
@@ -71,14 +71,14 @@ function Novels() {
         const fetchBooks = async () => {
             setLoading(true);
             try {
-                let url = 'http://localhost:3000/api/v1/books';
+                let url = '/books';
                 const params = new URLSearchParams();
                 
                 // Check if we have any filters
                 const hasFilters = keyword || selectedStatus || selectedFilters.length > 0;
                 
                 if (hasFilters) {
-                    url = 'http://localhost:3000/api/v1/books/search';
+                    url = '/books/search';
                     
                     if (keyword) params.append('keyword', keyword);
                     if (selectedStatus) params.append('status', selectedStatus);
@@ -94,7 +94,7 @@ function Novels() {
                 params.append('page', currentPage);
                 params.append('limit', 12);
                 
-                const response = await axios.get(`${url}?${params}`);
+                const response = await api.get(`${url}?${params}`);
                 
                 if (response.data.status === 'success') {
                     setBooks(response.data.data);

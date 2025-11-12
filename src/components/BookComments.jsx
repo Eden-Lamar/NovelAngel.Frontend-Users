@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import axios from "axios";
+import api from '../api/axiosInstance';
 import { Link } from "react-router-dom";
 import { Card, CardBody } from "@heroui/card";
 import { Button } from "@heroui/button";
@@ -32,8 +32,8 @@ function BookComments({ bookId, isAuthenticated }) {
                 setLoadingMore(true);
             }
 
-            const response = await axios.get(
-                `http://localhost:3000/api/v1/books/${bookId}/comments?page=${pageNum}&limit=10`
+            const response = await api.get(
+                `/books/${bookId}/comments?page=${pageNum}&limit=10`
             );
 
             const { data, total, totalPages } = response.data;
@@ -98,8 +98,8 @@ function BookComments({ bookId, isAuthenticated }) {
 
         setSubmitting(true);
         try {
-            const response = await axios.post(
-                `http://localhost:3000/api/v1/books/${bookId}/comments`,
+            const response = await api.post(
+                `/books/${bookId}/comments`,
                 { content: newComment }
             );
 

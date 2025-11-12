@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import {Image} from "@heroui/image";
 import { FaRegEyeSlash, FaRegEye  } from "react-icons/fa";
-import axios from "axios";
+import api from "../api/axiosInstance";
 import loginImage from '../assets/girl-reading-novel.gif'; // Add your image
 import { useAuth } from '../context/useAuth';
 
@@ -45,15 +45,15 @@ function Login() {
 		useEffect(() => {
       const params = new URLSearchParams(window.location.search);
       const token = params.get("token");
-      
+
       if (token) {
       setGoogleLoading(true); // show spinner while verifying user
       // Store token
       localStorage.setItem("token", token);
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
       // Fetch user profile
-      axios.get("http://localhost:3000/api/v1/user/profile")
+      api.get("/user/profile")
         .then((res) => {
           const user = res.data.data;
 					// console.log("red", user)
@@ -198,7 +198,7 @@ function Login() {
                         isDisabled={googleLoading}
                         isLoading={googleLoading}
 												onClick={() => {
-													window.location.href = "http://localhost:3000/api/v1/user/auth/google";
+													window.location.href =`${import.meta.env.VITE_API_BASE_URL}/user/auth/google`;
 												}}
                     >
                         Continue with Google

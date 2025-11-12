@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import axios from "axios";
+import api from "../api/axiosInstance";
 import { FaEdit, FaSave, FaTimes } from "react-icons/fa";
 import { FiUpload } from "react-icons/fi";
 import { LuTrash2, LuMail } from "react-icons/lu";
@@ -30,7 +30,7 @@ function Profile() {
         const fetchData = async () => {
             setLoading(true);
             try {
-                const profileResponse = await axios.get('http://localhost:3000/api/v1/user/profile', {
+                const profileResponse = await api.get('/user/profile', {
                     headers: { Authorization: `Bearer ${auth?.token}` }
                 });
                 setUser(profileResponse.data.data);
@@ -107,7 +107,7 @@ function Profile() {
                 data.append('removeAvatar', true);
             }
 
-            const response = await axios.put('http://localhost:3000/api/v1/user/profile', data, {
+            const response = await api.put('/user/profile', data, {
                 headers: {
                     Authorization: `Bearer ${auth?.token}`,
                     'Content-Type': 'multipart/form-data'
@@ -212,7 +212,7 @@ function Profile() {
                                             </Button>
                                             {(previewUrl || formData.avatar || user.avatar) && (
                                                 <Button
-                                                  isIconOnly
+																									isIconOnly
 																									aria-label="remove"
                                                     onClick={() => {
                                                         setFormData((prev) => ({

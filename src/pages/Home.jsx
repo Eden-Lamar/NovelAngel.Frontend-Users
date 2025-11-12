@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api/axiosInstance';
 import Hero from '../components/Hero';
 import TrendingBooks from '../components/TrendingBooks';
 import NewStories from '../components/NewStories';
@@ -34,13 +34,13 @@ function Home() {
     const fetchHomeData = async () => {
       try {
         const [newRes, trendingRes, recentRes, blRes, glRes, bgRes, noCPRes] = await Promise.all([
-          axios.get('http://localhost:3000/api/v1/books/new'),
-          axios.get('http://localhost:3000/api/v1/books/trending'),
-          axios.get('http://localhost:3000/api/v1/books/latest-updates'),
-          axios.get('http://localhost:3000/api/v1/books/search?category=BL'),
-          axios.get('http://localhost:3000/api/v1/books/search?category=GL'),
-          axios.get('http://localhost:3000/api/v1/books/search?category=BG'),
-          axios.get('http://localhost:3000/api/v1/books/search?category=No%20CP'),
+          api.get('/books/new'),
+          api.get('/books/trending'),
+          api.get('/books/latest-updates'),
+          api.get('/books/search?category=BL'),
+          api.get('/books/search?category=GL'),
+          api.get('/books/search?category=BG'),
+          api.get('/books/search?category=No%20CP'),
         ]);
 
         if (newRes.data.status === 'success') setNewBooks(newRes.data.data);

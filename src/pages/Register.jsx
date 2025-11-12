@@ -197,7 +197,7 @@ function Register() {
                                     style={{"color": "transparent"}}
                                 />
                             }
-                            onClick={() => window.location.href = "http://localhost:3000/api/v1/user/auth/google"}
+                            onClick={() => window.location.href =`${import.meta.env.VITE_API_BASE_URL}/user/auth/google`}
                         >
                             Continue with Google
                         </Button>
