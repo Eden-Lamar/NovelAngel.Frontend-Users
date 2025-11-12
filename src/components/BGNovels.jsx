@@ -34,25 +34,25 @@ function BGNovels({ books, loading }) {
 
         {loading ? (
             <div className="overflow-x-auto overflow-y-visible pb-8 pt-4 scrollbar-hide">
-              <div className="flex gap-14 min-w-max px-10">
-                {[...Array(8)].map((_, index) => (
+              <div className="flex gap-2 md:gap-6 min-w-max px-10">
+                {[...Array(6)].map((_, index) => (
                   <SkeletonBookCard key={`bg-skeleton-${index}`} index={index} />
                 ))}
               </div>
             </div>
         ) : (
-            <HorizontalScrollContainer gap="gap-6">
+            <HorizontalScrollContainer gap="gap-2 md:gap-6">
                 {books.slice(0, 10).map((book) => (
                   <div
                     key={book._id}
-                    className="relative group cursor-pointer overflow-visible flex-shrink-0 w-[220px]"
+                    className="relative group cursor-pointer overflow-visible flex-shrink-0 w-[140px] md:w-[220px]"
                     onMouseEnter={() => setHoveredBook(book._id)}
                     onMouseLeave={() => setHoveredBook(null)}
                     onClick={() => navigate(`/book/${book._id}`)}
                   >
                     <div
-                      className={`relative z-10 w-[220px] transition-transform duration-500 ease-out ${
-                        hoveredBook === book._id ? 'scale-110' : ''
+                      className={`relative z-10 w-[140px] md:w-[220px] transition-transform duration-500 ease-out ${
+                        hoveredBook === book._id ? 'scale-105' : ''
                       }`}
                       style={{ transformOrigin: 'center center' }}
                     >
@@ -71,10 +71,10 @@ function BGNovels({ books, loading }) {
                           />
                         </div>
 
-                        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.55)_0%,rgba(0,0,0,0.1)_25%,transparent_50%,rgba(0,0,0,0.1)_75%,rgba(0,0,0,0.55)_100%)]" />
+                        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.55)_0%,rgba(0,0,0,0.1)_25%,transparent_50%,rgba(0,0,0,0.5)_75%,rgba(0,0,0,0.55)_100%)]" />
 
                         <div className="absolute bottom-0 left-0 right-0 p-4 z-20">
-                          <h3 className="font-bold text-lg text-white line-clamp-2 mb-1">
+                          <h3 className="font-medium md:font-bold text-sm md:text-lg text-white line-clamp-2 mb-1">
                             {capitalize(book.title)}
                           </h3>
                         </div>
