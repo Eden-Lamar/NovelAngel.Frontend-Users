@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from '../api/axiosInstance';
 import { FaCoins, FaGift, FaCrown, FaStar } from "react-icons/fa";
 import { PiCoinsFill, PiShootingStarDuotone } from "react-icons/pi";
 import { GiCutDiamond } from "react-icons/gi";
@@ -35,7 +35,7 @@ function BuyCoins() {
             
             setIsProfileLoading(true);
             try {
-                const profileResponse = await axios.get('http://localhost:3000/api/v1/user/profile');
+                const profileResponse = await api.get('/user/profile');
                 
                 if (isMounted) {
                     setUserCoinBalance(profileResponse.data.data.coinBalance);
@@ -69,8 +69,8 @@ function BuyCoins() {
         setError(null);
 
         try {
-            const response = await axios.post(
-                "http://localhost:3000/api/v1/payments/buy-coins",
+            const response = await api.post(
+                "/payments/buy-coins",
                 { coins: baseCoins },
                 // {
                 //     headers: { Authorization: `Bearer ${auth?.token}` }
@@ -102,7 +102,7 @@ function BuyCoins() {
     };
 
     return (
-        <div className="container mx-auto px-10 py-8">
+        <div className="container mx-auto px-2 md:px-10 py-8">
             {/* Error Alert */}
             {error && (
 							<AlertMessage message={error} onClose={() => setError(null)} />
@@ -135,7 +135,7 @@ function BuyCoins() {
             </div>
 
             {/* Coin Packages Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-12">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
                 {COIN_PLANS.map((plan) => {
                     const totalCoins = plan.baseCoins + plan.bonus;
                     const hasBonus = plan.bonus > 0;
