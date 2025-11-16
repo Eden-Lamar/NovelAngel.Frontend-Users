@@ -28,7 +28,7 @@ function BookDetails() {
     const [isBookmarked, setIsBookmarked] = useState(false);
     
     const { auth, isAuthenticated } = useAuth(); // Set to null for anonymous access
-		
+		console.log("auth in BookDetails:", auth);
 		const startReadingButtonRef = useRef(null);
 		const [showFloatingButton, setShowFloatingButton] = useState(false);
 		// console.log(navigate)
@@ -237,7 +237,7 @@ function BookDetails() {
 														<div
 															className="w-[200%] h-[200%] rounded-full blur-3xl animate-pulse-slow"
 															style={{
-																background: 'radial-gradient(circle, rgba(251, 191, 36, 0.4) 0%, rgba(251, 191, 36, 0.1) 40%, transparent 70%)',
+																background: 'radial-gradient(circle, rgba(251, 191, 36, 0.7) 0%, rgba(251, 191, 36, 0.1) 40%, transparent 70%)',
 															}}
 														/>
 													</div>
@@ -558,7 +558,23 @@ function BookDetails() {
 																		<span className="text-gray-900 dark:text-white text-xl font-semibold p-2">Chapters</span>
                                     <div className="space-y-2">
                                         {book.chapters.map((chapter) => {
-																					const isUnlocked = auth?.user?.unlockedChapters?.includes(chapter._id) || !chapter.isLocked;
+																					// Define user-specific states
+																					const isPurchased = auth?.user?.unlockedChapters?.includes(chapter._id);
+																					const isAdmin = auth?.user?.role === 'admin';
+
+																					// State 1: Show as "Locked" (Red Icon, Coin Cost)
+																					// This is true ONLY if the chapter is locked, the user hasn't bought it, AND the user is not an admin.
+																					const showAsLocked = chapter.isLocked && !isPurchased && !isAdmin;
+																					
+																					// State 2: Show as "Purchased" (Green Icon, "Read" Button)
+																					// This is true ONLY if the chapter is locked, the user bought it, AND the user is not an admin.
+																					const showAsPurchased = chapter.isLocked && isPurchased && !isAdmin;
+
+																					// State 3: Show as "Free" (Blue Icon, "Read" Button)
+																					// This is the default 'else' case, which covers:
+																					// 1. Chapters that are actually free (!chapter.isLocked)
+																					// 2. Any chapter being viewed by an admin (isAdmin)
+								
 																					return(
                                             <div
                                                 key={chapter._id}
@@ -566,15 +582,15 @@ function BookDetails() {
                                             >
                                                 <div className="flex items-start gap-3 flex-1 min-w-0">
                                                     <div className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center border-2 ${
-																											chapter.isLocked && !isUnlocked
+																											showAsLocked
 																											? 'border-red-500 shadow-lg shadow-red-500/50' // Locked
-																											: chapter.isLocked && isUnlocked 
+																											: showAsPurchased
 																											? 'border-green-500 shadow-lg shadow-green-500/50' // Unlocked (purchased)
 																											: 'border-cyan-500 shadow-lg shadow-cyan-500/50' // Free
                                                     }`}>
-																											{chapter.isLocked && !isUnlocked ? (
+																											{ showAsLocked ? (
 																													<FaLock className="text-red-500 text-sm" />
-																												) : chapter.isLocked && isUnlocked ? (
+																												) : showAsPurchased ? (
 																													<FaLockOpen className="text-green-500 text-sm" />
 																												) : (
 																													<FaBookReader className="text-cyan-500 text-sm" />
@@ -595,11 +611,11 @@ function BookDetails() {
                                                     variant="ghost"
                                                     size="sm"
                                                     className="ml-4 border border-cyan-500 text-cyan-500 force-cyan text-sm font-medium"
-                                                    startContent={chapter.isLocked && !isUnlocked && chapter.coinCost
+                                                    startContent={showAsLocked && chapter.coinCost
 																											? <GiTwoCoins />
 																											: null}
 																										>
-                                                    {chapter.isLocked && chapter.coinCost && !isUnlocked ? chapter.coinCost : 'Read'}
+                                                    {showAsLocked && chapter.coinCost ? chapter.coinCost : 'Read'}
                                                 </Button>
                                             </div>
 																				)
