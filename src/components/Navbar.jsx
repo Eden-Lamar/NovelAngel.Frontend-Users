@@ -8,6 +8,7 @@ import { GiTwoCoins } from "react-icons/gi";
 import { useState, useEffect } from "react";
 import { CiSearch, CiCloudMoon  } from "react-icons/ci";
 import { PiCloudSun } from "react-icons/pi";
+import { RiShieldStarLine } from "react-icons/ri";
 import { useAuth } from "../context/useAuth";
 import logo from "../assets/logo.png";
 
@@ -41,9 +42,10 @@ function NavbarSticky() {
   const isBookReaderPage = location.pathname.includes("/book/") && location.pathname.includes("/read");
 
   
-  const { auth, logout, isAuthenticated } = useAuth(); // ✅ get user + logout + auth state
+  const { auth, logout, isAuthenticated } = useAuth(); // get user + logout + auth state
 
   const user = auth?.user;
+  const isAdmin = user?.role === 'admin'; // Check for admin role
   const coins = user?.coinBalance;
   const avatar = user?.avatar; 
 
@@ -57,13 +59,17 @@ function NavbarSticky() {
     setTheme((prev) => (prev === "light" ? "dark" : "light"));
   };
 
-
-  const menuItems = [
+  // Filter menu items based on admin role
+  const baseMenuItems = [
     { name: "Home", path: "/" },
     { name: "Novels", path: "/novels" },
     { name: "Genres", path: "/genres" },
     { name: "Buy Coins", path: "/buy-coins" },
   ];
+
+  const menuItems = isAdmin
+    ? baseMenuItems.filter(item => item.name !== "Buy Coins")
+    : baseMenuItems;
 
   return (
     <Navbar 
@@ -110,7 +116,9 @@ function NavbarSticky() {
       </NavbarContent>
 
       {/* Desktop Navigation Links */}
-      <NavbarContent className="hidden md:flex gap-4 justify-center flex-1">
+      <NavbarContent 
+          justify="center"
+          className="hidden md:flex gap-4 flex-1">
         <NavbarItem>
           <NavLink
             to="/"
@@ -153,20 +161,24 @@ function NavbarSticky() {
             Genres
           </NavLink>
         </NavbarItem>
-        <NavbarItem>
-          <NavLink
-            to="/buy-coins"
-            className={({ isActive }) =>
-              `text-base font-medium px-3 rounded-md transition-colors ${
-                isActive
-                  ? "text-transparent bg-clip-text bg-gradient-to-r from-gold to-cyan-500"
-                  : "text-gray-500 hover:text-gold"
-              }`
-            }
-          >
-            Buy Coins
-          </NavLink>
-        </NavbarItem>
+
+        {/* Hide "Buy Coins" for Admins */}
+        {!isAdmin && (
+          <NavbarItem>
+            <NavLink
+              to="/buy-coins"
+              className={({ isActive }) =>
+                `text-base font-medium px-3 rounded-md transition-colors ${
+                  isActive
+                    ? "text-transparent bg-clip-text bg-gradient-to-r from-gold to-cyan-500"
+                    : "text-gray-500 hover:text-gold"
+                }`
+              }
+            >
+              Buy Coins
+            </NavLink>
+          </NavbarItem>
+        )}
       </NavbarContent>
 
       {/* Mobile - Avatar Only (show only if logged in) */}
@@ -191,13 +203,25 @@ function NavbarSticky() {
                 <p className="font-semibold">Signed in as</p>
                 <p className="font-semibold">{user?.email}</p>
               </DropdownItem>
-              <DropdownItem key="coins" className="h-10 gap-2">
-                <div className="flex items-center gap-2">
-                  <GiTwoCoins className="text-lg text-yellow-500" />
-                  
-                  <span className="font-semibold">{coins} Coins</span>
-                </div>
-              </DropdownItem>
+
+              {/* ✅ Conditionally show Coins or Admin Status */}
+                {isAdmin ? (
+                  <DropdownItem key="admin-status" className="h-10 gap-2">
+                    <div className="flex items-center gap-2">
+                      <RiShieldStarLine className="text-lg text-amber-500" />
+                      <span className="font-semibold text-amber-500">Admin</span>
+                    </div>
+                  </DropdownItem>
+                ) : (
+                <DropdownItem key="coins" className="h-10 gap-2">
+                  <div className="flex items-center gap-2">
+                    <GiTwoCoins className="text-lg text-yellow-500" />
+                    
+                    <span className="font-semibold">{coins} Coins</span>
+                  </div>
+                </DropdownItem>
+              )}
+
               <DropdownItem key="theme" onClick={toggleTheme}>
                 <div className="flex items-center gap-2">
                   {theme === "light" ? (
@@ -213,6 +237,14 @@ function NavbarSticky() {
                   )}
                 </div>
               </DropdownItem>
+              
+              {/* ✅ Add Admin Dashboard link (for mobile) */}
+                {isAdmin && (
+                  <DropdownItem key="admin-dashboard" as={Link} to="#" className="text-blue-500">
+                    Go to Admin App
+                  </DropdownItem>
+              )}
+
               <DropdownItem key="my-profile" as={Link} to="/profile">My profile</DropdownItem>
               <DropdownItem key="library" as={Link} to="/library">My Library</DropdownItem>
               <DropdownItem key="logout" color="danger" onClick={logout}>
@@ -269,10 +301,18 @@ function NavbarSticky() {
       {/* Coins + Avatar (only show if logged in) */}
         {isAuthenticated ? (
           <>
-            <NavbarItem className="flex items-center gap-1">
-              <GiTwoCoins className="text-lg text-gold" />
-              <span className="text-sm font-semibold">{coins}</span>
-            </NavbarItem>
+          {/* Conditionally show Coins or Admin Badge */}
+            {isAdmin ? (
+              <NavbarItem className="flex items-center gap-1">
+                <RiShieldStarLine className="text-lg text-amber-500" />
+                <span className="text-sm font-semibold text-amber-500">Admin</span>
+              </NavbarItem>
+            ) : (
+              <NavbarItem className="flex items-center gap-1">
+                <GiTwoCoins className="text-lg text-gold" />
+                <span className="text-sm font-semibold">{coins}</span>
+              </NavbarItem>
+            )}
 
             <NavbarItem>
               <Dropdown placement="bottom-end">
@@ -293,6 +333,14 @@ function NavbarSticky() {
                     <p className="font-semibold">Signed in as</p>
                     <p className="font-semibold">{user?.email}</p>
                   </DropdownItem>
+
+                  {/* Add Admin Dashboard link (for desktop) */}
+                  {isAdmin && (
+                    <DropdownItem key="admin-dashboard" as={Link} to="#" className="text-blue-500">
+                      Go to Admin App
+                    </DropdownItem>
+                  )}
+
                   <DropdownItem key="my-profile" as={Link} to="/profile">My profile</DropdownItem>
                   <DropdownItem key="library"  as={Link} to="/library">My Library</DropdownItem>
                   <DropdownItem key="logout" color="danger" onClick={logout}>
