@@ -411,7 +411,7 @@ function BookReader() {
                 <Skeleton className="h-14 mx-auto w-full md:rounded-xl mb-6" />
             ) : chapterData ? (
 							<>
-                <div className="sticky top-0 z-20 flex justify-between items-center p-1 md:p-2 md:rounded-xl mb-6 bg-white/80 dark:bg-[#1a1b23]/80 backdrop-blur-md shadow-md">
+                <div className="sticky top-0 z-20 flex justify-between items-center p-1 md:p-2 md:rounded-xl mb-6 bg-white/40 dark:bg-[#1a1b23]/40 backdrop-blur-md shadow-md">
 									<div className=" ">
                     <Link to={`/book/${bookId}`} className="flex items-center group">
                         <RiArrowLeftSLine className="text-gold text-2xl md:text-2xl transition-all duration-200 group-hover:mr-1 group-hover:scale-105 md:group-hover:scale-125" />
