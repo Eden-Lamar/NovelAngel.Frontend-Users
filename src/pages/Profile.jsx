@@ -5,6 +5,7 @@ import { FiUpload } from "react-icons/fi";
 import { LuTrash2, LuMail } from "react-icons/lu";
 import { GoPerson } from "react-icons/go";
 import { PiCoinsFill } from "react-icons/pi";
+import { RiShieldStarLine } from "react-icons/ri";
 import { Card, CardBody } from "@heroui/card";
 import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
@@ -225,7 +226,7 @@ function Profile() {
 																													fileInputRef.current.value = ""; // 🧹 clear file input
 																												}
                                                     }}
-                                                  color="danger"
+																									color="danger"
 																									radius="full"
 																									variant="flat"
                                                 >
@@ -239,14 +240,22 @@ function Profile() {
                                 {/* User Info */}
                                 <div className="flex-1 space-y-2 text-center sm:text-left">
                                     <h2 className="text-3xl font-bold text-primary">{user.username}</h2>
-                                    <p className="flex items-center justify-center sm:justify-start gap-2 text-base-content/70">
+                                    <p className="flex items-center justify-start gap-2 text-gray-600 dark:text-gray-400">
                                         <LuMail className="text-lg" />
                                         <span>{user.email}</span>
                                     </p>
-                                    <div className="flex items-center justify-center sm:justify-start gap-2">
-                                        <PiCoinsFill className="text-warning text-2xl" /> 
-                                        <span className="text-lg font-semibold">{user.coinBalance.toLocaleString() || 0} Coins</span>
+																		{user?.role === "admin" ? (
+																			<div className="flex items-center justify-center md:justify-start gap-1 text-sm text-amber-500">
+																					<RiShieldStarLine className="text-lg" />
+																					<span>Admin</span>
+																			</div>
+																	) : (
+                                    <div className="flex items-center justify-center sm:justify-start gap-1">
+                                        <PiCoinsFill className="text-amber-500 text-sm" /> 
+                                        <span className="text-sm text-gray-600 dark:text-gray-400 tracking-tight">{user.coinBalance.toLocaleString() || 0} </span>
                                     </div>
+																	)}
+
                                 </div>
 
                                 {/* Edit Button */}
