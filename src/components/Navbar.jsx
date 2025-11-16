@@ -336,9 +336,9 @@ function NavbarSticky() {
       </NavbarContent>
 
       {/* Mobile Menu */}
-      <NavbarMenu>
+      <NavbarMenu className="">
         {menuItems.map((item, index) => (
-          <NavbarMenuItem key={`${item.name}-${index}`}>
+          <NavbarMenuItem key={`${item.name}-${index}`} className="pt-10 ">
             <NavLink
               to={item.path}
               onClick={() => setIsMenuOpen(false)}
