@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
+import NProgress from "nprogress";
+import "nprogress/nprogress.css";
 import NavbarSticky from './components/Navbar';
 import Footer from './components/Footer'; 
 import ScrollToTop from "./components/ScrollToTop";
@@ -20,8 +22,32 @@ import { useAuth } from "./context/useAuth";
 import 'animate.css';
 import "./App.css"
 
+// Configure NProgress (like YouTube/GitHub)
+NProgress.configure({
+    showSpinner: false, // Don't show the spinner
+    trickle: true,
+		trickleSpeed: 200, // How fast the "trickle" runs
+		minimum: 0.3,        // Never start below 30%
+		easing: 'ease',
+		speed: 500,    
+});
+
 function App() {
   const location = useLocation();
+
+	// Add the NProgress effect hook
+  useEffect(() => {
+    NProgress.start();
+
+		const timer = setTimeout(() => {
+			NProgress.done();
+		}, 300); // Minimum 300ms visible progress
+
+		return () => {
+			clearTimeout(timer);
+			NProgress.done();
+		};
+  }, [location.pathname]); // Use pathname only to avoid unnecessary triggers
 
   useEffect(() => {
     const { pathname } = location;
