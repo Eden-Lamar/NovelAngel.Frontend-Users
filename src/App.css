@@ -17,3 +17,8 @@
 .card-shine:hover::before {
   left: 100%;
 }
+
+/* Change nprogress bar height */
+#nprogress .bar {
+  height: 2px !important;
+}
