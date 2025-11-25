@@ -30,9 +30,9 @@ function BookRecommendations() {
   if (loading) {
     return (
       <div className="mt-10">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 p-2">
+        <div className="flex gap-4 overflow-x-auto px-2 py-4 snap-x snap-mandatory">
           {Array(5).fill(0).map((_, i) => (
-            <Card key={i}>
+            <Card key={i} className="flex-shrink-0 w-[160px] md:w-[180px] snap-start">
               <CardBody className="p-0">
                 <Skeleton className="w-full h-[220px] rounded-lg" />
                 <Skeleton className="h-4 w-3/4 mt-2 rounded-full m-3 px-1" />
