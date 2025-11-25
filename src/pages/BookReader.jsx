@@ -675,7 +675,10 @@ function BookReader() {
             </Card>
 						
 							{/* Recommendations Section - Full Width */}
-							<BookRecommendations />
+							<div className="w-full md:w-4/5 mx-auto">
+								<BookRecommendations />
+							</div>
+
 
             {/* Unlock Modal */}
             <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
