@@ -155,7 +155,14 @@ function TrendingBooks({ books, loading }) {
                       className={`relative z-10 w-[160px] md:w-[220px] transition-transform duration-500 ease-out ${
                       hoveredBook === book._id ? 'scale-110' : null
                     }`}
-                      style={{ transformOrigin: 'center center' }}
+                      style={{
+                              transformOrigin:
+                                index === 0
+                                  ? 'left center'
+                                  : index === books.slice(0, 10).length - 1
+                                  ? 'right center'
+                                  : 'center center',
+                            }}
                     >
                       {/* Book Cover */}
                       <div
