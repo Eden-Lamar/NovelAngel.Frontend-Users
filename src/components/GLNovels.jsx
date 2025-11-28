@@ -42,7 +42,7 @@ function GLNovels({ books, loading }) {
             </div>
         ) : (
           <HorizontalScrollContainer gap="gap-2 md:gap-6">
-                {books.slice(0, 10).map((book) => (
+                {books.slice(0, 10).map((book, index) => (
                   <div
                     key={book._id}
                     className="relative group cursor-pointer overflow-visible flex-shrink-0 w-[140px] md:w-[220px]"
@@ -54,7 +54,14 @@ function GLNovels({ books, loading }) {
                       className={`relative z-10 w-[140px] md:w-[220px] transition-transform duration-500 ease-out ${
                         hoveredBook === book._id ? 'scale-105' : ''
                       }`}
-                      style={{ transformOrigin: 'center center' }}
+                        style={{
+                              transformOrigin:
+                                index === 0
+                                  ? 'left center'
+                                  : index === books.slice(0, 10).length - 1
+                                  ? 'right center'
+                                  : 'center center',
+                            }}
                     >
                       <div
                         className={`relative overflow-hidden rounded-xl shadow-md transition-all duration-500 ${
