@@ -412,7 +412,7 @@ function BookDetails() {
 
 																		{/* Floating Start Reading button — appears after scroll past card */}
 																		{showFloatingButton && (
-																			<div className="fixed bottom-1 left-0 right-0 z-20 px-4 md:hidden animate__animated animate__fadeInUp">
+																			<div className="fixed bottom-2 left-0 right-0 z-20 px-4 md:hidden animate__animated animate__fadeInUp">
 																				<Button
 																					as={Link}
 																					to={`/book/${book._id}/read`}
