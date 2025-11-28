@@ -29,7 +29,7 @@ function Footer() {
                 alt="Novel Angel Logo"
                 className="h-12 w-12 group-hover:scale-110 transition-transform duration-300"
               />
-              <span className="text-3xl font-bold font-vibes text-transparent bg-clip-text bg-gradient-to-r from-gold to-cyan-500">
+              <span className="text-3xl font-bold font-vibes text-transparent bg-clip-text bg-gradient-to-r from-gold to-cyan-500 px-1">
                 Novel Angel
               </span>
             </Link>
