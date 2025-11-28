@@ -76,6 +76,7 @@ function Hero({ books, loading }) {
               <Button
                 size="lg"
                 color="warning"
+                variant="ghost"
                 className="font-semibold px-8 py-6 text-lg hover:scale-[1.02]"
                 onClick={() => navigate('/novels')}
               >
@@ -88,7 +89,7 @@ function Hero({ books, loading }) {
               <Button
                 size="lg"
                 color="warning"
-                variant="ghost"
+                variant="flat"
                 className=" font-semibold px-8 py-6 text-lg transition-all duration-300"
                 onClick={() => navigate('/genres')}
               >
