@@ -7,7 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
-import registerImage from '../assets/girl-reading-novel.gif'; // Add your image
+import registerImage from '../assets/man-chilling.gif'; // Add your image
 import { useAuth } from '../context/useAuth';
 
 // Yup validation schema
@@ -232,8 +232,8 @@ function Register() {
             <div className="hidden lg:flex lg:w-1/2">
                 <div className="flex items-center justify-center p-12">
                     <Image
-                        height={608.5}
-                        width={500}
+                        height={560}
+                        width={560}
                         alt="Join us"
                         src={registerImage}
                         className="max-w-full"
