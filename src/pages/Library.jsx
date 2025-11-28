@@ -328,7 +328,7 @@ function Library() {
                 {activeTab === "bookmarks" && (
                     <div>
                         {loading ? (
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-6 gap-4">
                                 {Array(6).fill(0).map((_, idx) => (
                                     <Card key={idx}>
                                         <CardBody className="p-0">
@@ -342,7 +342,7 @@ function Library() {
                                 ))}
                             </div>
                         ) : bookmarks.length > 0 ? (
-                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 overflow-x-auto p-2">
+                            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-6 gap-4">
                                 {bookmarks.map((book) => (
                                     <Link
 																			key={book._id}
@@ -352,7 +352,7 @@ function Library() {
 																			<Card className="h-full border border-gray-700/50 transition-all duration-300 
 																				hover:border-amber-400/50 
 																				hover:shadow-[0_0_4px_rgba(251,191,36,0.6)]">
-																				<CardBody className=" p-0 flex flex-col items-center">
+																				<CardBody className="p-0 flex flex-col items-center">
 																					<div className="relative w-full ">
 																						<img
 																							src={book.bookImage}
