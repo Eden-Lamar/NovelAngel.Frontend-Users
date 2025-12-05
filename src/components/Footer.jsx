@@ -175,15 +175,15 @@ function Footer() {
                 </Link>
               </li>
               <li>
-                <Link to="#" className="text-sm hover:text-gold transition-colors duration-300 flex items-center gap-2 group">
+                <Link to="/privacy" className="text-sm hover:text-gold transition-colors duration-300 flex items-center gap-2 group">
                   <span className="w-0 group-hover:w-2 h-0.5 bg-gold transition-all duration-300" />
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link to="#" className="text-sm hover:text-gold transition-colors duration-300 flex items-center gap-2 group">
+                <Link to="/terms" className="text-sm hover:text-gold transition-colors duration-300 flex items-center gap-2 group">
                   <span className="w-0 group-hover:w-2 h-0.5 bg-gold transition-all duration-300" />
-                  Terms of Service
+                  Terms & Conditions
                 </Link>
               </li>
             </ul>
@@ -216,10 +216,10 @@ function Footer() {
             © {currentYear} Novel Angel. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm">
-            <Link to="#" className="hover:text-gold transition-colors duration-300">
+            <Link to="/privacy" className="hover:text-gold transition-colors duration-300">
               Privacy
             </Link>
-            <Link to="#" className="hover:text-gold transition-colors duration-300">
+            <Link to="/terms" className="hover:text-gold transition-colors duration-300">
               Terms
             </Link>
             <Link to="#" className="hover:text-gold transition-colors duration-300">

@@ -18,6 +18,8 @@ import BuyCoins from './pages/BuyCoins';
 import PaymentSuccess from "./pages/PaymentSuccess";
 import Profile from "./pages/Profile";
 import Library from "./pages/Library";
+import Terms from './pages/Terms'; 
+import Privacy from './pages/Privacy';
 import { useAuth } from "./context/useAuth";
 import 'animate.css';
 import "./App.css"
@@ -87,6 +89,12 @@ function App() {
       case pathname === "/payment/success":
         title = "Payment Successful - Novel Angel";
         break;
+      case pathname === "/terms":
+        title = "Terms & Conditions - Novel Angel";
+        break;
+      case pathname === "/privacy":
+        title = "Privacy Policy - Novel Angel";
+        break;
       default:
         title = "Novel Angel - Read Novels Online";
     }
@@ -151,6 +159,8 @@ function App() {
             <Route path="/payment/success" element={<PaymentSuccess />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/library" element={<Library />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/privacy" element={<Privacy />} />
           </Routes>
       </div>
 
