@@ -91,7 +91,7 @@ export default function HorizontalScrollContainer({
     });
   };
 
-   // 🔹 Drag scroll (MOUSE ONLY - Let native touch handle mobile)
+   // Drag scroll (MOUSE ONLY - Let native touch handle mobile)
   useEffect(() => {
     const container = scrollRef.current;
     if (!container) return;
@@ -169,7 +169,7 @@ export default function HorizontalScrollContainer({
       <div
         ref={scrollRef}
         className="overflow-x-auto overflow-y-visible scrollbar-hide pb-8 pt-4 
-                  scroll-smooth snap-x snap-mandatory select-none cursor-grab touch-pan-x"
+                  scroll-smooth snap-x snap-mandatory select-none cursor-grab"
       >
         <div className={`flex min-w-max ${gap} py-1`}>
           {Array.isArray(children)
