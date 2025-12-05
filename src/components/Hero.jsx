@@ -66,7 +66,7 @@ function Hero({ books, loading }) {
 
             {/* Description */}
             <p className="text-base md:text-lg lg:text-xl text-gray-600 dark:text-gray-300 leading-relaxed max-w-2xl mx-auto lg:mx-0">
-              Explore unforgettable stories—translated Asian epics, passionate stories, and more.
+              Explore unforgettable stories translated Asian epics, passionate stories, and more.
 							Every tale is a journey waiting to unfold.
 							Sign up to get personalized picks made just for you.
             </p>
