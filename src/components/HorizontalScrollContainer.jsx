@@ -91,7 +91,7 @@ export default function HorizontalScrollContainer({
     });
   };
 
-   // 🔹 Drag scroll (mouse & touch)
+   // 🔹 Drag scroll (MOUSE ONLY - Let native touch handle mobile)
   useEffect(() => {
     const container = scrollRef.current;
     if (!container) return;
@@ -103,7 +103,7 @@ export default function HorizontalScrollContainer({
     const startDragging = (e) => {
       isDown = true;
       container.classList.add("dragging");
-      startX = e.pageX || e.touches?.[0].pageX;
+      startX = e.pageX;
       scrollLeft = container.scrollLeft;
     };
 
@@ -114,29 +114,24 @@ export default function HorizontalScrollContainer({
 
     const onMove = (e) => {
       if (!isDown) return;
-      e.preventDefault();
-      const x = e.pageX || e.touches?.[0].pageX;
-      const walk = (x - startX) * 1.2; // scroll speed multiplier
+      e.preventDefault(); // Prevent text selection while dragging
+      const x = e.pageX
+      const walk = (x - startX) * 1.5; // scroll speed multiplier
       container.scrollLeft = scrollLeft - walk;
     };
 
-    // Event listeners for mouse & touch
+    // Event listeners for mouse only. Touch is handled natively by browser.
     container.addEventListener("mousedown", startDragging);
     container.addEventListener("mouseleave", stopDragging);
     container.addEventListener("mouseup", stopDragging);
     container.addEventListener("mousemove", onMove);
-    container.addEventListener("touchstart", startDragging);
-    container.addEventListener("touchend", stopDragging);
-    container.addEventListener("touchmove", onMove);
+    
 
     return () => {
       container.removeEventListener("mousedown", startDragging);
       container.removeEventListener("mouseleave", stopDragging);
       container.removeEventListener("mouseup", stopDragging);
       container.removeEventListener("mousemove", onMove);
-      container.removeEventListener("touchstart", startDragging);
-      container.removeEventListener("touchend", stopDragging);
-      container.removeEventListener("touchmove", onMove);
     };
   }, []);
 
@@ -148,8 +143,8 @@ export default function HorizontalScrollContainer({
           isIconOnly
           variant="flat"
           onClick={() => scrollByAmount(-1)}
-          className="absolute -left-5 top-1/2 -translate-y-1/2 z-30 bg-black/60 hover:bg-black/80 
-            text-white backdrop-blur-sm opacity-0 group-hover/container:opacity-100 
+          className="absolute -left-10 top-1/2 -translate-y-1/2 z-30 bg-black/60 hover:bg-black/80 
+            text-white backdrop-blur-sm md:opacity-0 md:group-hover/container:opacity-100 
             transition-opacity duration-300 h-1/2 w-8 rounded-lg mr-10"
         >
           <IoChevronBack className="text-3xl" />
@@ -162,8 +157,8 @@ export default function HorizontalScrollContainer({
           isIconOnly
           variant="flat"
           onClick={() => scrollByAmount(1)}
-          className="absolute -right-5 top-1/2 -translate-y-1/2 z-30 bg-black/60 hover:bg-black/80 
-            text-white backdrop-blur-sm opacity-0 group-hover/container:opacity-100 
+          className="absolute -right-10 top-1/2 -translate-y-1/2 z-30 bg-black/60 hover:bg-black/80 
+            text-white backdrop-blur-sm md:opacity-0 md:group-hover/container:opacity-100 
             transition-opacity duration-300 h-1/2 w-8 rounded-lg"
         >
           <IoChevronForward className="text-3xl" />
@@ -174,7 +169,7 @@ export default function HorizontalScrollContainer({
       <div
         ref={scrollRef}
         className="overflow-x-auto overflow-y-visible scrollbar-hide pb-8 pt-4 
-                  scroll-smooth snap-x snap-mandatory select-none cursor-grab"
+                  scroll-smooth snap-x snap-mandatory select-none cursor-grab touch-pan-x"
       >
         <div className={`flex min-w-max ${gap} py-1`}>
           {Array.isArray(children)
@@ -199,6 +194,7 @@ export default function HorizontalScrollContainer({
         cursor: grabbing;
         cursor: -webkit-grabbing;
         user-select: none;
+        scroll-behavior: auto !important; /* Disables smooth scroll while dragging for instant feedback */
         }
       `}</style>
     </div>
