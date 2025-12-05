@@ -91,14 +91,14 @@ function NavbarSticky() {
       </NavbarContent>
 
       {/* Logo - Centered on mobile, left on desktop */}
-      <NavbarContent className="md:hidden pr-3" justify="center">
+      <NavbarContent className="md:hidden " justify="center">
         <NavbarBrand as={Link} to="/" className="group">
           <img
             src={logo}
             alt="Novel Angel Logo"
             className="h-10 w-auto mr-1 group-hover:scale-110"
           />
-          <span className="text-xl font-vibes font-bold text-transparent bg-clip-text bg-gradient-to-r from-gold to-cyan-500 px-1">
+          <span className="text-2xl font-vibes font-bold text-transparent bg-clip-text bg-gradient-to-r from-gold to-cyan-500 px-1">
             Novel Angel
           </span>
         </NavbarBrand>
@@ -112,7 +112,7 @@ function NavbarSticky() {
             alt="Novel Angel Logo"
             className="h-14 w-auto mr-1 group-hover:scale-105"
           />
-          <span className="px-1 text-2xl font-bold font-vibes text-transparent bg-clip-text bg-gradient-to-r from-gold to-cyan-500">
+          <span className="px-1 text-3xl font-bold font-vibes text-transparent bg-clip-text bg-gradient-to-r from-gold to-cyan-500">
             Novel Angel
           </span>
         </NavbarBrand>
