@@ -16,6 +16,9 @@ import logo from "../assets/logo.png";
 function NavbarSticky() {
   const location = useLocation();
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // GET THE ENV VARIABLE
+  const adminAppUrl = import.meta.env.VITE_ADMIN_APP_URL
   
   // 🔥 Initialize theme from localStorage or system preference
   const getInitialTheme = () => {
@@ -238,9 +241,9 @@ function NavbarSticky() {
                 </div>
               </DropdownItem>
               
-              {/* ✅ Add Admin Dashboard link (for mobile) */}
+              {/* Add Admin Dashboard link (for mobile) */}
                 {isAdmin && (
-                  <DropdownItem key="admin-dashboard" as={Link} to="#" className="text-blue-500">
+                  <DropdownItem key="admin-dashboard" as="a" href={adminAppUrl} target="_blank" rel="noopener noreferrer" className="text-blue-500">
                     Go to Admin App
                   </DropdownItem>
               )}
@@ -336,7 +339,7 @@ function NavbarSticky() {
 
                   {/* Add Admin Dashboard link (for desktop) */}
                   {isAdmin && (
-                    <DropdownItem key="admin-dashboard" as={Link} to="#" className="text-blue-500">
+                    <DropdownItem key="admin-dashboard" as="a" href={adminAppUrl} target="_blank" rel="noopener noreferrer" className="text-blue-500">
                       Go to Admin App
                     </DropdownItem>
                   )}
