@@ -11,7 +11,7 @@ import NoCPNovels from '../components/NoCPNovels';
 import DiverseReaders from '../components/DiverseReaders'
 import ContinueReadingHome from '../components/ContinueReadingHome';
 import { useAuth } from '../context/useAuth';
-
+import Logo from '../assets/logo.png';
 
 // Define a key for storage and a cache duration (e.g., 5 minutes)
 const CACHE_KEY = 'home_page_data';
@@ -141,16 +141,16 @@ function Home() {
 
   // Mock data for development (remove when API is ready)
   const mockBooks = [
-    { _id: '1', title: 'Heaven Official\'s Blessing', bookImage: 'https://images.unsplash.com/photo-1589998059171-988d887df646?w=300&h=450&fit=crop' },
-    { _id: '2', title: 'Mo Dao Zu Shi', bookImage: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=300&h=450&fit=crop' },
-    { _id: '3', title: 'The Scum Villain', bookImage: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=300&h=450&fit=crop' },
-    { _id: '4', title: 'Thousand Autumns', bookImage: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=300&h=450&fit=crop' },
-    { _id: '5', title: 'Silent Reading', bookImage: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=300&h=450&fit=crop' },
-    { _id: '6', title: 'Guardian', bookImage: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=300&h=450&fit=crop' },
-    { _id: '7', title: 'Sha Po Lang', bookImage: 'https://images.unsplash.com/photo-1519682337058-a94d519337bc?w=300&h=450&fit=crop' },
-    { _id: '8', title: 'Liu Yao', bookImage: 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=300&h=450&fit=crop' },
-    { _id: '9', title: 'Poyun', bookImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=450&fit=crop' },
-    { _id: '10', title: 'Breaking Through the Clouds', bookImage: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=300&h=450&fit=crop' },
+    { _id: '1', title: 'Novel Angel', bookImage: Logo },
+    { _id: '2', title: 'Novel Angel', bookImage: Logo },
+    { _id: '3', title: 'Novel Angel', bookImage: Logo },
+    { _id: '4', title: 'Novel Angel', bookImage: Logo },
+    { _id: '5', title: 'Novel Angel', bookImage: Logo },
+    { _id: '6', title: 'Novel Angel', bookImage: Logo },
+    { _id: '7', title: 'Novel Angel', bookImage: Logo },
+    { _id: '8', title: 'Novel Angel', bookImage: Logo },
+    { _id: '9', title: 'Novel Angel', bookImage: Logo },
+    { _id: '10', title: 'Novel Angel', bookImage: Logo },
   ];
 
   const booksToDisplay = newBooks.length > 0 ? newBooks : mockBooks;
