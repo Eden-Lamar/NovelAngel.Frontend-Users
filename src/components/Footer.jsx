@@ -156,24 +156,24 @@ function Footer() {
               Support
             </h3>
             <ul className="space-y-3">
-              <li>
+              {/* <li>
                 <Link to="#" className="text-sm hover:text-gold transition-colors duration-300 flex items-center gap-2 group">
                   <span className="w-0 group-hover:w-2 h-0.5 bg-gold transition-all duration-300" />
                   About Us
                 </Link>
-              </li>
+              </li> */}
               <li>
-                <Link to="#" className="text-sm hover:text-gold transition-colors duration-300 flex items-center gap-2 group">
+                <Link to="/contact-us" className="text-sm hover:text-gold transition-colors duration-300 flex items-center gap-2 group">
                   <span className="w-0 group-hover:w-2 h-0.5 bg-gold transition-all duration-300" />
                   Contact Us
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link to="#" className="text-sm hover:text-gold transition-colors duration-300 flex items-center gap-2 group">
                   <span className="w-0 group-hover:w-2 h-0.5 bg-gold transition-all duration-300" />
                   FAQ
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link to="/privacy" className="text-sm hover:text-gold transition-colors duration-300 flex items-center gap-2 group">
                   <span className="w-0 group-hover:w-2 h-0.5 bg-gold transition-all duration-300" />
@@ -222,7 +222,7 @@ function Footer() {
             <Link to="/terms" className="hover:text-gold transition-colors duration-300">
               Terms
             </Link>
-            <Link to="#" className="hover:text-gold transition-colors duration-300">
+            <Link to="/contact-us" className="hover:text-gold transition-colors duration-300">
               Contact Us
             </Link>
           </div>

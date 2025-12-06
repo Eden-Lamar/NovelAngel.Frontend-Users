@@ -40,7 +40,7 @@ const Terms = () => {
 
             <Section title="2. Your Acceptance">
                 <p className="uppercase font-semibold text-xs md:text-sm tracking-wide">
-                    BY USING AND/OR VISITING THIS WEBSITE (COLLECTIVELY, INCLUDING ALL CONTENT AVAILABLE THROUGH THE NOVELANGEL.COM DOMAIN NAME, THE “NOVELANGEL WEBSITE”, OR “WEBSITE”), YOU SIGNIFY YOUR ASSENT TO TERMS OF USE, WHICH ARE PUBLISHED AT HTTP://WWW.NOVELANGEL.COM/TERMS-AND-CONDITIONS AND WHICH ARE INCORPORATED HEREIN BY REFERENCE.
+                    BY USING AND/OR VISITING THIS WEBSITE (COLLECTIVELY, INCLUDING ALL CONTENT AVAILABLE THROUGH THE NOVELANGEL.COM DOMAIN NAME, THE “NOVELANGEL WEBSITE”, OR “WEBSITE”), YOU SIGNIFY YOUR ASSENT TO TERMS OF USE, WHICH ARE PUBLISHED AT HTTPS://WWW.NOVELANGEL.COM/TERMS AND WHICH ARE INCORPORATED HEREIN BY REFERENCE.
                 </p>
                 <p>If you do not agree to any of these terms, then please do not use the NovelAngel Website.</p>
             </Section>
@@ -50,7 +50,7 @@ const Terms = () => {
                     <li><strong>Service:</strong> Refers to the NovelAngel website operated by NovelAngel.</li>
                     <li><strong>User:</strong> Refers to the individual accessing or using the Service, or the company, or other legal entity on behalf of which such individual is accessing or using the Service.</li>
                     <li><strong>Content:</strong> Refers to novels, chapters, reviews, comments, and other material available through the Service.</li>
-                    <li><strong>Stars:</strong> Refers to the virtual currency used within the Service.</li>
+                    <li><strong>Coins:</strong> Refers to the virtual currency used within the Service.</li>
                 </ul>
             </Section>
 
@@ -60,22 +60,21 @@ const Terms = () => {
             </Section>
 
             <Section title="5. Content and Refund Policy">
-                <p>Some chapters on our platform are free, while others can be unlocked using Stars – our virtual currency.</p>
+                <p>Some chapters on our platform are free, while others can be unlocked using Coins – our virtual currency.</p>
                 <ul className="list-disc pl-5 space-y-1">
-                    <li>Stars can be purchased with debit cards using real money.</li>
+                    <li>Coins can be purchased with debit cards using real money.</li>
                     <li>They are non-refundable and hold no cash value outside NovelAngel.</li>
-                    <li>Stars cannot be exchanged, gifted, or transferred.</li>
+                    <li>Coins cannot be exchanged, gifted, or transferred.</li>
                 </ul>
             </Section>
 
-            <Section title="6. Stars and Purchases">
-                <p>Stars are a virtual currency that can be used to purchase chapters and other content on the Service. Stars have no real-world value and cannot be exchanged for cash or other items of monetary value from us or any other party except as explicitly provided in these Terms.</p>
-                <p>All purchases of Stars are final and non-refundable, except as required by applicable law. We reserve the right to modify, manage, control and/or eliminate Stars at our sole discretion. Prices and availability of Stars are subject to change without notice.</p>
+            <Section title="6. Coins and Purchases">
+                <p>Coins are a virtual currency that can be used to purchase chapters and other content on the Service. Coins have no real-world value and cannot be exchanged for cash or other items of monetary value from us or any other party except as explicitly provided in these Terms.</p>
+                <p>All purchases of Coins are final and non-refundable, except as required by applicable law. We reserve the right to modify, manage, control and/or eliminate Coins at our sole discretion. Prices and availability of Coins are subject to change without notice.</p>
             </Section>
 
             <Section title="7. NovelAngel Website">
-                <p>These Terms of Use apply to all users of the NovelAngel Website, including users who are also contributors of novel content, information, and other materials or services on the Website. The NovelAngel Website may contain links to third party websites that are not owned or controlled by NovelAngel.</p>
-                <p>NovelAngel has no control over, and assumes no responsibility for, the content, privacy policies, or practices of any third party websites. In addition, NovelAngel will not and cannot censor or edit the content of any third-party site. By using the Website, you expressly relieve NovelAngel from any and all liability arising from your use of any third-party website. Accordingly, we encourage you to be aware when you leave the NovelAngel Website and to read the terms and conditions and privacy policy of each other website that you visit.</p>
+                <p>These Terms of Use apply to all users of the NovelAngel Website, including users who are also contributors of novel content, information, and other materials or services on the Website. The NovelAngel Website may contain links to third party websites that are not owned or controlled by NovelAngel. NovelAngel has no control over, and assumes no responsibility for, the content, privacy policies, or practices of any third party websites. In addition, NovelAngel will not and cannot censor or edit the content of any third-party site. By using the Website, you expressly relieve NovelAngel from any and all liability arising from your use of any third-party website. Accordingly, we encourage you to be aware when you leave the NovelAngel Website and to read the terms and conditions and privacy policy of each other website that you visit.</p>
             </Section>
 
             <Section title="8. Website Access">
@@ -118,7 +117,7 @@ const Terms = () => {
                         <li>(vi) A statement that the information in the notification is accurate, and under penalty of perjury, that you are authorized to act on behalf of the owner of an exclusive right that is allegedly infringed.</li>
                     </ul>
                     <p className="mt-2 p-4 text-sm bg-gray-50 dark:bg-gray-900 rounded-lg border-[1px] border-gray-700">
-                        NovelAngel’s designated Copyright Agent to receive notifications of claimed infringement is: <span className="text-cyan-600 dark:text-cyan-400">copyright@novelangel.com</span>. <br/>
+                        NovelAngel’s designated Copyright Agent to receive notifications of claimed infringement is: <strong className="text-cyan-600 dark:text-cyan-400">copyright@novelangel.com</strong>. <br/>
                         <span className="text-sm">For clarity, only DMCA notices should go to the Copyright Agent; any other feedback, comments, requests for technical support, and other communications should be directed to NovelAngel customer service. You acknowledge that if you fail to comply with all of the requirements of this Section 5(D), your DMCA notice may not be valid.</span>
                     </p>
                 </div>
@@ -135,7 +134,7 @@ const Terms = () => {
                     <li>(iii) Any unauthorized access to or use of our secure servers and/or any and all personal information and/or financial information stored therein,</li>
                     <li>(iv) Any interruption or cessation of transmission to or from our website,</li>
                     <li>(v) Any bugs, viruses, trojan horses, or the like which may be transmitted to or through our website by any third party,</li>
-                    <li>(vi) Any errors or omissions in any content or for any loss or damage of any kind incurred as a result of the use of any content posted, emailed, transmitted, or otherwise made available via the NovelAngel website. NovelAngel does not warrant, endorse, guarantee, or assume responsibility for any product or service advertised or offered by a third party through the NovelAngel website or any hyperlinked website or featured in any banner or other advertising, and NovelAngel will not be a party to or in any way be responsible for monitoring any transaction between you and third-party providers of products or services. as with the purchase of a product or service through any medium or in any environment, you should use your best judgment and exercise caution where appropriate.</li>
+                    <li>(vi) Any errors or omissions in any content or for any loss or damage of any kind incurred as a result of the use of any content posted, emailed, transmitted, or otherwise made available via the NovelAngel website. NovelAngel does not warrant, endorse, guarantee, or assume responsibility for any product or service advertised or offered by a third party through the NovelAngel website or any hyperlinked website or featured in any banner or other advertising, and NovelAngel will not be a party to or in any way be responsible for monitoring any transaction between you and third-party providers of products or services. As with the purchase of a product or service through any medium or in any environment, you should use your best judgment and exercise caution where appropriate.</li>
                 </ul>
             </Section>
 

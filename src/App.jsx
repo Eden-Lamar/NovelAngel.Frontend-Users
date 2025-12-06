@@ -20,6 +20,7 @@ import Profile from "./pages/Profile";
 import Library from "./pages/Library";
 import Terms from './pages/Terms'; 
 import Privacy from './pages/Privacy';
+import ContactUs from './pages/ContactUs';
 import { useAuth } from "./context/useAuth";
 import 'animate.css';
 import "./App.css"
@@ -161,6 +162,7 @@ function App() {
             <Route path="/library" element={<Library />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/privacy" element={<Privacy />} />
+            <Route path="/contact-us" element={<ContactUs />} />
           </Routes>
       </div>
 

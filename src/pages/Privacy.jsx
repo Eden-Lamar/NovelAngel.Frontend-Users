@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { IoArrowBack } from "react-icons/io5";
 
@@ -14,6 +13,8 @@ const Section = ({ title, children }) => (
 );
 
 const Privacy = () => {
+
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-[#0f1419] py-6 px-4 md:px-8">
       <div className="max-w-4xl mx-auto">
@@ -23,7 +24,7 @@ const Privacy = () => {
             <Link to="/" className="inline-flex items-center gap-2 text-gold hover:text-cyan-500 transition-colors text-sm font-medium">
                 <IoArrowBack /> Back to Home
             </Link>
-            <h1 className="text-4xl md:text-5xl py-1.5 font-bold  text-transparent bg-clip-text bg-gradient-to-r from-gold to-cyan-500 font-vibes">
+            <h1 className="text-4xl md:text-5xl py-1.5 font-bold text-transparent bg-clip-text bg-gradient-to-r from-gold to-cyan-500 font-vibes">
                 Privacy Policy
             </h1>
             <p className="text-gray-500 dark:text-gray-400">
@@ -32,16 +33,16 @@ const Privacy = () => {
         </div>
 
         {/* Content Container */}
-        <div className="bg-white dark:bg-[#1a1b23] rounded-2xl shadow-xl p-6 md:p-12 border border-gray-100 dark:border-gray-800/50">
+        <div className="bg-white dark:bg-[#1a1b23] rounded-2xl shadow-xl p-6 md:p-12 border border-gray-100 dark:border-gray-800/50 text-justify">
             
             <Section title="1. Introduction & Data Collection">
                 <p>
                     The following webpage outlines NovelAngel’s collection and use of personal information from its users. 
-                    NovelAngel.com values the privacy of our members and users; we will never share any personal information 
+                    NovelAngel.com values the privacy of our members and users, we will never share any personal information 
                     of anybody who logs on to NovelAngel with anyone. This includes your e-mail address, name, and location. 
                 </p>
                 <p>
-                    Upon logging on to NovelAngel, such things as your IP address and hostname are logged for statistical and security reasons.
+                    Upon logging on to NovelAngel such things as your IP address and hostname are logged for statistical and security reasons.
                 </p>
             </Section>
 
@@ -55,7 +56,7 @@ const Privacy = () => {
                 <p>
                     Notwithstanding the foregoing, NovelAngel may choose to retain some personal information such as the child’s e-mail 
                     address as a means to prevent the child from re-registering at our website. The Children’s Online Privacy Protection 
-                    Act (COPPA) went into effect in April 2000, and as a result, websites all over the world wide web had to change 
+                    Act (COPPA) went into effect in April 2000, and as a result websites all over the world wide web had to change 
                     their standards to not collect any information from a child.
                 </p>
             </Section>
@@ -86,17 +87,20 @@ const Privacy = () => {
                     hostname, and information about your system to help us serve you better. These are purely used for statistical reasons, 
                     and will not be used in any way other than that. Some programs that may collect this information include: Google, Jetpack, WordPress.
                 </p>
+                <p>
+                    We use Local Storage to securely store your session token and interface preferences. We may also use essential cookies provided by our hosting partners for security and performance.
+                </p>
             </Section>
 
             <Section title="6. Website Policy Changes">
                 <p>
-                    NovelAngel reserves the right to change this, and any other policy located on our website at anytime without notifying our users.
+                    NovelAngel reserves the right to change this and any other policy located on our website at any time without notifying our users.
                 </p>
             </Section>
             
             <div className="mt-8 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg text-center">
                  <p className="text-sm text-gray-500">
-                    Questions? Contact us at <a href="mailto:novelangel@gmail.com" className="text-cyan-500 hover:text-gold">novelangel@gmail.com</a>
+                    Questions? Contact us at <a href="mailto:novelangel@gmail.com" className="text-cyan-500 hover:text-gold transition-colors">novelangel@gmail.com</a>
                  </p>
             </div>
 
