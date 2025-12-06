@@ -530,10 +530,10 @@ function BookDetails() {
                                 {/* Summary Tab */}
                                 {activeTab === 'summary' && (
                                     <div className="prose dark:prose-invert max-w-none">
-                                        <span className="text-base leading-relaxed mr-2">
+                                        <span className="text-base leading-relaxed mr-2 whitespace-pre-wrap">
                                             {showFullDescription
-                                                ? startCase(book.description)
-                                                : truncate(startCase(book.description), { length: 300 })}
+                                                ? book.description
+                                                : truncate(book.description, { length: 300 })}
                                         </span>
                                         {book.description.length > 300 && !showFullDescription && (
                                             <Button
