@@ -49,7 +49,7 @@ function Hero({ books, loading }) {
             <div className="flex items-center justify-center lg:justify-start gap-4 mb-2">
               <div className="h-px w-12 bg-gradient-to-r from-transparent to-gold" />
               <span className="text-sm font-medium text-gold uppercase tracking-widest">
-              Story Realm
+              Novel Angel
               </span>
               <div className="h-px w-12 bg-gradient-to-l from-transparent to-gold" />
             </div>
