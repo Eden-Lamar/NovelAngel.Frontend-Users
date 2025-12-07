@@ -143,7 +143,7 @@ function BuyCoins() {
                     return (
                         <Card
                             key={plan.baseCoins}
-                            className={`relative border border-gray-400 bg-custom-striped-light dark:bg-custom-striped hover:bottom-1 transition-transform duration-300`}
+                            className={`relative border border-amber-500/50 hover:bottom-1 transition-transform duration-300`}
                         >
                             <CardBody className="p-6">
                                 {/* Popular Badge */}
@@ -223,9 +223,9 @@ function BuyCoins() {
 																		color={plan.popular ? "warning" : "primary"}
                                     variant={plan.popular ? "solid" : "ghost"}
                                     size="lg"
-                                    startContent={!purchaseLoading && <FaCoins />}
+                                    // startContent={!purchaseLoading && <FaCoins />}
                                 >
-                                    {purchaseLoading === plan.baseCoins ? "Processing..." : "Buy Now"}
+                                    {purchaseLoading === plan.baseCoins ? "Processing..." : "Select Plan"}
                                 </Button>
                             </CardBody>
                         </Card>
