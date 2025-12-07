@@ -6,10 +6,9 @@ export default function BookHoverCard({ book }) {
 
   return (
     <div
-      className={`hidden md:block absolute 
-        ${book.title.length > 25 ? "top-[40%]" : "top-[47%]"}
-        left-0 right-0 bg-white dark:bg-gray-800 
-        rounded-xl shadow-md p-4 z-30 animate-fadeIn`}
+      className="hidden md:block absolute 
+        bottom-0 left-0 right-0 bg-white dark:bg-gray-800 
+        rounded-xl shadow-md p-4 z-30 animate-fadeIn"
     >
       {/* Title */}
       <h4 className="font-bold text-base text-gray-800 dark:text-gray-100 mb-2 line-clamp-2 leading-5">
@@ -18,7 +17,7 @@ export default function BookHoverCard({ book }) {
 
       {/* Tags */}
       {book.tags?.length > 0 && (
-        <div className="flex gap-1 mb-3">
+        <div className="flex flex-wrap gap-x-0.5 gap-y-1 mb-1.5">
           {book.tags.slice(0, 3).map((tag, i) => (
             <Chip
               key={i}
@@ -34,7 +33,7 @@ export default function BookHoverCard({ book }) {
       )}
 
       {/* Description */}
-      <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-3">
+      <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-3 leading-relaxed">
         {book.description || "No description available"}
       </p>
     </div>
