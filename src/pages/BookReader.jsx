@@ -426,7 +426,7 @@ function BookReader() {
 													/>
 												</div>
 
-                        <h2 className="text-sm md:text-xl font-medium md:font-bold line-clamp-2 md:line-clamp-none text-transparent bg-clip-text bg-gradient-to-r from-gold to-cyan-500">
+                        <h2 className="text-sm md:text-xl font-medium md:font-bold line-clamp-1 md:line-clamp-none text-transparent bg-clip-text bg-gradient-to-r from-gold to-cyan-500">
                             {startCase(chapterData.bookTitle)}
                         </h2>
                     </Link>
