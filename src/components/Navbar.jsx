@@ -98,7 +98,7 @@ function NavbarSticky() {
             alt="Novel Angel Logo"
             className="h-10 w-auto mr-1 group-hover:scale-110"
           />
-          <span className="text-2xl font-vibes font-bold text-transparent bg-clip-text bg-gradient-to-r from-gold to-cyan-500 px-1">
+          <span className="text-xl font-vibes font-bold text-transparent bg-clip-text bg-gradient-to-r from-gold to-cyan-500 px-1">
             Novel Angel
           </span>
         </NavbarBrand>
