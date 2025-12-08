@@ -42,7 +42,7 @@
 }
 
   /* use !important to beat library specificity */
-.force-blue:hove {
+.force-blue:hover {
   background-color: #3b82f6 !important; /* blue-500 */
   color: #111827 !important;            /* gray-900 */
 }
