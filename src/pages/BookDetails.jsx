@@ -244,14 +244,12 @@ function BookDetails() {
 
 														{/* Book cover */}
 														{/* Original container — keep overflow-hidden for image zoom */}
-														<div className="relative w-[60%] md:w-[300px] aspect-[2/3] rounded-xl shadow-2xl group overflow-hidden">
+														<div className="relative w-[60%] md:w-[300px] aspect-[2/3] rounded-xl shadow-2xl group overflow-hidden bg-gray-200 dark:bg-gray-800">
                             <img
                                 src={book.bookImage}
                                 alt={book.title}
-																width={300}
-																height={400}
 																decoding="async"
-                                className="object-cover object-center w-full h-full transform transition-transform duration-300 ease-in-out group-hover:scale-105"
+                                className="absolute inset-0 w-full h-full object-cover object-center transform transition-transform duration-300 ease-in-out group-hover:scale-105"
                             />
                             {/* Gradient Overlay */}
                             {/* <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-transparent to-transparent bg-opacity-100"></div> */}
