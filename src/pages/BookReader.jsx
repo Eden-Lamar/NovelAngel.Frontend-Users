@@ -416,7 +416,7 @@ function BookReader() {
                     <Link to={`/book/${bookId}`} className="flex items-center group">
                         <RiArrowLeftSLine className="text-gold text-2xl md:text-2xl transition-all duration-200 group-hover:mr-1 group-hover:scale-105 md:group-hover:scale-125" />
 
-                        <div className="relative w-8 md:w-10 aspect-[2/3] shadow-md rounded-sm md:rounded-md overflow-hidden bg-gray-200 dark:bg-gray-800 mr-2 group-hover:shadow-lg transition-all">
+                        <div className="relative w-10 aspect-[2/3] shadow-md rounded-sm md:rounded-md overflow-hidden bg-gray-200 dark:bg-gray-800 mr-2 group-hover:shadow-lg transition-all">
 													<img 
 													src={bookImage} 
 													alt={chapterData.bookTitle} 
@@ -426,7 +426,7 @@ function BookReader() {
 													/>
 												</div>
 
-                        <h2 className="text-lg md:text-xl font-medium md:font-bold line-clamp-2 md:line-clamp-none text-transparent bg-clip-text bg-gradient-to-r from-gold to-cyan-500">
+                        <h2 className="text-sm md:text-xl font-medium md:font-bold line-clamp-2 md:line-clamp-none text-transparent bg-clip-text bg-gradient-to-r from-gold to-cyan-500">
                             {startCase(chapterData.bookTitle)}
                         </h2>
                     </Link>
