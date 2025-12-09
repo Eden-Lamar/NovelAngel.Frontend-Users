@@ -215,14 +215,16 @@ function BookDetails() {
 											<Skeleton className="relative h-[342.2px] md:h-[442.2px] w-[60%] md:w-[300px] aspect-[2/2.5] md:aspect-[3/4] rounded-xl shadow-2xl group overflow-hidden self-center md:self-start" />
                     ) : book ? (
                         <div className="relative flex justify-center md:justify-start">
-													{/* ────────  GLOW (mobile only)  ──────── */}
-													<div className="absolute inset-0 flex items-center justify-center md:hidden -z-10 pointer-events-none">
-														<div
-															className="w-[200%] h-[200%] rounded-full blur-3xl animate-pulse-slow"
-															style={{
-																background: 'radial-gradient(circle, rgba(251, 191, 36, 0.7) 0%, rgba(251, 191, 36, 0.1) 40%, transparent 70%)',
-															}}
-														/>
+													{/* ────────  Ambient Blur Background (YouTube Music Style) (mobile only)  ──────── */}
+													<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full md:hidden -z-10 pointer-events-none">
+															<img
+																	src={book.bookImage}
+																	alt={book.title}
+																	aria-hidden="true"
+																	className="w-full h-full object-cover rounded-full blur-3xl opacity-100 dark:opacity-50"
+															/>
+															{/* Optional: A subtle dark overlay to ensure it doesn't get too bright in dark mode */}
+															{/* <div className="absolute inset-0 bg-white/50 dark:bg-black/20 mix-blend-overlay rounded-full blur-3xl" /> */}
 													</div>
 
 														{/* Book cover */}
