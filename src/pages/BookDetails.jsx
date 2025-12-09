@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import api from '../api/axiosInstance';
 import { startCase, truncate, capitalize } from 'lodash';
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { FaHeart, FaRegEye, FaBookOpen, FaBookReader, FaLock, FaBookmark, FaLockOpen, FaShareAlt } from "react-icons/fa";
+import { FaHeart, FaRegEye, FaBookOpen, FaBookReader, FaLock, FaBookmark, FaLockOpen, FaShareAlt, FaPlay} from "react-icons/fa";
 import { RiArrowDownWideFill } from "react-icons/ri";
 import { GiTwoCoins } from "react-icons/gi";
 import { Button } from "@heroui/button";
@@ -26,9 +26,12 @@ function BookDetails() {
     const [activeTab, setActiveTab] = useState('summary');
     const [isLiked, setIsLiked] = useState(false);
     const [isBookmarked, setIsBookmarked] = useState(false);
+
+		// State to store the specific chapter the user left off at
+    const [lastReadChapter, setLastReadChapter] = useState(null);
     
     const { auth, isAuthenticated } = useAuth(); // Set to null for anonymous access
-		console.log("auth in BookDetails:", auth);
+		// console.log("auth in BookDetails:", auth);
 
 		// Refs for floating button logic
 		const startReadingButtonRef = useRef(null); // The static button in the UI
@@ -38,31 +41,49 @@ function BookDetails() {
 		// const [stopFloating, setStopFloating] = useState(false); 
 		// console.log(navigate)
 
-    // Fetch book details
+    // Fetch book details & User Progress
     useEffect(() => {
         const fetchBookData  = async () => {
             setLoading(true);
+						// ---------------------------------------------------------
+            //  Explicitly reset progress state every time 
+            // the ID changes or auth status changes.
+            // ---------------------------------------------------------
+            setLastReadChapter(null);
             try {
 							// Base requests
 							const promises = [api.get(`/books/${id}`)];
 							
-							// Conditionally add like/bookmark requests if logged in
+							// Conditionally add like/bookmark/progress requests if logged in
 							if (isAuthenticated) {
 									promises.push(api.get(`/books/${id}/like-status`));
 									promises.push(api.get(`/books/${id}/bookmark-status`));
+									// Fetch continue reading list to check progress
+                  promises.push(api.get('/user/continue-reading'));
 								}
 								
-								// Fetch book details, like status, and bookmark status in parallel
+								// Fetch book details, like status, bookmark status, and continue reading list in parallel
 								const results = await Promise.allSettled(promises);
 
 								const bookRes = results[0];
 								const likeRes = isAuthenticated ? results[1] : null;
 								const bookmarkRes = isAuthenticated ? results[2] : null;
+								const progressRes = isAuthenticated ? results[3] : null;
 
 								if (bookRes.status === "fulfilled") setBook(bookRes.value.data.data);
 								if (likeRes?.status === "fulfilled") setIsLiked(likeRes.value.data.isLiked);
 								if (bookmarkRes?.status === "fulfilled") setIsBookmarked(bookmarkRes.value.data.isBookmarked);
-                
+
+								// Process Reading Progress
+                if (progressRes?.status === "fulfilled") {
+                    const continueList = progressRes.value.data.data || [];
+                    // Find if THIS book is in the list
+                    const currentProgress = continueList.find(item => item.bookId === id);
+                    if (currentProgress && currentProgress.lastChapter) {
+                        setLastReadChapter(currentProgress.lastChapter);
+                    }
+                }
+	
                 setError(null);
             } catch (err) {
                 const errorMessage = err.response?.data?.message || "Failed to load book details.";
@@ -198,7 +219,23 @@ function BookDetails() {
         return { fullDate, year };
     };
 
-		// console.log("book", book)
+		// Helper to generate the correct read link
+    const getReadLink = () => {
+        // Case 1: Continue Reading (User has progress)
+        if (lastReadChapter) {
+            return `/book/${book._id}/read?chapterId=${lastReadChapter.id}`;
+        }
+
+        // Case 2: Start Reading (User has no progress, default to Chapter 1)
+        if (book?.chapters?.length > 0) {
+            // Find the chapter with the lowest number to ensure we start at the beginning
+            const firstChapter = book.chapters[0];
+            return `/book/${book._id}/read?chapterId=${firstChapter._id}`;
+        }
+
+        // Case 3: Fallback (No chapters exist yet)
+        return `/book/${book._id}/read`;
+    };
 
     return (
         <div className="container mx-auto px-2 md:px-10 py-8 min-h-screen">
@@ -385,13 +422,13 @@ function BookDetails() {
 																			<Button
 																				ref={startReadingButtonRef}
 																				as={Link}
-																				to={`/book/${book._id}/read`}
+																				to={getReadLink()}
 																				variant="bordered"
 																				size="md"
 																				className="w-full border-cyan-500 text-cyan-500 force-cyan"
-																				startContent={<FaBookOpen />}
+																				startContent={lastReadChapter ? <FaPlay /> : <FaBookOpen />}
 																			>
-																					Start Reading
+																					{lastReadChapter ? `Continue: Ch. ${lastReadChapter.number}` : "Start Reading"}
 																			</Button>
                                 </div>                             
                             </CardBody>
@@ -622,14 +659,14 @@ function BookDetails() {
 								<div className="px-4 animate__animated animate__fadeInUp">
 										<Button
 											as={Link}
-											to={`/book/${book._id}/read`}
+											to={getReadLink()}
 											variant="solid"
 											size="md"
 											radius="md"
-											startContent={<FaBookOpen />}
+											startContent={lastReadChapter ? <FaPlay /> : <FaBookOpen />}
 											className="w-full force-cyan-solid"
 										>
-												Start Reading
+											{lastReadChapter ? `Continue Reading Ch. ${lastReadChapter.number}` : "Start Reading"}
 										</Button>
 								</div>
 							)}
