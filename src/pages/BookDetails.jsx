@@ -29,8 +29,13 @@ function BookDetails() {
     
     const { auth, isAuthenticated } = useAuth(); // Set to null for anonymous access
 		console.log("auth in BookDetails:", auth);
-		const startReadingButtonRef = useRef(null);
+
+		// Refs for floating button logic
+		const startReadingButtonRef = useRef(null); // The static button in the UI
+		// const bottomSentinelRef = useRef(null);  // The marker at the bottom of the page
+
 		const [showFloatingButton, setShowFloatingButton] = useState(false);
+		// const [stopFloating, setStopFloating] = useState(false); 
 		// console.log(navigate)
 
     // Fetch book details
@@ -70,44 +75,22 @@ function BookDetails() {
         fetchBookData();
     }, [id, isAuthenticated]);
 
-		useEffect(() => {
-			if (!startReadingButtonRef.current || typeof window === 'undefined') return;
-
+		// Handle Floating Button Visibility & Latching
+    useEffect(() => {
 			const button = startReadingButtonRef.current;
+        if (!button) return;
 
-			const observer = new IntersectionObserver(
-				([entry]) => {
-					// Show floating button ONLY when the button is completely out of view
-					setShowFloatingButton(entry.intersectionRatio === 0);
-				},
-				{
-					root: null,
-					threshold: [0, 1.0], // Track fully visible vs fully out of view
-				}
-			);
+        const topObserver = new IntersectionObserver(
+            ([entry]) => {
+                // Show floating button when static button is NOT visible
+                setShowFloatingButton(!entry.isIntersecting);
+            },
+            { threshold: 0 }
+        );
 
-			observer.observe(button);
-
-			// Initial check after layout stabilizes
-			const runInitialCheck = () => {
-				requestAnimationFrame(() => {
-					const rect = button.getBoundingClientRect();
-					const fullyVisible =
-						rect.top >= 0 && rect.bottom <= window.innerHeight;
-					setShowFloatingButton(!fullyVisible);
-				});
-			};
-
-			// Run after layout + images load
-			const timeoutId = setTimeout(runInitialCheck, 150);
-
-			window.addEventListener('resize', runInitialCheck);
-
-			return () => {
-				observer.unobserve(button);
-				clearTimeout(timeoutId);
-				window.removeEventListener('resize', runInitialCheck);
-			};
+        topObserver.observe(button);
+        return () => topObserver.disconnect();
+			
 		}, [book]); // Re-run when book loads
 
 
@@ -215,7 +198,7 @@ function BookDetails() {
         return { fullDate, year };
     };
 
-		console.log("book", book)
+		// console.log("book", book)
 
     return (
         <div className="container mx-auto px-2 md:px-10 py-8 min-h-screen">
@@ -245,36 +228,37 @@ function BookDetails() {
 														{/* Book cover */}
 														{/* Original container — keep overflow-hidden for image zoom */}
 														<div className="relative w-[60%] md:w-[300px] aspect-[2/3] rounded-xl shadow-2xl group overflow-hidden bg-gray-200 dark:bg-gray-800">
-                            <img
-                                src={book.bookImage}
-                                alt={book.title}
-																decoding="async"
-                                className="absolute inset-0 w-full h-full object-cover object-center transform transition-transform duration-300 ease-in-out group-hover:scale-105"
-                            />
-                            {/* Gradient Overlay */}
-                            {/* <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-transparent to-transparent bg-opacity-100"></div> */}
+															{/* Image is forced to fill container absolutely */}
+															<img
+																	src={book.bookImage}
+																	alt={book.title}
+																	decoding="async"
+																	className="absolute inset-0 w-full h-full object-cover object-center transform transition-transform duration-300 ease-in-out group-hover:scale-105"
+															/>
+															{/* Gradient Overlay */}
+															{/* <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-transparent to-transparent bg-opacity-100"></div> */}
 
-														{/* Gradient Overlay */}
-														<div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.55)_0%,rgba(0,0,0,0.1)_25%,transparent_50%,rgba(0,0,0,0.1)_75%,rgba(0,0,0,0.55)_100%)]" />
+															{/* Gradient Overlay */}
+															<div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.55)_0%,rgba(0,0,0,0.1)_25%,transparent_50%,rgba(0,0,0,0.1)_75%,rgba(0,0,0,0.55)_100%)]" />
 
-                            {/* Status Badge */}
-                            <Chip
-                                color={book.status === 'ongoing' ? 'warning' : 'success'}
-                                variant="flat"
-                                className={`absolute top-4 left-4 uppercase font-bold ${book.status === "ongoing" ? "text-yellow-500" : "text-green-500" } backdrop-blur-md`}
-                            >
-                                {capitalize(book.status)}
-                            </Chip>
-                                
-                            {/* Stats */}
-                            <div className="flex justify-between absolute bottom-0 left-0 p-4 w-full">
-                                <p className="text-gold text-lg flex items-center gap-2 font-semibold">
-                                    <FaHeart /> {book.likeCount || 0}
-                                </p>
-                                <p className="text-gray-300 text-lg flex items-center gap-2 font-semibold">
-                                    <FaRegEye /> {book.views || 0}
-                                </p>
-                            </div>
+															{/* Status Badge */}
+															<Chip
+																	color={book.status === 'ongoing' ? 'warning' : 'success'}
+																	variant="flat"
+																	className={`absolute top-4 left-4 uppercase font-bold ${book.status === "ongoing" ? "text-yellow-500" : "text-green-500" } backdrop-blur-md`}
+															>
+																	{capitalize(book.status)}
+															</Chip>
+																	
+															{/* Stats */}
+															<div className="flex justify-between absolute bottom-0 left-0 p-4 w-full">
+																	<p className="text-gold text-lg flex items-center gap-2 font-semibold">
+																			<FaHeart /> {book.likeCount || 0}
+																	</p>
+																	<p className="text-gray-300 text-lg flex items-center gap-2 font-semibold">
+																			<FaRegEye /> {book.views || 0}
+																	</p>
+															</div>
                         </div>
 											</div>
                     ) : null}
@@ -395,7 +379,7 @@ function BookDetails() {
                                         </div>
                                     </div>
 
-																		{/* Start Reading button (inside card) */}
+																		{/* Start Reading button (inside card - Static) */}
 																			<Button
 																				ref={startReadingButtonRef}
 																				as={Link}
@@ -407,25 +391,7 @@ function BookDetails() {
 																			>
 																					Start Reading
 																			</Button>
-
-																		{/* Floating Start Reading button — appears after scroll past card */}
-																		{showFloatingButton && (
-																			<div className="fixed bottom-2 left-0 right-0 z-20 px-4 md:hidden animate__animated animate__fadeInUp">
-																				<Button
-																					as={Link}
-																					to={`/book/${book._id}/read`}
-																					variant="solid"
-																					size="md"
-																					radius="md"
-																					className="w-full force-cyan-solid">
-																					<FaBookOpen className="mr-2" /> Start Reading
-																				</Button>
-																			</div>
-																	)}
-
-                                </div>
-
-                                
+                                </div>                             
                             </CardBody>
                         </Card>
                     ) : null}
@@ -641,6 +607,31 @@ function BookDetails() {
 
 					{/* Recommendations Section - Full Width */}
 					<BookRecommendations />
+
+					{/* --- STICKY BUTTON IMPLEMENTATION --- 
+              1. 'sticky': Makes it stick.
+              2. 'bottom-4': Sets the distance from the bottom of the viewport.
+              3. 'z-20': Ensures it sits on top of content.
+              4. 'mt-4': Adds space so it doesn't overlap the very last element immediately.
+					*/}
+
+						<div className="md:hidden sticky bottom-0 z-20 w-full pb-2">
+							{showFloatingButton && (
+								<div className="px-4 animate__animated animate__fadeInUp">
+										<Button
+											as={Link}
+											to={`/book/${book._id}/read`}
+											variant="solid"
+											size="md"
+											radius="md"
+											startContent={<FaBookOpen />}
+											className="w-full force-cyan-solid"
+										>
+												Start Reading
+										</Button>
+								</div>
+							)}
+						</div>
         </div>
     );
 }
