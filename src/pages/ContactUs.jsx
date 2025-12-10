@@ -32,7 +32,7 @@ const ContactUs = () => {
   // };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-[#0f1419] py-6 px-4 md:px-8">
+    <div className="bg-gray-50 dark:bg-[#0f1419] py-6 px-4 md:px-8">
       <div className="max-w-6xl mx-auto">
         
         {/* Header */}
