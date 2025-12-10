@@ -1,7 +1,7 @@
 // import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { IoArrowBack } from "react-icons/io5";
-import { FaEnvelope, FaMapMarkerAlt, FaPaperPlane } from "react-icons/fa";
+import { FaEnvelope, FaMapMarkerAlt, FaPaperPlane, FaPhoneAlt } from "react-icons/fa";
 
 const ContactUs = () => {
   
@@ -75,6 +75,19 @@ const ContactUs = () => {
                                 </a>
                             </div>
                         </div>
+												
+                        {/* Phone Number */}
+                        <div className="flex items-start gap-4">
+                            <div className="w-12 h-12 rounded-xl bg-green-500/10 flex items-center justify-center flex-shrink-0 text-green-500">
+                                <FaPhoneAlt className="text-xl" />
+                            </div>
+                            <div>
+                                <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Phone Number</p>
+                                <a href="tel:+2349129216405" className="text-lg font-semibold text-gray-800 dark:text-gray-200 hover:text-gold transition-colors">
+                                    +234 912 921 6405
+                                </a>
+                            </div>
+                        </div>
 
                         {/* Address */}
                         <div className="flex items-start gap-4">
@@ -94,7 +107,7 @@ const ContactUs = () => {
                     {/* Support Note */}
                     <div className="mt-12 pt-8 border-t border-gray-100 dark:border-gray-800 relative z-10">
                         <p className="text-sm text-gray-500 dark:text-gray-400 italic">
-                            "We strive to respond to all inquiries within 24 hours."
+                            "We respond to all inquiries within 24 hours."
                         </p>
                     </div>
                 </div>
