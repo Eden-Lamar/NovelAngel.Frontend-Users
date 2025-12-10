@@ -30,7 +30,7 @@ function BookRecommendations() {
   if (loading) {
     return (
       <div className="mt-10">
-        <div className="flex gap-4 overflow-x-auto px-2 py-4 snap-x snap-mandatory">
+        <div className="flex gap-4 overflow-x-auto px-2 py-4 snap-x snap-mandatory scrollbar-hide">
           {Array(5).fill(0).map((_, i) => (
             <Card key={i} className="flex-shrink-0 w-[160px] md:w-[180px] snap-start">
               <CardBody className="p-0">
@@ -61,7 +61,7 @@ function BookRecommendations() {
 					size="md"
 					className="text-sm"
 				>
-					You Might Also Like 💫
+					You Might Also Like 🔮
 				</Chip>
 			</div>
       <div className="flex gap-4 overflow-x-auto px-2 py-4 snap-x snap-mandatory">
