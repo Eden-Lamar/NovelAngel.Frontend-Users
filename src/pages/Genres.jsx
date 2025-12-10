@@ -117,7 +117,7 @@ function Genres() {
 				{
 						name: 'Mature',
 						gradient: 'from-gray-900 via-emerald-600 to-gray-900',
-						icon: '🔥',
+						icon: '🔞',
 						description: 'Intense stories with mature themes and emotions'
 				},
 				{
