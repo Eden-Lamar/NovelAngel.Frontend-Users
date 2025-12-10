@@ -27,7 +27,7 @@ function NoCPNovels({ books, loading }) {
             size="md"
             className="text-sm"
           >
-            No CP Novels 🚫💑
+            No CP Novels 🧘
           </Chip>
 
 					<ViewMoreButton category="No CP"/>
