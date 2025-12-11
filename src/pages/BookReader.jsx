@@ -15,12 +15,24 @@ import { Switch } from "@heroui/switch";
 import { Select, SelectItem } from "@heroui/select";
 import { Slider } from "@heroui/slider";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@heroui/modal";
+import DOMPurify from 'dompurify';
 import { useAuth } from "../context/useAuth";
 import AlertMessage from "../components/AlertMessage";
 import BookRecommendations from '../components/BookRecommendations';
-
-
 import 'animate.css';
+
+
+// DEFINE DEFAULTS OUTSIDE THE COMPONENT
+const DEFAULT_SETTINGS = {
+    fontSize: 20,
+    fontFamily: 'serif',
+    lineSpacing: 1.6,
+    backgroundGradient: true,
+    textAlignment: 'left',
+    letterSpacing: 0,
+    wordSpacing: 0,
+};
+
 
 function BookReader() {
     const { auth, refreshUser } = useAuth();
@@ -41,19 +53,36 @@ function BookReader() {
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const [activeTab, setActiveTab] = useState('text');
     
-    // Reading settings
-    const [readingSettings, setReadingSettings] = useState({
-        fontSize: 20,
-        fontFamily: 'serif',
-        lineSpacing: 1.6,
-        backgroundGradient: true,
-        textAlignment: 'left',
-        letterSpacing: 0,
-        wordSpacing: 0,
+    // READING SETTINGS STATE TO LOAD FROM LOCAL STORAGE
+    const [readingSettings, setReadingSettings] = useState(() => {
+        // Check if settings exist in localStorage
+        const savedSettings = localStorage.getItem("novelAngel_readingSettings");
+        if (savedSettings) {
+            try {
+                // Merge saved settings with defaults (in case we add new settings later)
+                return { ...DEFAULT_SETTINGS, ...JSON.parse(savedSettings) };
+            } catch (error) {
+                console.error("Error parsing reading settings:", error);
+                return DEFAULT_SETTINGS;
+            }
+        }
+        return DEFAULT_SETTINGS;
     });
+
+		// ADD EFFECT TO SAVE TO LOCAL STORAGE ON CHANGE
+    useEffect(() => {
+        localStorage.setItem("novelAngel_readingSettings", JSON.stringify(readingSettings));
+    }, [readingSettings]);
 
     // Modal control
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+		// 2. HELPER TO DETECT HTML CONTENT
+    const isHtmlContent = (text) => {
+        if (!text) return false;
+        // Check for common HTML tags created by Quill
+        return /<p>|<br>|<div>|<ul>|<ol>|<strong>|<em>/i.test(text);
+    };
 
     // Fetch book and chapter details
     useEffect(() => {
@@ -126,7 +155,7 @@ function BookReader() {
         try {
             await api.post(`/books/${bookId}/chapters/${chapterId}/unlock`);
 
-						// ✅ If successful, refresh the user (update coin balance)
+						// If successful, refresh the user (update coin balance)
 						await refreshUser();
 
             // Refetch chapter data
@@ -228,7 +257,7 @@ function BookReader() {
                         onClick={() => setIsSettingsOpen(false)}
                     />
                     
-                    <div className="fixed right-0 top-0 h-full w-full md:w-96 bg-white dark:bg-[#1a1b23] border-l border-cyan-500/50 shadow-2xl z-50 transform transition-transform duration-300 ease-in-out overflow-y-auto">
+                    <div className="fixed right-0 top-0 h-full w-4/5 md:w-96 bg-white dark:bg-[#1a1b23] border-l border-cyan-500/50 shadow-2xl z-50 transform transition-transform duration-300 ease-in-out overflow-y-auto">
                         {/* Header */}
                         <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
                             <h3 className="text-xl font-bold text-gold">Reading Settings</h3>
@@ -643,14 +672,29 @@ function BookReader() {
                                 )}
                             </div>
                         ) : (
-                            <div
-                                draggable="false"
-                                className="whitespace-pre-wrap select-none mt-6"
-                                style={getContentStyles()}
-                                onContextMenu={(e) => e.preventDefault()}
-                            >
-                                {chapterData.chapter.content}
-                            </div>
+                           // CONDITIONAL RENDERING FOR RICH TEXT VS PLAIN TEXT
+                            <>
+                                {isHtmlContent(chapterData.chapter.content) ? (
+                                    <div
+                                        draggable="false"
+                                        className="chapter-content select-none mt-4 text-foreground"
+                                        style={getContentStyles()}
+                                        onContextMenu={(e) => e.preventDefault()}
+                                        dangerouslySetInnerHTML={{
+                                            __html: DOMPurify.sanitize(chapterData.chapter.content)
+                                        }}
+                                    />
+                                ) : (
+                                    <div
+                                        draggable="false"
+                                        className="whitespace-pre-wrap select-none mt-4"
+                                        style={getContentStyles()}
+                                        onContextMenu={(e) => e.preventDefault()}
+                                    >
+                                        {chapterData.chapter.content}
+                                    </div>
+                                )}
+                            </>
                         )}
 
                         <div className="flex justify-between mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
