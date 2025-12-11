@@ -22,3 +22,33 @@
 #nprogress .bar {
   height: 2px !important;
 }
+
+/* READER VIEW STYLES */
+
+/* Ensure paragraphs in the reader have the same spacing as the editor */
+.chapter-content p {
+    margin-bottom: 1.2rem;
+    /* We don't set line-height here because it's controlled by your React settings slider */
+}
+
+/* Collapse empty paragraphs (fixes the double spacing issue on the reader side too) */
+.chapter-content p:has(br:only-child) {
+    margin-bottom: 1.2rem !important;
+    line-height: 0 !important;
+    height: 0;
+}
+
+/* Support for your "Tight Spacing" class in the reader */
+.chapter-content .tight-spacing {
+    margin-bottom: 0 !important;
+    padding-bottom: 0.2rem !important;
+    /* line-height is controlled by React settings, so we might leave it or force it */
+}
+
+/* Style Blockquotes if you use them */
+.chapter-content blockquote {
+    border-left: 4px solid #06b6d4;
+    padding-left: 1rem;
+    font-style: italic;
+    color: #e5e7eb;
+}
