@@ -355,7 +355,7 @@ function Novels() {
                             >
                                 <CardBody className="flex flex-row gap-0 p-0">
                                     {/* Book Image */}
-                                    <div className="relative w-[40%] aspect-[3/4] h-full flex-shrink-0 overflow-hidden group">
+                                    <div className="relative w-[40%] aspect-[3/4] flex-shrink-0 overflow-hidden group">
                                         <img
                                             src={book.bookImage}
                                             alt={book.title}
@@ -363,7 +363,7 @@ function Novels() {
 																						loading='lazy'
 																						width={100}
 																						height={200}
-                                            className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                                            className="absolute inset-0 object-cover object-center w-full h-full scale-110 group-hover:scale-105 transition-transform duration-300"
                                         />
 
 																			{/* Gradient Overlay */}
