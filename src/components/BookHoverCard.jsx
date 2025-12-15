@@ -29,6 +29,16 @@ export default function BookHoverCard({ book }) {
               {capitalize(tag)}
             </Chip>
           ))}
+
+            {book.tags.length > 3 && (
+              <Chip
+                size="sm"
+                color="primary"
+                variant="flat"
+              >
+                +{book.tags.length - 3}
+              </Chip>
+            )}
         </div>
       )}
 
