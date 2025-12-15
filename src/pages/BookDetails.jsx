@@ -2,9 +2,10 @@ import { useState, useEffect, useRef } from "react";
 import api from '../api/axiosInstance';
 import { startCase, truncate, capitalize } from 'lodash';
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { FaHeart, FaRegEye, FaBookOpen, FaBookReader, FaLock, FaBookmark, FaLockOpen, FaShareAlt, FaPlay} from "react-icons/fa";
+import { FaHeart, FaRegEye, FaBookOpen, FaBookReader, FaLock, FaBookmark, FaLockOpen, FaPlay} from "react-icons/fa";
 import { RiArrowDownWideFill } from "react-icons/ri";
 import { GiTwoCoins } from "react-icons/gi";
+import { LuShare } from "react-icons/lu";
 import { Button } from "@heroui/button";
 import { Chip } from "@heroui/chip";
 import { Card, CardBody } from "@heroui/card";
@@ -249,24 +250,27 @@ function BookDetails() {
                 <div className="w-full md:w-1/3 md:sticky md:top-20 flex flex-col gap-4 md:self-start ">
                     {/* Book Image */}
                     {loading ? (
-											<Skeleton className="relative h-[342.2px] md:h-[442.2px] w-[60%] md:w-[300px] aspect-[2/2.5] md:aspect-[3/4] rounded-xl shadow-2xl group overflow-hidden self-center md:self-start" />
+											<Skeleton className="relative h-[342.2px] md:h-[442.2px] w-[60%] md:w-[300px] aspect-[3/4] rounded-xl shadow-2xl group overflow-hidden self-center md:self-start" />
                     ) : book ? (
                         <div className="relative flex justify-center md:justify-start">
-													{/* ────────  Ambient Blur Background (YouTube Music Style) (mobile only)  ──────── */}
-													<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full md:hidden -z-10 pointer-events-none">
-															<img
-																	src={book.bookImage}
-																	alt={book.title}
-																	aria-hidden="true"
-																	className="w-full h-full object-cover rounded-full blur-3xl opacity-100 dark:opacity-50"
-															/>
-															{/* Optional: A subtle dark overlay to ensure it doesn't get too bright in dark mode */}
-															{/* <div className="absolute inset-0 bg-white/50 dark:bg-black/20 mix-blend-overlay rounded-full blur-3xl" /> */}
+													{/* ────────  Ambient Blur Background (YouTube Music Style) (mobile only) top-1/2 w-full h-[120%]  ──────── */}
+													<div className="absolute top-2/5 left-1/2 -translate-x-1/2 -translate-y-1/2 w-9/12 h-4/5 md:hidden -z-10 pointer-events-none">
+															<div className="relative w-full h-full ">
+																<img
+																		src={book.bookImage}
+																		alt={book.title}
+																		aria-hidden="true"
+																		className="w-full h-full object-cover blur-lg saturate-200 opacity-70 dark:opacity-90"
+																/>
+
+																{/* A subtle dark overlay to ensure it doesn't get too bright in dark mode */}
+																{/* <div className="absolute inset-0 bg-white/50 dark:bg-black/20 mix-blend-overlay rounded-full blur-3xl" /> */}
+														</div>
 													</div>
 
 														{/* Book cover */}
 														{/* Original container — keep overflow-hidden for image zoom */}
-														<div className="relative w-[60%] md:w-[300px] aspect-[2/3] rounded-xl shadow-2xl group overflow-hidden bg-gray-200 dark:bg-gray-800">
+														<div className="relative w-[60%] md:w-[300px] aspect-[3/4] rounded-xl shadow-2xl group overflow-hidden bg-gray-200 dark:bg-gray-800">
 															{/* Image is forced to fill container absolutely */}
 															<img
 																	src={book.bookImage}
@@ -387,7 +391,7 @@ function BookDetails() {
                                     </div>
                                     <div>
                                         <p className="text-sm text-gray-500 dark:text-[#afafaf]">Free Chapters</p>
-                                        <p className="medium text-sm text-transparent bg-clip-text bg-gradient-to-r from-gold to-cyan-500">
+                                        <p className="medium text-sm text-amber-500">
                                             {getChapterStats(book.chapters).free}
                                         </p>
                                     </div>
@@ -444,35 +448,41 @@ function BookDetails() {
                         </div>
                     ) : 
 											book && (
-                        <div className="flex gap-2">
+                        <div className="flex justify-around">
                             <Button
                                 color={isBookmarked ? 'success' : 'default'}
-                                variant={isBookmarked ? 'solid' : 'bordered'}
-                                className="flex-1"
-                                startContent={<FaBookmark />}
+                                variant={isBookmarked ? 'faded' : 'bordered'}
+																isIconOnly
+																aria-label="bookmark"
+                                // className="flex-1"
+                                // startContent={<FaBookmark />}
                                 onClick={handleToggleBookmark}
                                 isDisabled={!auth}
                             >
-                                {isBookmarked ? 'Added' : 'Add'}
+                                <FaBookmark />
                             </Button>
                             <Button
                                 color={isLiked ? 'danger' : 'default'}
-                                variant={isLiked ? 'solid' : 'bordered'}
-                                className="flex-1"
-                                startContent={<FaHeart />}
+                                variant={isLiked ? 'faded' : 'bordered'}
+																isIconOnly
+																aria-label="Like"
+                                // className="flex-1"
+                                // startContent={<FaHeart />}
                                 onClick={handleToggleLike}
                                 isDisabled={!auth}
                             >
-                                {isLiked ? 'Liked' : 'Like'}
+                                <FaHeart />
                             </Button>
 														<Button
-																color="primary"
-																variant="ghost"
-																className="flex-1"
-																startContent={<FaShareAlt />}
+																color="default"
+																variant="faded"
+																isIconOnly
+																aria-label="share"
+																// className="flex-1"
+																// startContent={<FaShareAlt />}
 																onClick={handleShare}
 															>
-																Share
+																<LuShare />
 														</Button>
 													</div>
 													)}
