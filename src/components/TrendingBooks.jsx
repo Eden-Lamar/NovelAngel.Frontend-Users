@@ -61,28 +61,30 @@ function TrendingBooks({ books, loading }) {
                         width="160"
                         height="260"
                         viewBox="0 0 160 260"
-                        className="drop-shadow-2xl"
+                        // Added drop-shadow to make the whole number glow slightly
+                        className="drop-shadow-[0_0_10px_rgba(6,182,212,0.5)]"
                       >
                         <defs>
-                          {/* Subtle blur for glow */}
+                          {/* Subtle blur for glow texture */}
                           <filter id={`glassBlur-${index}`}>
-                            <feGaussianBlur in="SourceGraphic" stdDeviation="1.2" />
+                            <feGaussianBlur in="SourceGraphic" stdDeviation="1.5" />
                           </filter>
 
                           {/* Frosted glass fill gradient (like backdrop-blur-md) */}
                           <linearGradient id={`frostedFill-${index}`} x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" stopColor="rgba(255,255,255,0.2)" />
-                            <stop offset="50%" stopColor="rgba(255,255,255,0.05)" />
-                            <stop offset="100%" stopColor="rgba(255,255,255,0.15)" />
+                            <stop offset="0%" stopColor="rgba(255,255,255,0.4)" />
+                            <stop offset="50%" stopColor="rgba(255,255,255,0.1)" />
+                            <stop offset="100%" stopColor="rgba(255,255,255,0.3)" />
                           </linearGradient>
 
                           {/* Animated cyan shimmer applied to stroke */}
                           <linearGradient id={`animatedCyanStroke-${index}`} x1="0%" y1="0%" x2="200%" y2="0%">
-                            <stop offset="0%" stopColor="#00FFFF" />
-                            <stop offset="25%" stopColor="#00BFFF" />
-                            <stop offset="50%" stopColor="#00FFFF" />
-                            <stop offset="75%" stopColor="#00BFFF" />
-                            <stop offset="100%" stopColor="#00FFFF" />
+                            <stop offset="0%" stopColor="#0891b2" />   {/* Cyan-600 */}
+                            <stop offset="35%" stopColor="#06b6d4" />  {/* Cyan-500 */}
+                            <stop offset="50%"stopColor="#ffffff" />  {/* PURE WHITE FLASH */}
+                            <stop offset="65%" stopColor="#06b6d4" />  {/* Cyan-500 */}
+                            <stop offset="100%" stopColor="#0891b2" /> {/* Cyan-600 */}
+
                             <animateTransform
                               attributeName="gradientTransform"
                               type="translate"
@@ -111,11 +113,11 @@ function TrendingBooks({ books, loading }) {
                                 fontSize={fontSize}
                                 fontWeight="900"
                                 fill={`url(#frostedFill-${index})`}
-                                opacity="0.8"
+                                opacity="0.9"
                                 style={{
-                                  paintOrder: 'stroke fill',
-                                  stroke: 'rgba(255,255,255,0.15)',
-                                  strokeWidth: 2,
+                                  // paintOrder: 'stroke fill',
+                                  // stroke: 'rgba(255,255,255,0.15)',
+                                  // strokeWidth: 2,
                                   letterSpacing: spacing,
                                   filter: 'blur(1px)',
                                 }}
@@ -123,7 +125,7 @@ function TrendingBooks({ books, loading }) {
                                 {text}
                               </text>
 
-                              {/* Cyan shimmer stroke (animated) */}
+                              {/* The Stroke Layer (The "Popping" Shimmer) */}
                               <text
                                 x="50%"
                                 y="50%"
@@ -133,13 +135,15 @@ function TrendingBooks({ books, loading }) {
                                 fontWeight="900"
                                 fill="none"
                                 stroke={`url(#animatedCyanStroke-${index})`}
-                                strokeWidth="3"
+                                strokeWidth="4" // Thicker stroke (was 3)
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
-                                filter={`url(#glassBlur-${index})`}
-                                opacity="0.9"
+                                // filter={`url(#glassBlur-${index})`}
+                                opacity="1"
                                 style={{
                                   letterSpacing: spacing,
+                                  // Added a specific drop-shadow to the stroke to make the color neon-like
+                                  filter: 'drop-shadow(0px 0px 3px rgba(6, 182, 212, 0.8))'
                                 }}
                               >
                                 {text}
