@@ -7,7 +7,7 @@ import { CiLock, CiUnlock } from "react-icons/ci";
 import { RiArrowLeftSLine, RiArrowRightSLine, RiSettings3Line, RiCloseLine } from "react-icons/ri";
 import { GiTwoCoins } from "react-icons/gi";
 import { LuCalendarRange } from "react-icons/lu";
-import { GoShareAndroid } from "react-icons/go";
+import { PiShareFatBold } from "react-icons/pi";
 import { Button } from "@heroui/button";
 import { Card, CardBody } from "@heroui/card";
 import { Skeleton } from "@heroui/skeleton";
@@ -440,12 +440,12 @@ function BookReader() {
                 <Skeleton className="h-14 mx-auto w-full md:rounded-xl mb-6" />
             ) : chapterData ? (
 							<>
-                <div className="sticky top-0 z-20 flex justify-between items-center p-1 md:p-2 md:rounded-xl mb-6 bg-white/40 dark:bg-[#1a1b23]/40 backdrop-blur-md shadow-md">
+                <div className="sticky top-0 z-20 flex justify-between items-center p-1 md:p-2 rounded-xl mb-6 bg-white/40 dark:bg-[#1a1b23]/40 backdrop-blur-md shadow-md">
 									<div className=" ">
                     <Link to={`/book/${bookId}`} className="flex items-center group">
                         <RiArrowLeftSLine className="text-gold text-2xl md:text-2xl transition-all duration-200 group-hover:mr-1 group-hover:scale-105 md:group-hover:scale-125" />
 
-                        <div className="relative w-10 aspect-[2/3] shadow-md rounded-sm md:rounded-md overflow-hidden bg-gray-200 dark:bg-gray-800 mr-2 group-hover:shadow-lg transition-all">
+                        <div className="relative w-10 aspect-[3/4] shadow-md rounded-sm md:rounded-md overflow-hidden bg-gray-200 dark:bg-gray-800 mr-2 group-hover:shadow-lg transition-all">
 													<img 
 													src={bookImage} 
 													alt={chapterData.bookTitle} 
@@ -471,6 +471,7 @@ function BookReader() {
 														size="sm"
                             onClick={() => setIsSettingsOpen(true)}
                             className="text-gray-400"
+														aria-label="setting"
 													>
                             <RiSettings3Line className="text-lg md:text-2xl" />
 													</Button>
@@ -480,10 +481,10 @@ function BookReader() {
 														variant="light"
 														size="sm"
 														onClick={handleShare}
-														className="text-gray-400 dark:text-gray-300"
+														className="text-gray-400"
 														aria-label="Share Chapter"
 													>
-														<GoShareAndroid className="text-lg md:text-xl" />
+														<PiShareFatBold className="text-lg md:text-xl" />
 													</Button>
 												</>
                     )}
