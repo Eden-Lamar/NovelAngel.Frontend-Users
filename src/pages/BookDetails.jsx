@@ -3,9 +3,9 @@ import api from '../api/axiosInstance';
 import { startCase, truncate, capitalize } from 'lodash';
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { FaHeart, FaRegEye, FaBookOpen, FaBookReader, FaLock, FaBookmark, FaLockOpen, FaPlay} from "react-icons/fa";
+import { IoIosShareAlt } from "react-icons/io";
 import { RiArrowDownWideFill } from "react-icons/ri";
 import { GiTwoCoins } from "react-icons/gi";
-import { LuShare } from "react-icons/lu";
 import { Button } from "@heroui/button";
 import { Chip } from "@heroui/chip";
 import { Card, CardBody } from "@heroui/card";
@@ -482,7 +482,7 @@ function BookDetails() {
 																// startContent={<FaShareAlt />}
 																onClick={handleShare}
 															>
-																<LuShare />
+																<IoIosShareAlt className="text-lg"/>
 														</Button>
 													</div>
 													)}
