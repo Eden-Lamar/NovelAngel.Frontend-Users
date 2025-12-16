@@ -1,84 +1,90 @@
-import { Link } from "react-router-dom";
-import { PiCoinsFill } from "react-icons/pi";
-import { HiSpeakerphone } from "react-icons/hi"; // Better icon for announcements
+import { HiSpeakerphone } from "react-icons/hi"; 
 
 function SignUpBanner() {
+  
+  // Define content once so we can easily map it twice
+  const bannerContent = [
+    {
+      id: 1,
+      text: (
+        <>
+          Register now & get <span className="text-amber-500 font-bold mx-1">30 FREE COINS</span> to unlock premium chapters
+        </>
+      )
+    },
+    {
+      id: 2,
+      text: "New releases weekly - Stay tuned for more updates"
+    },
+    {
+      id: 3,
+      text: (
+        <>
+          Register now & get <span className="text-amber-500 font-bold mx-1">30 FREE COINS</span> to unlock premium chapters
+        </>
+      )
+    },
+    {
+      id: 4,
+      text: "Join the Novel Angel community today."
+    }
+  ];
+
   return (
-    // changed bg to a solid dark slate/cyan for a clean, professional news-bar look
     <div className="relative w-full bg-slate-800 text-white overflow-hidden h-8 flex items-center border-b border-white/10">
       
-      {/* The scrolling container */}
+    {/* Container width must be large enough to hold double content.
+            We use 'animate-ticker' to slide the whole strip. */}
+      
       <div className="flex whitespace-nowrap animate-ticker">
         
-        {/* Content Block 1 */}
-        <div className="flex items-center mx-8">
-            <HiSpeakerphone className="text-blue-500 mr-2 animate-icon-pop" />
-            <span className="text-xs md:text-sm font-medium tracking-wide">
-              Register now & get 
-              <span className="text-amber-500 font-bold mx-1">30 FREE COINS</span>
-              to unlock premium chapters!
-            </span>
-        </div>
+        {/* Set 1: Original Content */}
+        {bannerContent.map((item, index) => (
+          <div key={`original-${index}`} className="flex items-center mx-8">
+              <HiSpeakerphone className="text-blue-500 mr-2 animate-icon-pop" />
+              <span className="text-xs md:text-sm font-medium tracking-wide">
+                {item.text}
+              </span>
+          </div>
+        ))}
 
-        {/* Content Block 2 (Duplicate for seamless loop visual) */}
-        <div className="flex items-center mx-8">
-            <HiSpeakerphone className="text-blue-500 mr-2 animate-icon-pop" />
-            <span className="text-xs md:text-sm font-medium tracking-wide">
-              New releases weekly - Stay tuned for more updates 
-            </span>
-        </div>
-
-        {/* Content Block 3 (Duplicate of #1 to ensure loop feels endless) */}
-        <div className="flex items-center mx-8">
-          <HiSpeakerphone className="text-blue-500 mr-2 animate-icon-pop" />
-            <span className="text-xs md:text-sm font-medium tracking-wide">
-              Register now & get 
-              <span className="text-amber-500 font-bold mx-1">30 FREE COINS</span>
-              to unlock premium chapters
-            </span>
-        </div>
-
-         {/* Content Block 4 */}
-        <div className="flex items-center mx-8">
-            <HiSpeakerphone className="text-blue-500 mr-2 animate-icon-pop" />
-            <span className="text-xs md:text-sm font-medium tracking-wide">
-              Join the Novel Angel community today.
-            </span>
-        </div>
+        {/* Set 2: Duplicate Content (This fills the gap immediately) */}
+        {bannerContent.map((item, index) => (
+          <div key={`duplicate-${index}`} className="flex items-center mx-8">
+              <HiSpeakerphone className="text-blue-500 mr-2 animate-icon-pop" />
+              <span className="text-xs md:text-sm font-medium tracking-wide">
+                {item.text}
+              </span>
+          </div>
+        ))}
 
       </div>
 
       <style jsx>{`
         @keyframes ticker {
           0% {
-            transform: translateX(100%); /* Start off-screen right */
+            transform: translateX(0);
           }
           100% {
-            transform: translateX(-100%); /* Move all the way to left */
+            /* Move left by exactly 50% of the total width (which is the width of one full set) */
+            transform: translateX(-50%);
           }
         }
         
         .animate-ticker {
-          /* Adjust duration (20s) to control speed. Linear is crucial for smooth flow. */
+          display: flex;
+          /* Width needs to be fit-content to allow flexible scrolling */
+          width: max-content; 
           animation: ticker 60s linear infinite;
         }
 
-        /* Pauses the ticker when user hovers over it to read */
         .animate-ticker:hover {
             animation-play-state: paused;
         }
 
-        /* NEW ANIMATION: 'iconPop'
-          1. Scales up to 1.2x size (makes it jump out)
-        */
         @keyframes iconPop {
-          0%, 100% {
-            transform: scale(1);
-          }
-          50% {
-            transform: scale(1.1);
-
-          }
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.1); }
         }
 
         .animate-icon-pop {
