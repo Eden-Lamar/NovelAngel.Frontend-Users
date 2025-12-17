@@ -53,8 +53,8 @@ export default function NetworkStatusAlert() {
       <div className="w-full max-w-2xl pointer-events-auto">
         <Alert
           color={isOnline ? 'success' : 'danger'}
-          variant="faded"
-          radius="full"
+          variant="solid"
+          radius="lg"
 					title={
             isOnline
               ? "Back online. connection restored."

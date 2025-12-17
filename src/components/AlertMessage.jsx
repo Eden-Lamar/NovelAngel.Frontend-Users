@@ -11,15 +11,17 @@ const AlertMessage = ({message, color = "danger", duration = 10000, onClose }) =
   }
 
 		return(
-			<div className="fixed top-20 left-1/2 -translate-x-1/2 max-w-[90vw] lg:max-w-[60vw] z-50 animate__animated animate__fadeInDown">
+			<div className="fixed top-20 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none animate__animated animate__fadeInDown">
+				<div className="w-full max-w-2xl pointer-events-auto">
 				<Alert
 					hideIconWrapper
 					color={color}
-					variant="faded"
+					variant="solid"
 					radius="lg"
 					title={startCase(message)}
 				/>
-    </div>
+				</div>
+			</div>
 		)
 }
 
