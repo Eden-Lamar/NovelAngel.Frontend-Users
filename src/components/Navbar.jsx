@@ -98,7 +98,7 @@ function NavbarSticky() {
             alt="Novel Angel Logo"
             className="h-10 w-auto mr-1 group-hover:scale-110"
           />
-          <span className="text-2xl font-vibes font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-gold to-cyan-500 px-1">
+          <span className="text-2xl font-vibes font-[900] text-transparent bg-clip-text bg-gradient-to-r from-gold to-cyan-500 px-1">
             Novel Angel
           </span>
         </NavbarBrand>
@@ -191,7 +191,7 @@ function NavbarSticky() {
           <Dropdown placement="bottom-end">
             <DropdownTrigger>
               <Avatar
-                isBordered
+                // isBordered
                 as="button"
                 name={user?.username}
                 // className="transition-transform"
@@ -321,7 +321,7 @@ function NavbarSticky() {
               <Dropdown placement="bottom-end">
                 <DropdownTrigger>
                   <Avatar
-                    isBordered
+                    // isBordered
                     as="button"
                     // className="transition-transform"
                     // color="primary"
