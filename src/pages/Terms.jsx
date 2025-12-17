@@ -27,7 +27,7 @@ const Terms = () => {
                 Terms and Conditions
             </h1>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-                Last updated: {new Date().toLocaleDateString()}
+                Last updated: December 5th, 2025
             </p>
         </div>
 
