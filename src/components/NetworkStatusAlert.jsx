@@ -4,7 +4,7 @@ import { Alert } from '@heroui/alert';
 export default function NetworkStatusAlert() {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [showRestoreAlert, setShowRestoreAlert] = useState(false);
-	const timerRef = useRef(null); // ✅ persist timer across renders
+	const timerRef = useRef(null); // persist timer across renders
 
   useEffect(() => {
     const goOnline = () => {
@@ -17,7 +17,7 @@ export default function NetworkStatusAlert() {
       // Auto-hide after 8 seconds
       timerRef.current = setTimeout(() => {
         setShowRestoreAlert(false);
-      }, 8000);
+      }, 3000);
     };
 
     const goOffline = () => {
@@ -31,7 +31,7 @@ export default function NetworkStatusAlert() {
     window.addEventListener('online', goOnline);
     window.addEventListener('offline', goOffline);
 
-    // ✅ Fallback check every 5 seconds — ensures status updates even if browser event doesn’t fire
+    // Fallback check every 5 seconds — ensures status updates even if browser event doesn’t fire
     // const interval = setInterval(() => {
     //   if (navigator.onLine !== isOnline) {
     //     if (navigator.onLine) goOnline();
