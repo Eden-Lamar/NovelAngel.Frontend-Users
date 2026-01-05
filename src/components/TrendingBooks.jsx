@@ -57,28 +57,14 @@ function TrendingBooks({ books, loading }) {
                   >
                     {/* Ranking Number - Behind the book */}
                     <div className="absolute -left-15 top-0 z-20 pointer-events-none">
-                      <svg
+                     <svg
                         width="160"
                         height="260"
                         viewBox="0 0 160 260"
-                        className="overflow-visible" // Ensure shadows aren't clipped
+                        // iOS Fix: Explicitly set overflow visible on the SVG tag itself
+                        style={{ overflow: 'visible' }} 
                       >
                         <defs>
-                          {/* 1. iOS FIX: Native SVG Drop Shadow Filter 
-                              CSS filters on SVG elements don't work well on iOS. 
-                              This <feDropShadow> works everywhere. 
-                          */}
-                          <filter id={`neonGlow-${index}`} x="-50%" y="-50%" width="200%" height="200%">
-                            <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
-                            <feOffset dx="0" dy="0" result="offsetblur"/>
-                            <feFlood floodColor="rgba(6, 182, 212, 0.8)"/>
-                            <feComposite in2="offsetblur" operator="in"/>
-                            <feMerge>
-                              <feMergeNode/>
-                              <feMergeNode in="SourceGraphic"/>
-                            </feMerge>
-                          </filter>
-
                           {/* Frosted fill gradient */}
                           <linearGradient id={`frostedFill-${index}`} x1="0%" y1="0%" x2="0%" y2="100%">
                             <stop offset="0%" stopColor="rgba(255,255,255,0.4)" />
@@ -87,18 +73,23 @@ function TrendingBooks({ books, loading }) {
                           </linearGradient>
 
                           {/* Animated Shimmer Gradient */}
-                          <linearGradient id={`animatedCyanStroke-${index}`} x1="0%" y1="0%" x2="200%" y2="0%">
-                            <stop offset="0%" stopColor="#0891b2" />   {/* Cyan-600 */}
-                            <stop offset="35%" stopColor="#06b6d4" />  {/* Cyan-500 */}
-                            <stop offset="50%" stopColor="#ffffff" />   {/* PURE WHITE FLASH */}
-                            <stop offset="65%" stopColor="#06b6d4" />  {/* Cyan-500 */}
-                            <stop offset="100%" stopColor="#0891b2" /> {/* Cyan-600 */}
+                          <linearGradient 
+                            id={`animatedCyanStroke-${index}`} 
+                            x1="0%" y1="0%" x2="200%" y2="0%"
+                            // iOS Fix: Sometimes helps gradient animations on Safari
+                            gradientUnits="userSpaceOnUse" 
+                          >
+                            <stop offset="0%" stopColor="#0891b2" /> 
+                            <stop offset="35%" stopColor="#06b6d4" />
+                            <stop offset="50%" stopColor="#ffffff" />
+                            <stop offset="65%" stopColor="#06b6d4" />
+                            <stop offset="100%" stopColor="#0891b2" />
                             
                             <animateTransform
                               attributeName="gradientTransform"
                               type="translate"
-                              from="-1 0"
-                              to="1 0"
+                              from="-160 0" // Adjusted for userSpaceOnUse (approx width of svg)
+                              to="160 0"
                               dur="3s"
                               repeatCount="indefinite"
                             />
@@ -107,53 +98,59 @@ function TrendingBooks({ books, loading }) {
 
                         {(() => {
                           const text = (index + 1).toString();
-                          const isDoubleDigit = text.length > 1;
                           const fontSize = 120;
-                          const spacing = isDoubleDigit ? '-2px' : '-8px';
+                          // iOS Fix: Hardcoded Y-center instead of 'dominant-baseline'
+                          // Viewbox height is 260. A good visual center for 120px font is around 180.
+                          const yPos = "180"; 
 
                           return (
-                            <>
-                              {/* Layer 1: Frosted Glass Fill */}
+                            <g>
+                              {/* Layer 1: The "Glow" (Thick transparent stroke behind) 
+                                  This replaces the <filter> drop-shadow which breaks on iOS 
+                              */}
                               <text
-                                x="50%"
-                                y="50%"
-                                dy=".35em" /* 2. iOS FIX: Use dy instead of dominantBaseline="middle" */
-                                textAnchor="middle"
-                                fontSize={fontSize}
-                                fontWeight="900"
-                                fill={`url(#frostedFill-${index})`}
-                                opacity="0.9"
-                                style={{
-                                  letterSpacing: spacing,
-                                  filter: 'blur(1px)',
-                                }}
-                              >
-                                {text}
-                              </text>
-
-                              {/* Layer 2: Shimmering Stroke + Neon Glow */}
-                              <text
-                                x="50%"
-                                y="50%"
-                                dy=".35em" /* iOS FIX */
+                                x="50%" y={yPos}
                                 textAnchor="middle"
                                 fontSize={fontSize}
                                 fontWeight="900"
                                 fill="none"
-                                stroke={`url(#animatedCyanStroke-${index})`}
-                                strokeWidth="4"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                opacity="1"
-                                // 3. iOS FIX: Use the filter ID instead of CSS filter style
-                                filter={`url(#neonGlow-${index})`}
-                                style={{
-                                  letterSpacing: spacing,
-                                }}
+                                stroke="#06b6d4" // Solid Cyan
+                                strokeWidth="12" // Very thick
+                                opacity="0.4"
                               >
                                 {text}
                               </text>
-                            </>
+
+                              {/* Layer 2: The Core Stroke (Medium stroke) */}
+                              <text
+                                x="50%" y={yPos}
+                                textAnchor="middle"
+                                fontSize={fontSize}
+                                fontWeight="900"
+                                fill="none"
+                                stroke="#0891b2" // Darker Cyan
+                                strokeWidth="6"
+                                opacity="0.6"
+                              >
+                                {text}
+                              </text>
+
+                              {/* Layer 3: The Shimmer (Front Layer) */}
+                              <text
+                                x="50%" y={yPos}
+                                textAnchor="middle"
+                                fontSize={fontSize}
+                                fontWeight="900"
+                                fill={`url(#frostedFill-${index})`}
+                                stroke={`url(#animatedCyanStroke-${index})`}
+                                strokeWidth="3"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                opacity="1"
+                              >
+                                {text}
+                              </text>
+                            </g>
                           );
                         })()}
                       </svg>
