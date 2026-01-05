@@ -412,7 +412,7 @@ function BookDetails() {
 
                                     <div>
                                         <p className="text-sm text-gray-500 dark:text-[#afafaf]">Uploaded By</p>
-                                        <p className="medium text-sm">{startCase(book.uploadedBy.username)}</p>
+                                        <p className="medium text-sm">{book.uploadedBy.username}</p>
                                     </div>
 
 
