@@ -10,6 +10,7 @@ import { Button } from "@heroui/button";
 import { Chip } from "@heroui/chip";
 import { Card, CardBody } from "@heroui/card";
 import { Skeleton } from "@heroui/skeleton";
+// import {Link} from "@heroui/link";
 import AlertMessage from "../components/AlertMessage";
 import BookComments from '../components/BookComments';
 import BookRecommendations from '../components/BookRecommendations';
@@ -306,6 +307,15 @@ function BookDetails() {
 											</div>
                     ) : null}
 
+										{/* ---------------------------------------------------- */}
+                    {/* Title placed here ONLY for mobile (md:hidden)   */}
+                    {/* ---------------------------------------------------- */}
+                    {!loading && book && (
+												<h1 className="md:hidden text-xl font-bold text-center text-gray-800 dark:text-gray-200 my-1 px-2 break-words">
+                            {startCase(book.title)}
+                        </h1>
+                    )}
+
                     {/* Tags */}
                     {loading ? (
                         <div className="flex gap-2 flex-wrap">
@@ -516,7 +526,7 @@ function BookDetails() {
                     ) : book ? (
                         <Card className="w-full shadow-xl bg-custom-striped-light dark:bg-custom-striped">
                             <CardBody className="md:p-6">
-                                <h2 className="text-2xl md:text-2xl text-transparent bg-clip-text bg-gradient-to-r from-gold to-cyan-500 mb-6 break-words">
+                                <h2 className="hidden md:block text-2xl font-bold text-gray-800 dark:text-gray-200 mb-6 break-words">
                                     {startCase(book.title)}
                                 </h2>
 
@@ -543,24 +553,18 @@ function BookDetails() {
                                 {/* Summary Tab */}
                                 {activeTab === 'summary' && (
                                     <div className="prose dark:prose-invert max-w-none">
-                                        <span className="text-base leading-relaxed mr-2 whitespace-pre-wrap">
+                                        <span className="text-base text-gray-700 dark:text-gray-300 leading-relaxed mr-2 whitespace-pre-wrap">
                                             {showFullDescription
                                                 ? book.description
                                                 : truncate(book.description, { length: 300 })}
                                         </span>
                                         {book.description.length > 300 && !showFullDescription && (
-                                            <Button
-																							// color="primary"
-																							variant="flat"
-																							size="sm"
-																							radius="full"
-																							onClick={() => setShowFullDescription(true)}
-																							endContent={<RiArrowDownWideFill className="text-xl" />}
-																							// className="ml-2"
-                                            >
-                                                Show More
-                                                
-                                            </Button>
+                                          <span 
+																						onClick={() => setShowFullDescription(true)}
+																						className="text-blue-500 text-sm hover:underline cursor-pointer"
+                                          >
+																							Show More
+                                          </span>
                                         )}
                                     </div>
                                 )}
