@@ -61,36 +61,45 @@ function TrendingBooks({ books, loading }) {
                         width="160"
                         height="260"
                         viewBox="0 0 160 260"
-                        // Added drop-shadow to make the whole number glow slightly
-                        className="drop-shadow-[0_0_10px_rgba(6,182,212,0.5)]"
+                        className="overflow-visible" // Ensure shadows aren't clipped
                       >
                         <defs>
-                          {/* Subtle blur for glow texture */}
-                          <filter id={`glassBlur-${index}`}>
-                            <feGaussianBlur in="SourceGraphic" stdDeviation="1.5" />
+                          {/* 1. iOS FIX: Native SVG Drop Shadow Filter 
+                              CSS filters on SVG elements don't work well on iOS. 
+                              This <feDropShadow> works everywhere. 
+                          */}
+                          <filter id={`neonGlow-${index}`} x="-50%" y="-50%" width="200%" height="200%">
+                            <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
+                            <feOffset dx="0" dy="0" result="offsetblur"/>
+                            <feFlood floodColor="rgba(6, 182, 212, 0.8)"/>
+                            <feComposite in2="offsetblur" operator="in"/>
+                            <feMerge>
+                              <feMergeNode/>
+                              <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
                           </filter>
 
-                          {/* Frosted glass fill gradient (like backdrop-blur-md) */}
+                          {/* Frosted fill gradient */}
                           <linearGradient id={`frostedFill-${index}`} x1="0%" y1="0%" x2="0%" y2="100%">
                             <stop offset="0%" stopColor="rgba(255,255,255,0.4)" />
                             <stop offset="50%" stopColor="rgba(255,255,255,0.1)" />
                             <stop offset="100%" stopColor="rgba(255,255,255,0.3)" />
                           </linearGradient>
 
-                          {/* Animated cyan shimmer applied to stroke */}
+                          {/* Animated Shimmer Gradient */}
                           <linearGradient id={`animatedCyanStroke-${index}`} x1="0%" y1="0%" x2="200%" y2="0%">
                             <stop offset="0%" stopColor="#0891b2" />   {/* Cyan-600 */}
                             <stop offset="35%" stopColor="#06b6d4" />  {/* Cyan-500 */}
-                            <stop offset="50%"stopColor="#ffffff" />  {/* PURE WHITE FLASH */}
+                            <stop offset="50%" stopColor="#ffffff" />   {/* PURE WHITE FLASH */}
                             <stop offset="65%" stopColor="#06b6d4" />  {/* Cyan-500 */}
                             <stop offset="100%" stopColor="#0891b2" /> {/* Cyan-600 */}
-
+                            
                             <animateTransform
                               attributeName="gradientTransform"
                               type="translate"
                               from="-1 0"
                               to="1 0"
-                              dur="4s"
+                              dur="3s"
                               repeatCount="indefinite"
                             />
                           </linearGradient>
@@ -104,20 +113,17 @@ function TrendingBooks({ books, loading }) {
 
                           return (
                             <>
-                              {/* Glass translucent fill (frosted effect) */}
+                              {/* Layer 1: Frosted Glass Fill */}
                               <text
                                 x="50%"
                                 y="50%"
-                                dominantBaseline="middle"
+                                dy=".35em" /* 2. iOS FIX: Use dy instead of dominantBaseline="middle" */
                                 textAnchor="middle"
                                 fontSize={fontSize}
                                 fontWeight="900"
                                 fill={`url(#frostedFill-${index})`}
                                 opacity="0.9"
                                 style={{
-                                  // paintOrder: 'stroke fill',
-                                  // stroke: 'rgba(255,255,255,0.15)',
-                                  // strokeWidth: 2,
                                   letterSpacing: spacing,
                                   filter: 'blur(1px)',
                                 }}
@@ -125,25 +131,24 @@ function TrendingBooks({ books, loading }) {
                                 {text}
                               </text>
 
-                              {/* The Stroke Layer (The "Popping" Shimmer) */}
+                              {/* Layer 2: Shimmering Stroke + Neon Glow */}
                               <text
                                 x="50%"
                                 y="50%"
-                                dominantBaseline="middle"
+                                dy=".35em" /* iOS FIX */
                                 textAnchor="middle"
                                 fontSize={fontSize}
                                 fontWeight="900"
                                 fill="none"
                                 stroke={`url(#animatedCyanStroke-${index})`}
-                                strokeWidth="4" // Thicker stroke (was 3)
+                                strokeWidth="4"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
-                                // filter={`url(#glassBlur-${index})`}
                                 opacity="1"
+                                // 3. iOS FIX: Use the filter ID instead of CSS filter style
+                                filter={`url(#neonGlow-${index})`}
                                 style={{
                                   letterSpacing: spacing,
-                                  // Added a specific drop-shadow to the stroke to make the color neon-like
-                                  filter: 'drop-shadow(0px 0px 3px rgba(6, 182, 212, 0.8))'
                                 }}
                               >
                                 {text}
