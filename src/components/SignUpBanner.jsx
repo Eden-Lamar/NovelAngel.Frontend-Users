@@ -26,7 +26,7 @@ function SignUpBanner() {
     },
     {
       id: 4,
-      text: "Join the Novel Angel community today."
+      text: "New Free Chapters Everyday - Don't miss out"
     }
   ];
 
