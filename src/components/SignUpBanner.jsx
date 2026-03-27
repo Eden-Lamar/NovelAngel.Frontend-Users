@@ -14,7 +14,7 @@ function SignUpBanner() {
     },
     {
       id: 2,
-      text: "New releases weekly - Stay tuned for more updates"
+      text: "New releases weekly - Stay tuned for more updates."
     },
     {
       id: 3,
@@ -26,7 +26,7 @@ function SignUpBanner() {
     },
     {
       id: 4,
-      text: "New Free Chapters Everyday - Don't miss out"
+      text: "New Free Chapters Everyday - Don't miss out."
     }
   ];
 
