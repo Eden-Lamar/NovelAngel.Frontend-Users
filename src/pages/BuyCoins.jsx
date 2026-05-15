@@ -1,23 +1,25 @@
 import { useState, useEffect } from "react";
 import api from '../api/axiosInstance';
-import { FaCoins, FaGift, FaCrown, FaStar } from "react-icons/fa";
+import { FaCoins, FaGift, FaCrown, FaStar} from "react-icons/fa";
+import { SiBuymeacoffee } from "react-icons/si";
+import { BsBank } from "react-icons/bs";
 import { PiCoinsFill, PiShootingStarDuotone } from "react-icons/pi";
-import { GiCutDiamond } from "react-icons/gi";
-import { GiTwoCoins } from "react-icons/gi";
+import { GiCutDiamond, GiTwoCoins } from "react-icons/gi";
 import { Card, CardBody } from "@heroui/card";
 import { Button } from "@heroui/button";
 import { Chip } from "@heroui/chip";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@heroui/modal";
 import { useAuth } from "../context/useAuth";
 import AlertMessage from "../components/AlertMessage";
 
 const COIN_PLANS = [
-    { baseCoins: 100, bonus: 0, price: 1.00, popular: false },
-    { baseCoins: 300, bonus: 0, price: 2.99, popular: false },
-    { baseCoins: 500, bonus: 0, price: 4.99, popular: false },
-    { baseCoins: 1000, bonus: 50, price: 9.99, popular: true },
-    { baseCoins: 2000, bonus: 200, price: 19.99, popular: false },
-    { baseCoins: 5000, bonus: 1750, price: 49.99, popular: false },
-    { baseCoins: 10000, bonus: 4500, price: 99.99, popular: false },
+		{ baseCoins: 100, bonus: 0, price: 1.00, popular: false, bmacLink: "https://buymeacoffee.com/novelangel/e/499691" },
+    { baseCoins: 300, bonus: 0, price: 2.99, popular: false, bmacLink: "https://buymeacoffee.com/novelangel/e/499692" },
+    { baseCoins: 500, bonus: 0, price: 4.99, popular: false, bmacLink: "https://buymeacoffee.com/novelangel/e/499697" },
+    { baseCoins: 1000, bonus: 50, price: 9.99, popular: true, bmacLink: "https://buymeacoffee.com/novelangel/e/499703" },
+    { baseCoins: 2000, bonus: 200, price: 19.99, popular: false, bmacLink: "https://buymeacoffee.com/novelangel/e/499712" },
+    { baseCoins: 5000, bonus: 1750, price: 49.99, popular: false, bmacLink: "https://buymeacoffee.com/novelangel/e/499718" },
+    { baseCoins: 10000, bonus: 4500, price: 99.99, popular: false, bmacLink: "https://buymeacoffee.com/novelangel/extras" }, // Fallback until created
 ];
 
 function BuyCoins() {
@@ -26,6 +28,10 @@ function BuyCoins() {
     const [purchaseLoading, setPurchaseLoading] = useState(null);
     const [error, setError] = useState(null);
     const [userCoinBalance, setUserCoinBalance] = useState(null);
+
+		// State for the payment selection modal
+    const {isOpen, onOpen, onOpenChange} = useDisclosure();
+    const [selectedPlan, setSelectedPlan] = useState(null);
 
     // Fetch user profile to get current coin balance
     useEffect(() => {
@@ -59,22 +65,27 @@ function BuyCoins() {
         };
     }, [auth?.token]);
 
-    const handlePurchase = async (baseCoins) => {
+		// Handle the initial click on a coin plan to open the payment method selection modal
+		const handlePlanSelect = (plan) => {
         if (!auth?.token) {
             setError("Please login to purchase coins");
             return;
         }
+        setSelectedPlan(plan);
+        onOpen(); // Open the payment selection modal
+    };
+
+   // The original Flutterwave Purchase Logic
+    const handleFlutterwavePurchase = async () => {
+        if (!selectedPlan) return;
         
-        setPurchaseLoading(baseCoins);
+        setPurchaseLoading('flutterwave');
         setError(null);
 
         try {
             const response = await api.post(
                 "/payments/buy-coins",
-                { coins: baseCoins },
-                // {
-                //     headers: { Authorization: `Bearer ${auth?.token}` }
-                // }
+                { coins: selectedPlan.baseCoins }
             );
 
             if (response.data.link) {
@@ -82,9 +93,25 @@ function BuyCoins() {
             }
         } catch (err) {
             setError(err.response?.data?.message || "Failed to initiate purchase");
+            onOpenChange(false); // Close modal on error
         } finally {
             setPurchaseLoading(null);
         }
+    };
+
+    // Helper logic for BMAC redirection
+    const handleBMACRedirect = () => {
+        if (!selectedPlan) return;
+        setPurchaseLoading('bmac');
+        
+        // This should be your main Buy Me a Coffee page URL (or the specific Extras URL)
+        // e.g., "https://buymeacoffee.com/novelangel/extras"
+        const bmacShopUrl = selectedPlan.bmacLink || `https://buymeacoffee.com/novelangel/extras`; 
+        
+        // Open BMAC in a new tab so they don't lose the app
+        window.open(bmacShopUrl, '_blank');
+        onOpenChange(false); // Close the modal
+        setPurchaseLoading(null);
     };
 
     const getBadgeColor = (plan) => {
@@ -211,27 +238,101 @@ function BuyCoins() {
                                     <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">USD</p>
                                 </div>
 
-                                {/* Purchase Button */}
+                                {/* Main Selection Button */}
                                 <Button
-                                    onClick={() => handlePurchase(plan.baseCoins)}
-                                    isLoading={purchaseLoading === plan.baseCoins}
-                                    className={`w-full ${
-                                        plan.popular
-                                            ? ""
-                                            : ""
-                                    }`}
-																		color={plan.popular ? "warning" : "primary"}
+                                    onClick={() => handlePlanSelect(plan)}
+                                    className={`w-full`}
+                                    color={plan.popular ? "warning" : "primary"}
                                     variant={plan.popular ? "solid" : "ghost"}
                                     size="lg"
-                                    // startContent={!purchaseLoading && <FaCoins />}
                                 >
-                                    {purchaseLoading === plan.baseCoins ? "Processing..." : "Select Plan"}
+                                    Select Plan
                                 </Button>
                             </CardBody>
                         </Card>
                     );
                 })}
             </div>
+
+						{/* Payment Selection Modal */}
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="center">
+                <ModalContent>
+                {(onClose) => (
+                    <>
+                    <ModalHeader className="flex flex-col gap-1">Select Payment Method</ModalHeader>
+                    <ModalBody>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                            How would you like to pay for the <strong className="text-gold">{selectedPlan?.baseCoins} Coin</strong> package <b>(${selectedPlan?.price})</b>?
+                        </p>
+                        
+                        <div className="space-y-4">
+                            {/* Primary Payment: Flutterwave */}
+                            <Button 
+                                color="primary" 
+                                variant="ghost" 
+                                className="w-full justify-start h-auto py-3 px-4"
+                                onClick={handleFlutterwavePurchase}
+                                isLoading={purchaseLoading === 'flutterwave'}
+                                isDisabled={purchaseLoading === 'bmac'}
+                            >
+														<div className="flex items-center gap-2">
+															<div className="flex text-xl">
+																				<BsBank  />
+															</div>
+                                        
+                                <div className="flex flex-col items-start ml-2 text-left">
+                                    <span className="font-bold text-md">Flutterwave</span>
+                                    <span className="text-xs opacity-70">Pay securely with Card, Bank Transfer, or USSD</span>
+                                </div>
+														</div>
+                            </Button>
+
+                            <div className="relative flex py-2 items-center">
+                                <div className="flex-grow border-t border-gray-300 dark:border-gray-700"></div>
+                                <span className="flex-shrink-0 mx-4 text-gray-400 text-xs">OR</span>
+                                <div className="flex-grow border-t border-gray-300 dark:border-gray-700"></div>
+                            </div>
+
+                            {/* Fallback Payment: Buy Me a Coffee */}
+                            <Button 
+                                color="warning" 
+                                variant="ghost" 
+                                className="w-full justify-start h-auto py-3 px-4 border-2"
+                                onClick={handleBMACRedirect}
+                                isLoading={purchaseLoading === 'bmac'}
+                                isDisabled={purchaseLoading === 'flutterwave'}
+                            >
+                                <div className="flex items-center gap-2">
+                                    <div className="flex text-xl">
+																				<SiBuymeacoffee />
+                                        
+                                    </div>
+                                    <div className="flex flex-col items-start ml-2 text-left">
+                                        <span className="font-bold text-md ">Buy Me a Coffee</span>
+                                        <span className="text-xs ">Card/PayPal via Buy Me a Coffee (Instant processing)</span>
+                                    </div>
+                                </div>
+                            </Button>
+
+														{/* Change this text in your ModalBody */}
+														<p className="text-xs text-center text-amber-600 bg-amber-50 dark:bg-amber-900/20 p-2 rounded-md mt-4">
+																⚠️ <strong>IMPORTANT:</strong> When checking out on Buy Me a Coffee, please ensure you use your <strong>Novel Angel registered email address</strong> so your coins credit automatically!
+														</p>
+                            
+                            <p className="text-xs text-center text-gray-400 mt-2">
+                                💡 If your international payment fails on Flutterwave, try Buy Me a Coffee
+                            </p>
+                        </div>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="danger" variant="light" onPress={onClose} isDisabled={purchaseLoading !== null}>
+                        Cancel
+                        </Button>
+                    </ModalFooter>
+                    </>
+                )}
+                </ModalContent>
+            </Modal>
 
             {/* How It Works Section */}
             <Card className="mb-6 border-2 border-cyan-500/50">
