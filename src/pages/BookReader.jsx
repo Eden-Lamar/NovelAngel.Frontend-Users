@@ -6,6 +6,7 @@ import { FaBookOpen } from "react-icons/fa";
 import { CiLock, CiUnlock } from "react-icons/ci";
 import { RiArrowLeftSLine, RiArrowRightSLine, RiSettings3Line, RiCloseLine } from "react-icons/ri";
 import { GiTwoCoins } from "react-icons/gi";
+import { GrDownload } from "react-icons/gr";
 import { LuCalendarRange } from "react-icons/lu";
 import { PiShareFatBold } from "react-icons/pi";
 import { Button } from "@heroui/button";
@@ -43,6 +44,7 @@ function BookReader() {
     const [chapterData, setChapterData] = useState(null);
     const [bookChapters, setBookChapters] = useState([]);
     const [bookImage, setBookImage] = useState(null);
+		const [bookLink, setBookLink] = useState(null);
     const [currentChapterIndex, setCurrentChapterIndex] = useState(-1);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -92,6 +94,7 @@ function BookReader() {
                 const bookResponse = await api.get(`/books/${bookId}`);
                 setBookChapters(bookResponse.data.data.chapters);
 								setBookImage(bookResponse.data.data.bookImage);
+								setBookLink(bookResponse.data.data.buyMeACoffeeLink);
 
                 if (chapterId) {
                     const chapterResponse = await api.get(`/books/${bookId}/chapters/${chapterId}`);
@@ -696,6 +699,24 @@ function BookReader() {
                                     </div>
                                 )}
                             </>
+                        )}
+
+												{/* NEW: Buy Ebook Banner at bottom of chapter */}
+                        {bookLink && (
+                            <div className="mt-12 mb-2 animate__animated animate__fadeIn">
+                                <a 
+                                    href={bookLink} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer" 
+                                    className="btn btn-outline btn-warning w-full font-bold text-lg flex flex-col sm:flex-row gap-2 h-auto py-3"
+                                >
+                                    <GrDownload className="text-xl hidden sm:block" />
+                                    <div className="flex gap-2 flex-wrap justify-center">
+                                        <span>Tired of waiting?</span> 
+                                        <span>Buy the Complete Ebook Now!</span>
+                                    </div>
+                                </a>
+                            </div>
                         )}
 
                         <div className="flex justify-between mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
