@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import api from '../api/axiosInstance';
 import { FaCoins, FaGift, FaCrown, FaStar} from "react-icons/fa";
 import { SiBuymeacoffee } from "react-icons/si";
-import { BsBank } from "react-icons/bs";
+import { ImCreditCard } from "react-icons/im";
 import { PiCoinsFill, PiShootingStarDuotone } from "react-icons/pi";
 import { GiCutDiamond, GiTwoCoins } from "react-icons/gi";
 import { Card, CardBody } from "@heroui/card";
@@ -28,6 +28,7 @@ function BuyCoins() {
     const [purchaseLoading, setPurchaseLoading] = useState(null);
     const [error, setError] = useState(null);
     const [userCoinBalance, setUserCoinBalance] = useState(null);
+		const [userEmail, setUserEmail] = useState("");
 
 		// State for the payment selection modal
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
@@ -45,6 +46,7 @@ function BuyCoins() {
                 
                 if (isMounted) {
                     setUserCoinBalance(profileResponse.data.data.coinBalance);
+										setUserEmail(profileResponse.data.data.email);
                     setError(null);
                 }
             } catch (err) {
@@ -268,33 +270,6 @@ function BuyCoins() {
                         <div className="space-y-4">
                             {/* Primary Payment: Flutterwave */}
                             <Button 
-                                color="primary" 
-                                variant="ghost" 
-                                className="w-full justify-start h-auto py-3 px-4"
-                                onClick={handleFlutterwavePurchase}
-                                isLoading={purchaseLoading === 'flutterwave'}
-                                isDisabled={purchaseLoading === 'bmac'}
-                            >
-														<div className="flex items-center gap-2">
-															<div className="flex text-xl">
-																				<BsBank  />
-															</div>
-                                        
-                                <div className="flex flex-col items-start ml-2 text-left">
-                                    <span className="font-bold text-md">Flutterwave</span>
-                                    <span className="text-xs opacity-70">Pay securely with Card, Bank Transfer, or USSD</span>
-                                </div>
-														</div>
-                            </Button>
-
-                            <div className="relative flex py-2 items-center">
-                                <div className="flex-grow border-t border-gray-300 dark:border-gray-700"></div>
-                                <span className="flex-shrink-0 mx-4 text-gray-400 text-xs">OR</span>
-                                <div className="flex-grow border-t border-gray-300 dark:border-gray-700"></div>
-                            </div>
-
-                            {/* Fallback Payment: Buy Me a Coffee */}
-                            <Button 
                                 color="warning" 
                                 variant="ghost" 
                                 className="w-full justify-start h-auto py-3 px-4 border-2"
@@ -314,10 +289,43 @@ function BuyCoins() {
                                 </div>
                             </Button>
 
+                            <div className="relative flex py-2 items-center">
+                                <div className="flex-grow border-t border-gray-300 dark:border-gray-700"></div>
+                                <span className="flex-shrink-0 mx-4 text-gray-400 text-xs">OR</span>
+                                <div className="flex-grow border-t border-gray-300 dark:border-gray-700"></div>
+                            </div>
+
+                            {/* Fallback Payment: Flutterwave */}
+                            <Button 
+                                color="primary" 
+                                variant="ghost" 
+                                className="w-full justify-start h-auto py-3 px-4"
+                                onClick={handleFlutterwavePurchase}
+                                isLoading={purchaseLoading === 'flutterwave'}
+                                isDisabled={purchaseLoading === 'bmac'}
+                            >
+														<div className="flex items-center gap-2">
+															<div className="flex text-xl">
+																	<ImCreditCard />
+															</div>
+                                        
+                                <div className="flex flex-col items-start ml-2 text-left">
+                                    <span className="font-bold text-md">Cards</span>
+                                    <span className="text-xs opacity-70">Pay securely with Card</span>
+                                </div>
+														</div>
+                            </Button>
+
 														{/* Change this text in your ModalBody */}
-														<p className="text-xs text-center text-amber-600 bg-amber-50 dark:bg-amber-900/20 p-2 rounded-md mt-4">
-																⚠️ <strong>IMPORTANT:</strong> When checking out on Buy Me a Coffee, please ensure you use your <strong>Novel Angel registered email address</strong> so your coins credit automatically!
-														</p>
+														<div className="bg-amber-50 dark:bg-amber-900/20 p-3 rounded-md mt-4 border border-amber-200 dark:border-amber-700">
+																<p className="text-xs text-amber-800 dark:text-amber-400 font-semibold mb-1">
+																		⚠️ IMPORTANT WARNING
+																</p>
+																<p className="text-xs text-amber-700 dark:text-amber-500">
+																		Buy Me a Coffee may auto-fill a different email if you are logged in, so best to log out of your Buy Me a Coffee account before purchasing. 
+																		Please look for the <strong>"Enter the EXACT email address linked to your Novel Angel account"</strong> question during or right after checkout. You MUST enter <strong>{userEmail}</strong> there to receive your coins!
+																</p>
+														</div>
                             
                             <p className="text-xs text-center text-gray-400 mt-2">
                                 💡 If your international payment fails on Flutterwave, try Buy Me a Coffee
