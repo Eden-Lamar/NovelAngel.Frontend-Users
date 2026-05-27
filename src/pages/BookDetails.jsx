@@ -6,6 +6,7 @@ import { FaHeart, FaRegEye, FaBookOpen, FaBookReader, FaLock, FaBookmark, FaLock
 import { IoIosShareAlt } from "react-icons/io";
 import { RiArrowDownWideFill } from "react-icons/ri";
 import { GiTwoCoins } from "react-icons/gi";
+import { GrDownload } from "react-icons/gr";
 import { Button } from "@heroui/button";
 import { Chip } from "@heroui/chip";
 import { Card, CardBody } from "@heroui/card";
@@ -311,9 +312,22 @@ function BookDetails() {
                     {/* Title placed here ONLY for mobile (md:hidden)   */}
                     {/* ---------------------------------------------------- */}
                     {!loading && book && (
-												<h1 className="md:hidden text-xl font-bold text-center text-gray-800 dark:text-gray-200 my-1 px-2 break-words">
-                            {startCase(book.title)}
-                        </h1>
+                        <div className="md:hidden flex flex-col sm:flex-row items-center justify-between gap-4 my-2 px-2">
+                            <h1 className="text-xl font-bold text-center sm:text-left text-gray-800 dark:text-gray-200 break-words flex-1">
+                                {startCase(book.title)}
+                            </h1>
+                            {book?.buyMeACoffeeLink && (
+                                <a 
+                                    href={book.buyMeACoffeeLink} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer" 
+                                    className="btn btn-sm btn-outline btn-warning glass-shimmer-effect w-full sm:w-auto flex items-center justify-center gap-2 whitespace-nowrap px-4"
+                                >
+                                    <GrDownload className="text-base" /> 
+                                    <span>Buy Complete Ebook</span>
+                                </a>
+                            )}
+                        </div>
                     )}
 
                     {/* Tags */}
@@ -526,9 +540,24 @@ function BookDetails() {
                     ) : book ? (
                         <Card className="w-full shadow-xl bg-custom-striped-light dark:bg-custom-striped">
                             <CardBody className="md:p-6">
-                                <h2 className="hidden md:block text-2xl font-bold text-gray-800 dark:text-gray-200 mb-6 break-words">
-                                    {startCase(book.title)}
-                                </h2>
+                                <div className="hidden md:flex justify-between items-start xl:items-center gap-4 mb-6">
+                                    <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 break-words flex-1">
+                                        {startCase(book.title)}
+                                    </h2>
+                                    {book?.buyMeACoffeeLink && (
+                                        <div className="shrink-0 animate__animated animate__fadeIn">
+                                            <a 
+                                                href={book.buyMeACoffeeLink} 
+                                                target="_blank" 
+                                                rel="noopener noreferrer" 
+                                                className="btn btn-outline btn-warning glass-shimmer-effect flex items-center justify-center gap-2 whitespace-nowrap px-6"
+                                            >
+                                                <GrDownload className="text-lg" /> 
+                                                <span>Buy Complete Ebook</span>
+                                            </a>
+                                        </div>
+                                    )}
+                                </div>
 
                                 {/* Tabs */}
                                 <div className="flex gap-2 mb-6 rounded-lg bg-[#e6e6e6] dark:bg-[#1a1b23]">
