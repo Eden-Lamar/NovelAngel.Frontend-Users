@@ -708,12 +708,12 @@ function BookReader() {
                                     href={bookLink} 
                                     target="_blank" 
                                     rel="noopener noreferrer" 
-                                    className="btn btn-outline btn-warning w-full font-bold text-lg flex flex-col sm:flex-row gap-2 h-auto py-3"
+                                    className="btn btn-outline btn-warning hover:text-gray-900 w-full font-bold text-lg flex flex-col sm:flex-row gap-2 h-auto py-3"
                                 >
                                     <GrDownload className="text-xl hidden sm:block" />
                                     <div className="flex gap-2 flex-wrap justify-center">
-                                        <span>Tired of waiting?</span> 
-                                        <span>Buy the Complete Ebook Now!</span>
+                                        <span>Tired Of Waiting?</span> 
+                                        <span>Buy The Complete Ebook And Enjoy Offline Reading Now!</span>
                                     </div>
                                 </a>
                             </div>
