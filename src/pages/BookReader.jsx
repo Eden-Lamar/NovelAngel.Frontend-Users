@@ -547,11 +547,11 @@ function BookReader() {
 
 													const StatusLabel = isLocked ? (
 														isUnlocked ? (
-																<span className="text-xs text-green-500 ml-2">Unlocked</span>
+																<span className="text-xs text-green-500 whitespace-nowrap">Unlocked</span>
 															) : (
-																<span className="text-xs text-red-500 ml-2">Locked</span>
+																<span className="text-xs text-red-500 whitespace-nowrap">Locked</span>
 															)
-														) : <span className="text-xs text-cyan-500 ml-2">Free</span>;
+														) : <span className="text-xs text-cyan-500 whitespace-nowrap">Free</span>;
 
 													return (
                             <SelectItem
@@ -561,14 +561,18 @@ function BookReader() {
                                 startContent={icon}
                                 className={isLocked && !isUnlocked ? "text-gray-500" : ""}
                             >
-                                <div className="flex items-center justify-between w-full">
-                                    <span className={isLocked && !isUnlocked
-																					? "text-gray-500"
-																					: "font-semibold text-amber-500"
-																			}>
+                                <div className="flex items-center justify-between w-full min-w-0 gap-2">
+                                    <span className={`truncate flex-1 min-w-0 ${isLocked && !isUnlocked
+                                          ? "text-gray-500"
+                                          : "font-semibold text-amber-500"
+                                      }`}>
                                         {chapter.chapterNo}. {startCase(chapter.title)}
                                     </span>
-                                    {StatusLabel}
+																		
+																			<div className="flex-shrink-0">
+																					{StatusLabel}
+																			</div>
+																			
                                 </div>
                             </SelectItem>
 													)
