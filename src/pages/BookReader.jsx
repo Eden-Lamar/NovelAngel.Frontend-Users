@@ -498,7 +498,7 @@ function BookReader() {
 
 						 {/* Chapter List Dropdown */}
             {!loading && chapterData && bookChapters.length > 0 && (
-                <div className="w-3/4 md:w-1/2 self-center mb-6">
+                <div className="w-[95%] md:w-1/2 self-center mb-6 max-w-full">
                     <Select
                         // label="Select Chapter"
                         placeholder="Choose a chapter to read"
@@ -511,25 +511,30 @@ function BookReader() {
                         className="max-w-full"
                         classNames={{
                             trigger: "border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1a1b23] cursor-pointer",
-                            value: "text-gold font-semibold",
+                            value: "text-gold font-semibold truncate",
                             label: "text-gold font-bold",
                         }}
+												// NEW: Prevents the dropdown popover from causing horizontal overflow
+                        popoverProps={{
+                            className: "max-w-[95vw] sm:max-w-[80vw] md:max-w-[50vw] overflow-hidden" 
+                        }}
+
                         startContent={(() => {
 																			const currentChapter = bookChapters.find((ch) => ch._id === chapterId);
 
 																			if (!currentChapter)
-																				return <FaBookOpen className="text-cyan-500 text-lg" />;
+																				return <FaBookOpen className="text-cyan-500 text-lg flex-shrink-0" />;
 
 																			const isLocked = currentChapter.isLocked;
 																			const isUnlocked =
 																				auth?.user?.unlockedChapters?.includes(currentChapter._id) || !isLocked;
 
 																			if (!isLocked) {
-																				return <FaBookOpen className="text-cyan-500 text-lg" />; // Free
+																				return <FaBookOpen className="text-cyan-500 text-lg flex-shrink-0" />; // Free
 																			} else if (isUnlocked) {
-																				return <CiUnlock className="text-green-500 text-lg" />; // Unlocked (paid)
+																				return <CiUnlock className="text-green-500 text-lg flex-shrink-0" />; // Unlocked (paid)
 																			} else {
-																				return <CiLock className="text-red-500 text-lg" />; // Still locked
+																				return <CiLock className="text-red-500 text-lg flex-shrink-0" />; // Still locked
 																			}
 																		})()
 																	}
@@ -541,9 +546,9 @@ function BookReader() {
 													// Determine icon and label color dynamically
 													const icon = isLocked
 														? isUnlocked
-															? <CiUnlock className="text-green-500 text-sm" /> // unlocked (paid)
-															: <CiLock className="text-red-500 text-sm" /> // still locked
-														: <FaBookOpen className="text-cyan-500 text-sm" />; // free
+															? <CiUnlock className="text-green-500 text-lg" /> // unlocked (paid)
+															: <CiLock className="text-red-500 text-lg" /> // still locked
+														: <FaBookOpen className="text-cyan-500 text-lg" />; // free
 
 													const StatusLabel = isLocked ? (
 														isUnlocked ? (
@@ -558,10 +563,15 @@ function BookReader() {
                                 key={chapter._id}
                                 value={chapter._id}
                                 textValue={`Chapter ${chapter.chapterNo}: ${startCase(chapter.title)}`}
-                                startContent={icon}
+                                // startContent={icon}
                                 className={isLocked && !isUnlocked ? "text-gray-500" : ""}
                             >
                                 <div className="flex items-center justify-between w-full min-w-0 gap-2">
+																		{/* 1. ICON: Moved manually inside the flex container with flex-shrink-0 */}
+																		<div className="flex-shrink-0 flex items-center justify-center w-5">
+																				{icon}
+																		</div>
+
                                     <span className={`truncate flex-1 min-w-0 ${isLocked && !isUnlocked
                                           ? "text-gray-500"
                                           : "font-semibold text-amber-500"
@@ -572,7 +582,7 @@ function BookReader() {
 																			<div className="flex-shrink-0">
 																					{StatusLabel}
 																			</div>
-																			
+
                                 </div>
                             </SelectItem>
 													)
