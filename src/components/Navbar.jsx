@@ -42,7 +42,7 @@ function NavbarSticky() {
 
 
   // Check if current route is the book reader page
-  const isBookReaderPage = location.pathname.includes("/book/") && location.pathname.includes("/read");
+  const isBookReaderPage = location.pathname.includes("/book/") && location.pathname.includes("/chapter");
 
   
   const { auth, logout, isAuthenticated } = useAuth(); // get user + logout + auth state
