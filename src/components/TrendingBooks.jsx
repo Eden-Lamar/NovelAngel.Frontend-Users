@@ -20,7 +20,6 @@ function TrendingBooks({ books, loading }) {
 
 
 
-
   return (
     <div className={`relative ${isAuthenticated ? "py-2" : "py-2.5 md:py-5"} w-full`}>
       <div className="mx-auto px-10">
@@ -53,7 +52,7 @@ function TrendingBooks({ books, loading }) {
                     className="relative group cursor-pointer overflow-visible w-[160px] md:w-[220px]"
                     onMouseEnter={() => setHoveredBook(book._id)}
                     onMouseLeave={() => setHoveredBook(null)}
-                    onClick={() => navigate(`/book/${book._id}`)}
+                    onClick={() => navigate(`/book/${book.slug || book._id}`)}
                   >
                     {/* Ranking Number - Behind the book */}
                     <div className="absolute -left-15 top-0 z-20 pointer-events-none">
