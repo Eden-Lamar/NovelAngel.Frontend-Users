@@ -350,7 +350,7 @@ function Novels() {
                                 key={book._id}
                                 isPressable
 																shadow='md'
-                                onPress={() => navigate(`/book/${book._id}`)}
+                                onPress={() => navigate(`/book/${book.slug || book._id}`)}
                                 className="h-60 w-full transition-all duration-300 bg-gray-50 dark:bg-[#09090b] group border border-amber-500/50"
                             >
                                 <CardBody className="flex flex-row gap-0 p-0">
