@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import api from '../api/axiosInstance';
 import { startCase } from 'lodash';
-import { useParams, useSearchParams, Link } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { FaBookOpen } from "react-icons/fa";
 import { CiLock, CiUnlock } from "react-icons/ci";
 import { RiArrowLeftSLine, RiArrowRightSLine, RiSettings3Line, RiCloseLine } from "react-icons/ri";
@@ -38,9 +38,12 @@ const DEFAULT_SETTINGS = {
 function BookReader() {
     const { auth, refreshUser } = useAuth();
     
-    const { bookId } = useParams();
-    const [searchParams, setSearchParams] = useSearchParams();
-    const chapterId = searchParams.get('chapterId');
+    const { slug, chapterNo } = useParams();
+    const navigate = useNavigate();
+    // const chapterId = searchParams.get('chapterId');
+		const [bookId, setBookId] = useState(null);
+		const [chapterId, setChapterId] = useState(null);
+
     const [chapterData, setChapterData] = useState(null);
     const [bookChapters, setBookChapters] = useState([]);
     const [bookImage, setBookImage] = useState(null);
@@ -91,25 +94,44 @@ function BookReader() {
         const fetchData = async () => {
             setLoading(true);
             try {
-                const bookResponse = await api.get(`/books/${bookId}`);
-                setBookChapters(bookResponse.data.data.chapters);
-								setBookImage(bookResponse.data.data.bookImage);
-								setBookLink(bookResponse.data.data.buyMeACoffeeLink);
+							// Step A: Get the book details (metadata & chapters list) using slug
+                const bookResponse = await api.get(`/books/${slug}`);
+								const book = bookResponse.data.data;
 
-                if (chapterId) {
-                    const chapterResponse = await api.get(`/books/${bookId}/chapters/${chapterId}`);
-                    setChapterData(chapterResponse.data.data);
-                    const index = bookResponse.data.data.chapters.findIndex(ch => ch._id === chapterId);
-                    setCurrentChapterIndex(index);
-                } else {
-                    const firstChapter = bookResponse.data.data.chapters[0];
-                    if (firstChapter) {
-                        const chapterResponse = await api.get(`/books/${bookId}/chapters/${firstChapter._id}`);
-                        setChapterData(chapterResponse.data.data);
-                        setCurrentChapterIndex(0);
-                        setSearchParams({ chapterId: firstChapter._id });
-                    }
+                setBookChapters(book.chapters);
+								setBookImage(book.bookImage);
+								setBookLink(book.buyMeACoffeeLink);
+								setBookId(book._id); // Store real ID for unlock endpoint
+
+								// Step B: Find the specific chapter based on the chapterNo from the URL
+								const targetChapter = book.chapters.find(ch => ch.chapterNo === Number(chapterNo));
+
+                if (!targetChapter) {
+                    setError("Chapter not found.");
+                    setLoading(false);
+                    return;
                 }
+
+                setChapterId(targetChapter._id); // Store real ID for unlock endpoint
+                const index = book.chapters.findIndex(ch => ch.chapterNo === Number(chapterNo));
+                setCurrentChapterIndex(index);
+
+                // Step C: Fetch the chapter content using the real extracted IDs
+                const chapterResponse = await api.get(`/books/${book._id}/chapters/${targetChapter.chapterNo}`);
+                
+                // SAFELY UNWRAP AND MERGE THE DATA
+                const responseData = chapterResponse.data.data;
+                const actualChapter = responseData.chapter || responseData;
+
+                // Format the object to match what the component expects
+                setChapterData({
+                    chapter: {
+                        ...targetChapter, // This guarantees title, chapterNo, and isLocked are NEVER missing
+                        ...actualChapter  // This adds the 'content' field from the API
+                    },
+                    bookTitle: book.title
+                });
+
                 setError(null);
             } catch (err) {
                 const errorMessage = err.response?.data?.message || "Failed to load chapter.";
@@ -120,7 +142,7 @@ function BookReader() {
             }
         };
         fetchData();
-    }, [bookId, chapterId, setSearchParams]);
+    }, [slug, chapterNo]); // re-run ONLY when slug or chapterNo changes
 
 		// Dynamically update tab title
 	useEffect(() => {
@@ -163,7 +185,10 @@ function BookReader() {
 
             // Refetch chapter data
             const chapterResponse = await api.get(`/books/${bookId}/chapters/${chapterId}`);
-            setChapterData(chapterResponse.data.data);
+            setChapterData((prev) => ({
+                ...prev,
+                chapter: chapterResponse.data.data
+            }));
         } catch (err) {
             const errorMessage = err.response?.data?.message || "Failed to unlock chapter.";
             setUnlockError(errorMessage);
@@ -174,9 +199,11 @@ function BookReader() {
 
     // Navigate chapters
     const handleNavigation = (direction) => {
-        const newIndex = direction === 'next' ? currentChapterIndex + 1 : currentChapterIndex - 1;
+			const newIndex = direction === 'next' ? currentChapterIndex + 1 : currentChapterIndex - 1;
         if (newIndex >= 0 && newIndex < bookChapters.length) {
-            setSearchParams({ chapterId: bookChapters[newIndex]._id });
+            // Navigate using URL parameter instead of searchParams
+            const nextChapterNo = bookChapters[newIndex].chapterNo;
+            navigate(`/book/${slug}/chapter/${nextChapterNo}`);
         }
     };
 
@@ -445,7 +472,7 @@ function BookReader() {
 							<>
                 <div className="sticky top-0 z-20 flex justify-between items-center p-1 md:p-2 rounded-xl mb-6 bg-white/40 dark:bg-[#1a1b23]/40 backdrop-blur-md shadow-md">
 									<div className=" ">
-                    <Link to={`/book/${bookId}`} className="flex items-center group">
+                    <Link to={`/book/${slug || bookId}`} className="flex items-center group">
                         <RiArrowLeftSLine className="text-gold text-2xl md:text-2xl transition-all duration-200 group-hover:mr-1 group-hover:scale-105 md:group-hover:scale-125" />
 
                         <div className="relative w-10 aspect-[3/4] shadow-md rounded-sm md:rounded-md overflow-hidden bg-gray-200 dark:bg-gray-800 mr-2 group-hover:shadow-lg transition-all">
@@ -505,7 +532,11 @@ function BookReader() {
                         selectedKeys={chapterId ? [chapterId] : []}
                         onChange={(e) => {
                             if (e.target.value) {
-                                setSearchParams({ chapterId: e.target.value });
+                               // Find the chapter metadata using the _id value from the Select
+                                const selectedCh = bookChapters.find(ch => ch._id === e.target.value);
+                                if (selectedCh) {
+                                    navigate(`/book/${slug}/chapter/${selectedCh.chapterNo}`);
+                                }
                             }
                         }}
                         className="max-w-full"
@@ -573,8 +604,8 @@ function BookReader() {
 																		</div>
 
                                     <span className={`truncate flex-1 min-w-0 ${isLocked && !isUnlocked
-                                          ? "text-gray-500"
-                                          : "font-semibold text-amber-500"
+																					? "text-gray-500"
+																					: "font-semibold text-amber-500"
                                       }`}>
                                         {chapter.chapterNo}. {startCase(chapter.title)}
                                     </span>
