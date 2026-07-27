@@ -135,7 +135,7 @@ function ContinueReadingHome() {
                                                     <div className="flex gap-3">
                                                         {/* Book Cover */}
                                                         <Link
-                                                            to={`/book/${item.bookId}`}
+                                                            to={`/book/${item.slug || item.bookId}`}
                                                             className="flex-shrink-0"
                                                         >
                                                             <img
@@ -150,7 +150,7 @@ function ContinueReadingHome() {
                                                         {/* Book Info */}
                                                         <div className="flex-1 flex flex-col min-w-0">
                                                             <Link
-                                                                to={`/book/${item.bookId}`}
+                                                                to={`/book/${item.slug || item.bookId}`}
                                                                 className="hover:text-cyan-500 transition-colors"
                                                             >
                                                                 <h3 className="font-bold text-sm line-clamp-2 mb-1">
@@ -158,7 +158,7 @@ function ContinueReadingHome() {
                                                                 </h3>
                                                             </Link>
                                                             <Link
-                                                                to={`/book/${item.bookId}/read?chapterId=${item.lastChapter.id}`}
+                                                                to={`/book/${item.slug || item.bookId}/chapter/${item.lastChapter.number}`}
                                                                 className="text-xs text-gray-600 dark:text-gray-400 hover:text-amber-500 hover:dark:text-amber-500 transition-colors line-clamp-1 mb-2"
                                                             >
                                                                 <span className="text-amber-500">Ch {item.lastChapter.number}:</span> {startCase(item.lastChapter.title)}
@@ -204,7 +204,7 @@ function ContinueReadingHome() {
                                             <div className="flex gap-4">
                                                 {/* Book Cover */}
                                                 <Link
-                                                    to={`/book/${item.bookId}`}
+                                                    to={`/book/${item.slug || item.bookId}`}
                                                     className="flex-shrink-0"
                                                 >
                                                     <img
@@ -219,7 +219,7 @@ function ContinueReadingHome() {
                                                 {/* Book Info */}
                                                 <div className="flex-1 flex flex-col min-w-0">
                                                     <Link
-                                                        to={`/book/${item.bookId}`}
+                                                        to={`/book/${item.slug || item.bookId}`}
                                                         className="hover:text-cyan-500 transition-colors"
                                                     >
                                                         <h3 className="font-bold text-base line-clamp-1 mb-1">
@@ -227,7 +227,7 @@ function ContinueReadingHome() {
                                                         </h3>
                                                     </Link>
                                                     <Link
-                                                        to={`/book/${item.bookId}/read?chapterId=${item.lastChapter.id}`}
+                                                        to={`/book/${item.slug || item.bookId}/chapter/${item.lastChapter.number}`}
                                                         className="text-sm text-gray-600 dark:text-gray-400 hover:text-amber-500 hover:dark:text-amber-500 transition-colors line-clamp-1 mb-3"
                                                     >
                                                         <span className="text-amber-500">Chp {item.lastChapter.number}:</span> {startCase(item.lastChapter.title)}
