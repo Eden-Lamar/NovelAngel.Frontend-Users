@@ -46,7 +46,7 @@ function NewStories({ books, loading }) {
                     className="relative group cursor-pointer overflow-visible w-[140px] md:w-[220px]"
                     onMouseEnter={() => setHoveredBook(book._id)}
                     onMouseLeave={() => setHoveredBook(null)}
-                    onClick={() => navigate(`/book/${book._id}`)}
+                    onClick={() => navigate(`/book/${book.slug || book._id}`)}
                   >
                     <div
                       className={`relative z-10 w-[140px] md:w-[220px] transition-transform duration-500 ease-out ${
