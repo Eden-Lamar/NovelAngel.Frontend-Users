@@ -25,6 +25,7 @@ function BookComments({ bookId, isAuthenticated }) {
 
     // Fetch comments
     const fetchComments = useCallback(async (pageNum = 1, append = false) => {
+        if (!bookId) return;
         try {
             if (pageNum === 1) {
                 setLoading(true);
@@ -58,8 +59,11 @@ function BookComments({ bookId, isAuthenticated }) {
 
     // Initial fetch
     useEffect(() => {
-        fetchComments(1, false);
-    }, [fetchComments]);
+        // 2. ONLY FETCH IF WE HAVE AN ID
+        if (bookId) {
+            fetchComments(1, false);
+        }
+    }, [fetchComments, bookId]);
 
     // Infinite scroll observer
     useEffect(() => {
