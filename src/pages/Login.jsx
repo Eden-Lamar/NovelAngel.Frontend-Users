@@ -192,7 +192,7 @@ function Login() {
 												color='default'
                         startContent={
                           !googleLoading && (
-                            <img alt="Google logo" loading="lazy" width="16" height="16" decoding="async" data-nimg="1" src="https://claude.ai/images/google.svg" style={{"color": "transparent"}}/>
+                            <img alt="Google logo" loading="lazy" width="18" height="18" decoding="async" src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" style={{"color": "transparent"}}/>
                           )
                         }
                         isDisabled={googleLoading}

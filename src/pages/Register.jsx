@@ -190,10 +190,10 @@ function Register() {
                                 <img 
                                     alt="Google logo" 
                                     loading="lazy" 
-                                    width="16" 
-                                    height="16" 
+                                    width="18" 
+                                    height="18" 
                                     decoding="async" 
-                                    src="https://claude.ai/images/google.svg" 
+                                    src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" 
                                     style={{"color": "transparent"}}
                                 />
                             }
