@@ -68,7 +68,7 @@ function BookRecommendations() {
         {books.map(book => (
           <Link
             key={book._id}
-            to={`/book/${book._id}`}
+            to={`/book/${book.slug || book._id}`}
             className="group block flex-shrink-0 w-[160px] md:w-[180px] transition-transform transform hover:scale-[1.01] snap-start"
           >
             <Card className="h-full border border-gray-700/50 transition-all duration-300 
