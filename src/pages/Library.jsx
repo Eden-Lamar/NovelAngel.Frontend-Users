@@ -182,7 +182,7 @@ function Library() {
                                                 <div className="flex gap-4">
                                                     {/* Book Cover */}
                                                     <Link
-                                                        to={`/book/${item.bookId}`}
+                                                        to={`/book/${item.slug || item.bookId}`}
                                                         className="flex-shrink-0"
                                                     >
                                                         <img
@@ -198,7 +198,7 @@ function Library() {
                                                     <div className="flex-1 flex flex-col min-w-0">
                                                         <div>
                                                             <Link
-                                                                to={`/book/${item.bookId}`}
+                                                                to={`/book/${item.slug || item.bookId}`}
                                                                 className="hover:text-cyan-500 transition-colors"
                                                             >
                                                                 <h3 className="font-bold text-base line-clamp-1 mb-1">
@@ -206,7 +206,7 @@ function Library() {
                                                                 </h3>
                                                             </Link>
                                                             <Link
-																															to={`/book/${item.bookId}/read?chapterId=${item.lastChapter.id}`}
+																															to={`/book/${item.slug || item.bookId}/chapter/${item.lastChapter.number}`}
 																															className="text-sm text-gray-600 dark:text-gray-400 hover:text-amber-500 hover:dark:text-amber-500 transition-colors line-clamp-1 mb-3">
                                                                 <span className="text-amber-500">Chp {item.lastChapter.number}:</span> {startCase(item.lastChapter.title)}
                                                             </Link>
@@ -346,7 +346,7 @@ function Library() {
                                 {bookmarks.map((book) => (
                                     <Link
 																			key={book._id}
-																			to={`/book/${book._id}`}
+																			to={`/book/${book.slug || book._id}`}
 																			className="group block flex-shrink-0 w-[161.6px] md:w-[180px] transition-transform transform hover:scale-[1.01]"
 																		>
 																			<Card className="h-full border border-gray-700/50 transition-all duration-300 
