@@ -33,7 +33,7 @@ function RecentlyAdded({ books, loading }) {
 									<div
 										key={book.bookId}
 										className="group relative bg-gray-200 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl p-3 transition-all duration-300 cursor-pointer hover:shadow-lg hover:scale-[1.02] border border-transparent hover:border-cyan-500/20"
-										onClick={() => navigate(`/book/${book.bookId}`)}
+										onClick={() => navigate(`/book/${book.slug || book.bookId}`)}
 									>
 										<div className="flex gap-3">
 											{/* Book Cover */}
