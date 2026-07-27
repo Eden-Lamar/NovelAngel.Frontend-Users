@@ -10,6 +10,7 @@ import SignUpBanner from './components/SignUpBanner';
 import Home from './pages/Home';
 import BookDetails from './pages/BookDetails';
 import BookReader from './pages/BookReader';
+import LegacyUrlRedirect from './pages/LegacyUrlRedirect';
 import Novels from './pages/Novels';
 import Genres from './pages/Genres';
 import Login from './pages/Login';
@@ -152,8 +153,9 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Register />} />
-            <Route path="/book/:id" element={<BookDetails />} />
-            <Route path="/book/:bookId/read" element={<BookReader />} />
+            <Route path="/book/:slug" element={<BookDetails />} />
+            <Route path="/book/:bookId/read" element={<LegacyUrlRedirect />} />  // to catch the old bookmarks and redirect them:
+            <Route path="/book/:slug/chapter/:chapterNo" element={<BookReader />} />
             <Route path="/novels" element={<Novels />} />
             <Route path="/genres" element={<Genres />} />
             <Route path="/buy-coins" element={<BuyCoins />} />
