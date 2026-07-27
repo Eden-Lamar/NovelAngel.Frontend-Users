@@ -110,7 +110,7 @@ function BookDetails() {
             }
         };
         fetchBookData();
-    }, [slug, isAuthenticated]);
+    }, [slug, isAuthenticated, navigate]);
 
 		// Handle Floating Button Visibility & Latching
     useEffect(() => {
