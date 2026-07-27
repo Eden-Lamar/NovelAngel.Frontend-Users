@@ -20,7 +20,7 @@ import 'animate.css';
 import { getCountryFlagCode } from "../helperFunction";
 
 function BookDetails() {
-    const { id } = useParams();
+    const { slug } = useParams();
     const navigate = useNavigate();
     const [book, setBook] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -54,38 +54,51 @@ function BookDetails() {
             // ---------------------------------------------------------
             setLastReadChapter(null);
             try {
-							// Base requests
-							const promises = [api.get(`/books/${id}`)];
+							// 1. Fetch book first using the slug
+							const bookRes = await api.get(`/books/${slug}`);
+							const fetchedBook = bookRes.data.data;
 							
-							// Conditionally add like/bookmark/progress requests if logged in
-							if (isAuthenticated) {
-									promises.push(api.get(`/books/${id}/like-status`));
-									promises.push(api.get(`/books/${id}/bookmark-status`));
-									// Fetch continue reading list to check progress
-                  promises.push(api.get('/user/continue-reading'));
+							// --- NEW: Instantly redirect to the slug URL if they are using an old ID ---
+							if (fetchedBook.slug && slug !== fetchedBook.slug) {
+								navigate(`/book/${fetchedBook.slug}`, { replace: true });
+								return; // Stop running here; the new URL will automatically trigger a fresh load
+							}
+
+							setBook(fetchedBook);
+
+							// 2. Extract real ID to use for auth-dependent endpoints
+							const bookId = fetchedBook._id;
+							
+							// 3. Conditionally fetch like/bookmark/progress if logged in
+								if (isAuthenticated) {
+									const promises = [
+										api.get(`/books/${bookId}/like-status`),
+										api.get(`/books/${bookId}/bookmark-status`),
+										// Fetch continue reading list to check progress
+										api.get('/user/continue-reading')
+									];
+
+									// Fetch book details, like status, bookmark status, and continue reading list in parallel
+									const results = await Promise.allSettled(promises);
+									const likeRes = results[0];
+									const bookmarkRes = results[1];
+									const progressRes = results[2];
+	
+									// if (bookRes.status === "fulfilled") setBook(bookRes.value.data.data);
+									if (likeRes?.status === "fulfilled") setIsLiked(likeRes.value.data.isLiked);
+									if (bookmarkRes?.status === "fulfilled") setIsBookmarked(bookmarkRes.value.data.isBookmarked);
+	
+									// Process Reading Progress
+									if (progressRes?.status === "fulfilled") {
+											const continueList = progressRes.value.data.data || [];
+											// Find if THIS book is in the list
+											const currentProgress = continueList.find(item => item.bookId === bookId);
+											if (currentProgress && currentProgress.lastChapter) {
+													setLastReadChapter(currentProgress.lastChapter);
+											}
+									}
 								}
 								
-								// Fetch book details, like status, bookmark status, and continue reading list in parallel
-								const results = await Promise.allSettled(promises);
-
-								const bookRes = results[0];
-								const likeRes = isAuthenticated ? results[1] : null;
-								const bookmarkRes = isAuthenticated ? results[2] : null;
-								const progressRes = isAuthenticated ? results[3] : null;
-
-								if (bookRes.status === "fulfilled") setBook(bookRes.value.data.data);
-								if (likeRes?.status === "fulfilled") setIsLiked(likeRes.value.data.isLiked);
-								if (bookmarkRes?.status === "fulfilled") setIsBookmarked(bookmarkRes.value.data.isBookmarked);
-
-								// Process Reading Progress
-                if (progressRes?.status === "fulfilled") {
-                    const continueList = progressRes.value.data.data || [];
-                    // Find if THIS book is in the list
-                    const currentProgress = continueList.find(item => item.bookId === id);
-                    if (currentProgress && currentProgress.lastChapter) {
-                        setLastReadChapter(currentProgress.lastChapter);
-                    }
-                }
 	
                 setError(null);
             } catch (err) {
@@ -97,7 +110,7 @@ function BookDetails() {
             }
         };
         fetchBookData();
-    }, [id, isAuthenticated]);
+    }, [slug, isAuthenticated]);
 
 		// Handle Floating Button Visibility & Latching
     useEffect(() => {
@@ -148,7 +161,7 @@ function BookDetails() {
 				setBook((prev) => ({ ...prev, likeCount: newLikeCount }));
         
 				try {
-					await api.post(`/books/${id}/toggle-like`);
+					await api.post(`/books/${book._id}/toggle-like`);
 				} catch (err) {
 					// Revert on failure
 					setIsLiked(prevLiked);
@@ -171,7 +184,7 @@ function BookDetails() {
 				setIsBookmarked(!prevBookmarked);
 
 				try {
-					await api.post(`/books/${id}/toggle-bookmark`);
+					await api.post(`/books/${book._id}/toggle-bookmark`);
 				} catch (err) {
 					// Revert on failure
 					setIsBookmarked(prevBookmarked);
@@ -224,20 +237,23 @@ function BookDetails() {
 
 		// Helper to generate the correct read link
     const getReadLink = () => {
+			// We now use book.slug and chapterNo instead of book._id and chapterId
+			const targetSlug = book?.slug || book?._id; // Fallback just in case
+
         // Case 1: Continue Reading (User has progress)
         if (lastReadChapter) {
-            return `/book/${book._id}/read?chapterId=${lastReadChapter.id}`;
+            return `/book/${targetSlug}/chapter/${lastReadChapter.number}`;
         }
 
         // Case 2: Start Reading (User has no progress, default to Chapter 1)
         if (book?.chapters?.length > 0) {
             // Find the chapter with the lowest number to ensure we start at the beginning
             const firstChapter = book.chapters[0];
-            return `/book/${book._id}/read?chapterId=${firstChapter._id}`;
+            return `/book/${targetSlug}/chapter/${firstChapter.chapterNo}`;
         }
 
         // Case 3: Fallback (No chapters exist yet)
-        return `/book/${book._id}/read`;
+        return `/book/${targetSlug}/chapter/1`;
     };
 
     return (
@@ -653,7 +669,7 @@ function BookDetails() {
                                                 </div>
                                                 <Button
                                                     as={Link}
-                                                    to={`/book/${book._id}/read?chapterId=${chapter._id}`}
+                                                    to={`/book/${book.slug}/chapter/${chapter.chapterNo}`}
                                                     variant="ghost"
                                                     size="sm"
                                                     className="ml-4 border border-cyan-500 text-cyan-500 force-cyan text-sm font-medium"
@@ -675,10 +691,10 @@ function BookDetails() {
                 </div>
 
 								{/* Comments Section */}
-								{activeTab === 'summary' && (
+								{activeTab === 'summary' && book && (
 									<div className="">
 											<BookComments 
-												bookId={id} 
+												bookId={book._id} 
 												isAuthenticated={isAuthenticated}
 											/>
 									</div>
