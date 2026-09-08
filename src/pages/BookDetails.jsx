@@ -7,6 +7,7 @@ import { IoIosShareAlt } from "react-icons/io";
 import { RiArrowDownWideFill } from "react-icons/ri";
 import { GiTwoCoins } from "react-icons/gi";
 import { GrDownload } from "react-icons/gr";
+import { PiSortAscendingBold , PiSortDescendingBold   } from "react-icons/pi";
 import { Button } from "@heroui/button";
 import { Chip } from "@heroui/chip";
 import { Card, CardBody } from "@heroui/card";
@@ -26,7 +27,7 @@ function BookDetails() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [showFullDescription, setShowFullDescription] = useState(false);
-    const [activeTab, setActiveTab] = useState('summary');
+    const [activeTab, setActiveTab] = useState('chapters');
     const [isLiked, setIsLiked] = useState(false);
     const [isBookmarked, setIsBookmarked] = useState(false);
 
@@ -43,6 +44,9 @@ function BookDetails() {
 		const [showFloatingButton, setShowFloatingButton] = useState(false);
 		// const [stopFloating, setStopFloating] = useState(false); 
 		// console.log(navigate)
+
+		// State for Chapter Sorting (true = Descending/Newest first)
+    const [isSortDesc, setIsSortDesc] = useState(true);
 
     // Fetch book details & User Progress
     useEffect(() => {
@@ -255,6 +259,11 @@ function BookDetails() {
         // Case 3: Fallback (No chapters exist yet)
         return `/book/${targetSlug}/chapter/1`;
     };
+
+		// NEW: Computed property for sorted chapters
+    const sortedChapters = book?.chapters ? [...book.chapters].sort((a, b) => {
+        return isSortDesc ? b.chapterNo - a.chapterNo : a.chapterNo - b.chapterNo;
+    }) : [];
 
     return (
         <div className="container mx-auto px-2 md:px-10 py-8 min-h-screen">
@@ -601,7 +610,7 @@ function BookDetails() {
                                         <span className="text-base text-gray-700 dark:text-gray-300 leading-relaxed mr-2 whitespace-pre-wrap">
                                             {showFullDescription
                                                 ? book.description
-                                                : truncate(book.description, { length: 300 })}
+                                                : truncate(book.description, { length: 600 })}
                                         </span>
                                         {book.description.length > 300 && !showFullDescription && (
                                           <span 
@@ -617,9 +626,22 @@ function BookDetails() {
                                 {/* Chapters Tab */}
                                 {activeTab === 'chapters' && (
 																	<>
-																		<span className="text-gray-900 dark:text-white text-xl font-semibold p-2">Chapters</span>
+																	{/* text-gray-900 dark:text-white text-xl font-semibold p-2 */}
+																				{/* NEW: Sort Toggle inserted into Header */}
+																					<div className="flex items-center gap-2">
+																							<h3 className="text-gray-900 dark:text-white text-lg font-semibold p-2">
+																									Chapters
+																							</h3>
+																							<button 
+																									onClick={() => setIsSortDesc(!isSortDesc)}
+																									className="btn btn-ghost btn-circle btn-sm text-gray-400 hover:text-white"
+																									title={isSortDesc ? "Sort Oldest First" : "Sort Newest First"}
+																							>
+																									{isSortDesc ? <PiSortAscendingBold  className="text-lg" /> : <PiSortDescendingBold   className="text-lg" />}
+																							</button>
+																					</div>
                                     <div className="space-y-2">
-                                        {book.chapters.map((chapter) => {
+                                        {sortedChapters.map((chapter) => {
 																					// Define user-specific states
 																					const isPurchased = auth?.user?.unlockedChapters?.includes(chapter._id);
 																					const isAdmin = auth?.user?.role === 'admin';
